@@ -1,0 +1,10 @@
+[book]
+title = "Rust By Example"
+author = "The Rust Community"
+
+[output.html.playpen]
+editable = true
+editor = "ace"
+
+[output.html.fold]
+enable = true
