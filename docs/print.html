@@ -753,7 +753,7 @@ RGB (0, 0, 0) 0x000000
 }
 </code></pre></pre>
 <h3><a class="header" href="#こちらも参照-6" id="こちらも参照-6">こちらも参照:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/"><code>std</code>ライブラリ</a>、<a href="variable_bindings/mut.html"><code>mut</code></a>、[推論]、そして[シャドーイング]</p>
+<p><a href="https://doc.rust-lang.org/std/"><code>std</code>ライブラリ</a>、<a href="variable_bindings/mut.html"><code>mut</code></a>、<a href="types/inference.html">推論</a>、そして<a href="variable_bindings/scope.html">シャドーイング</a></p>
 <h1><a class="header" href="#リテラルと演算子" id="リテラルと演算子">リテラルと演算子</a></h1>
 <p>整数の<code>1</code>、浮動小数点数の<code>1.2</code>、文字の<code>'a'</code>、文字列の<code>&quot;abc&quot;</code>、真偽値の<code>true</code>、
 そしてユニット型の<code>()</code>などは、リテラルで表すことができます。</p>
@@ -786,7 +786,7 @@ RGB (0, 0, 0) 0x000000
     println!(&quot;1 &lt;&lt; 5 is {}&quot;, 1u32 &lt;&lt; 5);
     println!(&quot;0x80 &gt;&gt; 2 is 0x{:x}&quot;, 0x80u32 &gt;&gt; 2);
 
-    // アンダースコアを使って可読性を上げてください!
+    // アンダースコアを使って可読性を上げましょう!
     println!(&quot;One million is written as {}&quot;, 1_000_000u32); // 100万は{}と書きます
 }
 </code></pre></pre>
@@ -826,7 +826,7 @@ fn main() {
     // ただし、長いタプルは出力できません。
     // let too_long_tuple = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
     // println!(&quot;too long tuple: {:?}&quot;, too_long_tuple);
-    // TODO ^ コンパイラのエラーを確認するために上の2行をアンコメントしてください。
+    // TODO ^ コンパイルエラーを確認するために上の2行をアンコメントしてください。
 
     let pair = (1, true);
     println!(&quot;pair is {:?}&quot;, pair);
@@ -917,7 +917,7 @@ fn main() {
 
     // スライスで配列の部分を指す
     // [スタート..エンド]のようにして指定します。
-    // スタートはスライスの最初の位置のインデックス
+    // ただし、スタートはスライスの最初の位置のインデックス
     // エンドは1より大きいスライスの最後の位置のインデックスです。
     println!(&quot;borrow a section of the array as a slice&quot;);  // 配列の部分をスライスとして借用する。
     analyze_slice(&amp;ys[1 .. 4]);

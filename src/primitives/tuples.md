@@ -37,7 +37,7 @@ fn main() {
     // ただし、長いタプルは出力できません。
     // let too_long_tuple = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
     // println!("too long tuple: {:?}", too_long_tuple);
-    // TODO ^ コンパイラのエラーを確認するために上の2行をアンコメントしてください。
+    // TODO ^ コンパイルエラーを確認するために上の2行をアンコメントしてください。
 
     let pair = (1, true);
     println!("pair is {:?}", pair);
