@@ -23,7 +23,7 @@
         - [テストケース: 連結リスト](custom_types/enum/testcase_linked_list.md)
     - [定数](custom_types/constants.md)
 
-- [変数バインディング](variable_bindings.md)
+- [変数束縛](variable_bindings.md)
     - [可変性](variable_bindings/mut.md)
     - [スコープとシャドーイング](variable_bindings/scope.md)
     - [宣言](variable_bindings/declare.md)

@@ -13,53 +13,53 @@ Rust by Example (RBE)は、Rustの様々な概念や標準ライブラリを実�
 
 それでは、始めましょう!
 
-- [Hello World](hello.md) - Start with a traditional Hello World program.
+- [Hello World](hello.md) - 伝統的な「Hello World」プログラムから始めます。
 
-- [Primitives](primitives.md) - Learn about signed integers, unsigned integers and other primitives.
+- [プリミティブ](primitives.md) - 符号付き整数、符号なし整数などのプリミティブについて学びます。
 
-- [Custom Types](custom_types.md) - `struct` and `enum`.
+- [カスタム型](custom_types.md) - `struct`と`enum`
 
-- [Variable Bindings](variable_bindings.md) - mutable bindings, scope, shadowing.
+- [変数束縛](variable_bindings.md) - 可変束縛、スコープ、シャドーイング。
 
-- [Types](types.md) - Learn about changing and defining types.
+- [型](types.md) - 型の変更と宣言について学びます。
 
-- [Conversion](conversion.md)
+- [変換](conversion.md)
 
-- [Expressions](expression.md)
+- [式](expression.md)
 
-- [Flow of Control](flow_control.md) - `if`/`else`, `for`, and others.
+- [制御フロー](flow_control.md) - `if`/`else`、`for`など。
 
-- [Functions](fn.md) - Learn about Methods, Closures and High Order Functions.
+- [関数](fn.md) - メソッド、クロージャ、高階関数などについて学びます。
 
-- [Modules](mod.md) - Organize code using modules
+- [モジュール](mod.md) - モジュールでコードを整理する。
 
-- [Crates](crates.md) - A crate is a compilation unit in Rust. Learn to create a library.
+- [クレート](crates.md) - クレートはRustの編集ユニットです。ライブラリの作り方を学びます。
 
-- [Cargo](cargo.md) - Go through some basic features of the official Rust package management tool.
+- [Cargo](cargo.md) - Rustの標準パッケージマネージャの基本的な機能について学びます。
 
-- [Attributes](attribute.md) - An attribute is metadata applied to some module, crate or item.
+- [属性](attribute.md) - 属性とは、モジュールやクレート、その要素などに対して適用されるメタデータのことです。
 
-- [Generics](generics.md) - Learn about writing a function or data type which can work for multiple types of arguments.
+- [ジェネリック](generics.md) - 複数の型の引数に対して実行できる関数やデータ型について学びます.
 
-- [Scoping rules](scope.md) - Scopes play an important part in ownership, borrowing, and lifetimes.
+- [スコープのルール](scope.md) - スコープは所有権、借用、ライフタイムに関して重要な役割を担います。
 
-- [Traits](trait.md) - A trait is a collection of methods defined for an unknown type: `Self`
+- [トレイト](trait.md) - トレイとは未知の型`Self`に対して実装されたメソッドの集合です。
 
-- [Macros](macros.md)
+- [マクロ](macros.md)
 
-- [Error handling](error.md) - Learn Rust way of handling failures.
+- [エラー処理](error.md) - Rustで失敗を処理する方法について学びます。
 
-- [Std library types](std.md) - Learn about some custom types provided by `std` library.
+- [Stdライブラリの型](std.md) - `std`ライブラリで提供されるいくつかのカスタム型について学びます。
 
-- [Std misc](std_misc.md) - More custom types for file handling, threads.
+- [その他のStd](std_misc.md) - ファイル処理、スレッドなどのその他のカスタム型。
 
-- [Testing](testing.md) - All sorts of testing in Rust.
+- [テスト](testing.md) - Rustにおけるすべての種類のテスト。
 
-- [Unsafe Operations](unsafe.md)
+- [安全でない操作](unsafe.md)
 
-- [Compatibility](compatibility.md)
+- [互換性](compatibility.md)
 
-- [Meta](meta.md) - Documentation, Benchmarking.
+- [メタデータ](meta.md) - ドキュメント、ベンチマーク。
 
 
 [rust]: https://www.rust-lang.org/
