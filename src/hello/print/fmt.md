@@ -19,9 +19,9 @@ use std::fmt::{self, Formatter, Display};
 
 struct City {
     name: &'static str,
-    // Latitude
+    // 緯度
     lat: f32,
-    // Longitude
+    // 経度
     lon: f32,
 }
 

@@ -1,89 +1,87 @@
-# Formatted print
+# フォーマットしてプリント
 
-Printing is handled by a series of [`macros`][macros] defined in [`std::fmt`][fmt]
-some of which include:
+プリントは[`std::fmt`][fmt]で定義されているいくつかの[`マクロ`][macros]によって
+制御されています。そのいくつかを紹介します。
 
-* `format!`: write formatted text to [`String`][string]
-* `print!`: same as `format!` but the text is printed to the console (io::stdout).
-* `println!`: same as `print!` but a newline is appended.
-* `eprint!`: same as `format!` but the text is printed to the standard error (io::stderr).
-* `eprintln!`: same as `eprint!`but a newline is appended.
+* `format!`: フォーマットされたテキストを[`String`][string]に書き込む。
+* `print!`: `format!`と同様だが、コンソール(io::stdout)に書き込む。
+* `println!`: `print!`と同様だが、改行が追加される。
+* `eprint!`: `format!`と同様だが、標準エラー出力(io::stderr)に書き込む。
+* `eprintln!`: `eprint!`と同様だが、改行が追加される。
 
-All parse text in the same fashion. As a plus, Rust checks formatting
-correctness at compile time.
+すべてのものは、同じやり方で解析し、 コンパイル時に正しくフォーマットできるか
+チェックします。
 
 ```rust,editable,ignore,mdbook-runnable
 fn main() {
-    // In general, the `{}` will be automatically replaced with any
-    // arguments. These will be stringified.
-    println!("{} days", 31);
+    // 一般的に、`{}`が自動的に引数に変換されます。
+    // 自動的に文字列に変換します。
+    println!("{} days", 31); // {}日
 
-    // Without a suffix, 31 becomes an i32. You can change what type 31 is
-    // by providing a suffix. The number 31i64 for example has the type i64.
+    // 示唆しなければ、31はi32になります。示唆を加えることで、31の型を
+    // 変えられます。例えば31i64はi64として解釈されます。
 
-    // There are various optional patterns this works with. Positional
-    // arguments can be used.
-    println!("{0}, this is {1}. {1}, this is {0}", "Alice", "Bob");
+    // 引数の位置を使って、埋め込まれる場所を指定することができます。
+    println!("{0}, this is {1}. {1}, this is {0}", "Alice", "Bob"); // {0}、こちらが{1}です。{1}、こちらが{0}です。
 
-    // As can named arguments.
-    println!("{subject} {verb} {object}",
+    // 名前を付けても良いです。
+    println!("{subject} {verb} {object}", // 素早い茶色の狐はのろまな犬を飛び越える
              object="the lazy dog",
              subject="the quick brown fox",
              verb="jumps over");
 
-    // Special formatting can be specified after a `:`.
-    println!("{} of {:b} people know binary, the other half doesn't", 1, 2);
+    // `:`の後にフォーマット型を指定すると特殊なフォーマットができます。
+    println!("{} of {:b} people know binary, the other half doesn't", 1, 2); // {:b}(2つ目)人に{}(1つ目)人はバイナリを知っていますが、残りの半分は知りません。
 
-    // You can right-align text with a specified width. This will output
-    // "     1". 5 white spaces and a "1".
+    // 幅を指定して右寄せにできます。 この例は
+    // "     1". 5 white spaces and a "1"と出力します。
     println!("{number:>width$}", number=1, width=6);
 
-    // You can pad numbers with extra zeroes. This will output "000001".
+    // 余分なゼロで数字を埋めることができます。この例は"000001"と出力します。
     println!("{number:>0width$}", number=1, width=6);
 
-    // Rust even checks to make sure the correct number of arguments are
-    // used.
-    println!("My name is {0}, {1} {0}", "Bond");
-    // FIXME ^ Add the missing argument: "James"
+    // Rustは指定された数の引数が使われているかもチェック
+    // します。
+    println!("My name is {0}, {1} {0}", "Bond"); // 私の名前は{0}、{1} {0}です。
+    // FIXME ^ 足りない引数、"James"を追加してください。
 
-    // Create a structure named `Structure` which contains an `i32`.
+    // `i32`を含む`Structure`という構造体を作ります。
     #[allow(dead_code)]
     struct Structure(i32);
 
-    // However, custom types such as this structure require more complicated
-    // handling. This will not work.
-    println!("This struct `{}` won't print...", Structure(3));
-    // FIXME ^ Comment out this line.
+    // しかし、この構造体のようなカスタム型はもう少し複雑です。
+    // これは動作しません。
+    println!("This struct `{}` won't print...", Structure(3)); // この構造体`{}`は出力できません...
+    // FIXME ^ この行をコメントアウトしてください。
 }
 ```
 
-[`std::fmt`][fmt] contains many [`traits`][traits] which govern the display
-of text. The base form of two important ones are listed below:
+[`std::fmt`][fmt]はテキストを出力するための多くの[`トレイト`][traits]を持って
+います。2つの重要なものを挙げます。
 
-* `fmt::Debug`: Uses the `{:?}` marker. Format text for debugging purposes.
-* `fmt::Display`: Uses the `{}` marker. Format text in a more elegant, user
-friendly fashion.
+* `fmt::Debug`: `{:?}`マーカーを使います。デバッグ用にテキストをフォーマットします。
+* `fmt::Display`: `{}`マーカーを使います。もっと美しく、ユーザーフレンドリーに
+表示します。
 
-Here, we used `fmt::Display `because the std library provides implementations
-for these types. To print text for custom types, more steps are required.
+この例で使われている型は、標準ライブラリに含まれているため、ここでは`fmt::Display`
+を使用しています。カスタム型を扱う場合はもう少し複雑です。
 
-Implementing the `fmt::Display` trait automatically implements the
-[`ToString`] trait which allows us to [convert] the type to [`String`][string].
+`fmt::Display`トレイトを実装すると、自動的に[`String`][string]に[変換][convert]する
+[`ToString`]トレイトが実装されます。
 
-### Activities
+### 演習
 
- * Fix the two issues in the above code (see FIXME) so that it runs without
-   error.
- * Add a `println!` macro that prints: `Pi is roughly 3.142` by controlling
-   the number of decimal places shown. For the purposes of this exercise,
-   use `let pi = 3.141592` as an estimate for pi. (Hint: you may need to
-   check the [`std::fmt`][fmt] documentation for setting the number of
-   decimals to display)
+ * 上のコードの、2つの箇所を変更して(FIXMEを見てください)エラーなく実行できる
+   ようにしてください。
+ * 表示される小数の桁数を調整し、`Pi is roughly 3.142`(Piは大体3.142です)
+   と出力される`println!`マクロを追加してください。ただし、円周率の値は
+   `let pi = 3.141592`を使ってください。(ヒント: 小数の桁数を調整して出力
+   する方法について、[`std::fmt`][fmt]ドキュメントをチェックしてみてください。)
 
-### See also:
+### こちらも参照:
 
-[`std::fmt`][fmt], [`macros`][macros], [`struct`][structs],
-and [`traits`][traits]
+[`std::fmt`][fmt], [`マクロ`][macros], [`構造体`][structs],
+そして[`トレイト`][traits]
 
 [fmt]: https://doc.rust-lang.org/std/fmt/
 [macros]: ../macros.md

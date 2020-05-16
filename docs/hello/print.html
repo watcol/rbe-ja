@@ -147,85 +147,83 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#formatted-print" id="formatted-print">Formatted print</a></h1>
-<p>Printing is handled by a series of <a href="../macros.html"><code>macros</code></a> defined in <a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>
-some of which include:</p>
+                        <h1><a class="header" href="#フォーマットしてプリント" id="フォーマットしてプリント">フォーマットしてプリント</a></h1>
+<p>プリントは<a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>で定義されているいくつかの<a href="../macros.html"><code>マクロ</code></a>によって
+制御されています。そのいくつかを紹介します。</p>
 <ul>
-<li><code>format!</code>: write formatted text to <a href="../std/str.html"><code>String</code></a></li>
-<li><code>print!</code>: same as <code>format!</code> but the text is printed to the console (io::stdout).</li>
-<li><code>println!</code>: same as <code>print!</code> but a newline is appended.</li>
-<li><code>eprint!</code>: same as <code>format!</code> but the text is printed to the standard error (io::stderr).</li>
-<li><code>eprintln!</code>: same as <code>eprint!</code>but a newline is appended.</li>
+<li><code>format!</code>: フォーマットされたテキストを<a href="../std/str.html"><code>String</code></a>に書き込む。</li>
+<li><code>print!</code>: <code>format!</code>と同様だが、コンソール(io::stdout)に書き込む。</li>
+<li><code>println!</code>: <code>print!</code>と同様だが、改行が追加される。</li>
+<li><code>eprint!</code>: <code>format!</code>と同様だが、標準エラー出力(io::stderr)に書き込む。</li>
+<li><code>eprintln!</code>: <code>eprint!</code>と同様だが、改行が追加される。</li>
 </ul>
-<p>All parse text in the same fashion. As a plus, Rust checks formatting
-correctness at compile time.</p>
+<p>すべてのものは、同じやり方で解析し、 コンパイル時に正しくフォーマットできるか
+チェックします。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
-    // In general, the `{}` will be automatically replaced with any
-    // arguments. These will be stringified.
-    println!(&quot;{} days&quot;, 31);
+    // 一般的に、`{}`が自動的に引数に変換されます。
+    // 自動的に文字列に変換します。
+    println!(&quot;{} days&quot;, 31); // {}日
 
-    // Without a suffix, 31 becomes an i32. You can change what type 31 is
-    // by providing a suffix. The number 31i64 for example has the type i64.
+    // 示唆しなければ、31はi32になります。示唆を加えることで、31の型を
+    // 変えられます。例えば31i64はi64として解釈されます。
 
-    // There are various optional patterns this works with. Positional
-    // arguments can be used.
-    println!(&quot;{0}, this is {1}. {1}, this is {0}&quot;, &quot;Alice&quot;, &quot;Bob&quot;);
+    // 引数の位置を使って、埋め込まれる場所を指定することができます。
+    println!(&quot;{0}, this is {1}. {1}, this is {0}&quot;, &quot;Alice&quot;, &quot;Bob&quot;); // {0}、こちらが{1}です。{1}、こちらが{0}です。
 
-    // As can named arguments.
-    println!(&quot;{subject} {verb} {object}&quot;,
+    // 名前を付けても良いです。
+    println!(&quot;{subject} {verb} {object}&quot;, // 素早い茶色の狐はのろまな犬を飛び越える
              object=&quot;the lazy dog&quot;,
              subject=&quot;the quick brown fox&quot;,
              verb=&quot;jumps over&quot;);
 
-    // Special formatting can be specified after a `:`.
-    println!(&quot;{} of {:b} people know binary, the other half doesn't&quot;, 1, 2);
+    // `:`の後にフォーマット型を指定すると特殊なフォーマットができます。
+    println!(&quot;{} of {:b} people know binary, the other half doesn't&quot;, 1, 2); // {:b}(2つ目)人に{}(1つ目)人はバイナリを知っていますが、残りの半分は知りません。
 
-    // You can right-align text with a specified width. This will output
-    // &quot;     1&quot;. 5 white spaces and a &quot;1&quot;.
+    // 幅を指定して右寄せにできます。 この例は
+    // &quot;     1&quot;. 5 white spaces and a &quot;1&quot;と出力します。
     println!(&quot;{number:&gt;width$}&quot;, number=1, width=6);
 
-    // You can pad numbers with extra zeroes. This will output &quot;000001&quot;.
+    // 余分なゼロで数字を埋めることができます。この例は&quot;000001&quot;と出力します。
     println!(&quot;{number:&gt;0width$}&quot;, number=1, width=6);
 
-    // Rust even checks to make sure the correct number of arguments are
-    // used.
-    println!(&quot;My name is {0}, {1} {0}&quot;, &quot;Bond&quot;);
-    // FIXME ^ Add the missing argument: &quot;James&quot;
+    // Rustは指定された数の引数が使われているかもチェック
+    // します。
+    println!(&quot;My name is {0}, {1} {0}&quot;, &quot;Bond&quot;); // 私の名前は{0}、{1} {0}です。
+    // FIXME ^ 足りない引数、&quot;James&quot;を追加してください。
 
-    // Create a structure named `Structure` which contains an `i32`.
+    // `i32`を含む`Structure`という構造体を作ります。
     #[allow(dead_code)]
     struct Structure(i32);
 
-    // However, custom types such as this structure require more complicated
-    // handling. This will not work.
-    println!(&quot;This struct `{}` won't print...&quot;, Structure(3));
-    // FIXME ^ Comment out this line.
+    // しかし、この構造体のようなカスタム型はもう少し複雑です。
+    // これは動作しません。
+    println!(&quot;This struct `{}` won't print...&quot;, Structure(3)); // この構造体`{}`は出力できません...
+    // FIXME ^ この行をコメントアウトしてください。
 }
 </code></pre></pre>
-<p><a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a> contains many <a href="https://doc.rust-lang.org/std/fmt/#formatting-traits"><code>traits</code></a> which govern the display
-of text. The base form of two important ones are listed below:</p>
+<p><a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>はテキストを出力するための多くの<a href="https://doc.rust-lang.org/std/fmt/#formatting-traits"><code>トレイト</code></a>を持って
+います。2つの重要なものを挙げます。</p>
 <ul>
-<li><code>fmt::Debug</code>: Uses the <code>{:?}</code> marker. Format text for debugging purposes.</li>
-<li><code>fmt::Display</code>: Uses the <code>{}</code> marker. Format text in a more elegant, user
-friendly fashion.</li>
+<li><code>fmt::Debug</code>: <code>{:?}</code>マーカーを使います。デバッグ用にテキストをフォーマットします。</li>
+<li><code>fmt::Display</code>: <code>{}</code>マーカーを使います。もっと美しく、ユーザーフレンドリーに
+表示します。</li>
 </ul>
-<p>Here, we used <code>fmt::Display </code>because the std library provides implementations
-for these types. To print text for custom types, more steps are required.</p>
-<p>Implementing the <code>fmt::Display</code> trait automatically implements the
-<a href="https://doc.rust-lang.org/std/string/trait.ToString.html"><code>ToString</code></a> trait which allows us to <a href="../conversion/string.html">convert</a> the type to <a href="../std/str.html"><code>String</code></a>.</p>
-<h3><a class="header" href="#activities" id="activities">Activities</a></h3>
+<p>この例で使われている型は、標準ライブラリに含まれているため、ここでは<code>fmt::Display</code>
+を使用しています。カスタム型を扱う場合はもう少し複雑です。</p>
+<p><code>fmt::Display</code>トレイトを実装すると、自動的に<a href="../std/str.html"><code>String</code></a>に<a href="../conversion/string.html">変換</a>する
+<a href="https://doc.rust-lang.org/std/string/trait.ToString.html"><code>ToString</code></a>トレイトが実装されます。</p>
+<h3><a class="header" href="#演習" id="演習">演習</a></h3>
 <ul>
-<li>Fix the two issues in the above code (see FIXME) so that it runs without
-error.</li>
-<li>Add a <code>println!</code> macro that prints: <code>Pi is roughly 3.142</code> by controlling
-the number of decimal places shown. For the purposes of this exercise,
-use <code>let pi = 3.141592</code> as an estimate for pi. (Hint: you may need to
-check the <a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a> documentation for setting the number of
-decimals to display)</li>
+<li>上のコードの、2つの箇所を変更して(FIXMEを見てください)エラーなく実行できる
+ようにしてください。</li>
+<li>表示される小数の桁数を調整し、<code>Pi is roughly 3.142</code>(Piは大体3.142です)
+と出力される<code>println!</code>マクロを追加してください。ただし、円周率の値は
+<code>let pi = 3.141592</code>を使ってください。(ヒント: 小数の桁数を調整して出力
+する方法について、<a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>ドキュメントをチェックしてみてください。)</li>
 </ul>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>, <a href="../macros.html"><code>macros</code></a>, <a href="../custom_types/structs.html"><code>struct</code></a>,
-and <a href="https://doc.rust-lang.org/std/fmt/#formatting-traits"><code>traits</code></a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>, <a href="../macros.html"><code>マクロ</code></a>, <a href="../custom_types/structs.html"><code>構造体</code></a>,
+そして<a href="https://doc.rust-lang.org/std/fmt/#formatting-traits"><code>トレイト</code></a></p>
 
                     </main>
 

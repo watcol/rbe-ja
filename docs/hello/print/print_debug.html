@@ -152,7 +152,7 @@
 なように実装されている必要があります。<code>std</code>ライブラリにあるような型にしか
 実装は提供されていません。他は手動で実装<em>しなければいけません</em>。</p>
 <p><code>fmt::Debug</code>という<code>トレイト</code>でこれを簡略化できます。<em>すべての</em>型は
-<code>fmt::Debug</code>の実装を<code>derive</code>(自動で作成)できるからです。ただし、
+<code>fmt::Debug</code>の実装を<code>継承</code>(自動で作成)できるからです。ただし、
 <code>fmt::Display</code>の場合は手動で実装しなければいけません。</p>
 <pre><pre class="playpen"><code class="language-rust">
 <span class="boring">#![allow(unused_variables)]
@@ -168,7 +168,7 @@ struct DebugPrintable(i32);
 <span class="boring">}
 </span></code></pre></pre>
 <p>すべての<code>std</code>ライブラリの型も自動的に<code>{:?}</code>でプリントできます。</p>
-<pre><pre class="playpen"><code class="language-rust editable">// `fmt::Debug`の実装を`Structure`にderiveする. `Structure`
+<pre><pre class="playpen"><code class="language-rust editable">// `fmt::Debug`の実装を`Structure`に継承する. `Structure`
 // は一つの`i32`をメンバに持っています。
 #[derive(Debug)]
 struct Structure(i32);
@@ -187,7 +187,7 @@ fn main() {
              actor=&quot;actor's&quot;);
 
     // `Structure`はプリントできます!
-    println!(&quot;Now {:?} will print!&quot;, Structure(3));
+    println!(&quot;Now {:?} will print!&quot;, Structure(3)); // 今、{:?}がプリントされます。
     
     // `derive`の問題点は、結果の見た目を制御できない点です。
     // 出力を`7`だけにするにはどうすればよいでしょう?
@@ -213,8 +213,8 @@ fn main() {
 </code></pre></pre>
 <p>出力をコントロールするために手動で<code>fmt::Display</code>を実装することもできます。</p>
 <h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
-<p><a href="https://doc.rust-lang.org/reference/attributes.html">属性</a>, <a href="../../trait/derive.html"><code>derive</code></a>, <a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>,
-そして<a href="../../custom_types/structs.html"><code>struct</code></a></p>
+<p><a href="https://doc.rust-lang.org/reference/attributes.html">属性</a>, <a href="../../trait/derive.html"><code>継承</code></a>, <a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>,
+そして<a href="../../custom_types/structs.html"><code>構造体</code></a></p>
 
                     </main>
 

@@ -5,7 +5,7 @@
 実装は提供されていません。他は手動で実装*しなければいけません*。
 
 `fmt::Debug`という`トレイト`でこれを簡略化できます。*すべての*型は
-`fmt::Debug`の実装を`derive`(自動で作成)できるからです。ただし、
+`fmt::Debug`の実装を`継承`(自動で作成)できるからです。ただし、
 `fmt::Display`の場合は手動で実装しなければいけません。
 
 ```rust
@@ -22,7 +22,7 @@ struct DebugPrintable(i32);
 すべての`std`ライブラリの型も自動的に`{:?}`でプリントできます。
 
 ```rust,editable
-// `fmt::Debug`の実装を`Structure`にderiveする. `Structure`
+// `fmt::Debug`の実装を`Structure`に継承する. `Structure`
 // は一つの`i32`をメンバに持っています。
 #[derive(Debug)]
 struct Structure(i32);
@@ -41,7 +41,7 @@ fn main() {
              actor="actor's");
 
     // `Structure`はプリントできます!
-    println!("Now {:?} will print!", Structure(3));
+    println!("Now {:?} will print!", Structure(3)); // 今、{:?}がプリントされます。
     
     // `derive`の問題点は、結果の見た目を制御できない点です。
     // 出力を`7`だけにするにはどうすればよいでしょう?
@@ -73,8 +73,8 @@ fn main() {
 
 ### こちらも参照:
 
-[属性][attributes], [`derive`][derive], [`std::fmt`][fmt],
-そして[`struct`][structs]
+[属性][attributes], [`継承`][derive], [`std::fmt`][fmt],
+そして[`構造体`][structs]
 
 [attributes]: https://doc.rust-lang.org/reference/attributes.html
 [derive]: ../../trait/derive.md
