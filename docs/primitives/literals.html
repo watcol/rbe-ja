@@ -147,40 +147,40 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#literals-and-operators" id="literals-and-operators">Literals and operators</a></h1>
-<p>Integers <code>1</code>, floats <code>1.2</code>, characters <code>'a'</code>, strings <code>&quot;abc&quot;</code>, booleans <code>true</code>
-and the unit type <code>()</code> can be expressed using literals.</p>
-<p>Integers can, alternatively, be expressed using hexadecimal, octal or binary
-notation using these prefixes respectively: <code>0x</code>, <code>0o</code> or <code>0b</code>.</p>
-<p>Underscores can be inserted in numeric literals to improve readability, e.g.
-<code>1_000</code> is the same as <code>1000</code>, and <code>0.000_001</code> is the same as <code>0.000001</code>.</p>
-<p>We need to tell the compiler the type of the literals we use. For now,
-we'll use the <code>u32</code> suffix to indicate that the literal is an unsigned 32-bit
-integer, and the <code>i32</code> suffix to indicate that it's a signed 32-bit integer.</p>
-<p>The operators available and their precedence <a href="https://doc.rust-lang.org/reference/expressions.html#expression-precedence">in Rust</a> are similar to other
-<a href="https://en.wikipedia.org/wiki/Operator_precedence#Programming_languages">C-like languages</a>.</p>
+                        <h1><a class="header" href="#リテラルと演算子" id="リテラルと演算子">リテラルと演算子</a></h1>
+<p>整数の<code>1</code>、浮動小数点数の<code>1.2</code>、文字の<code>'a'</code>、文字列の<code>&quot;abc&quot;</code>、真偽値の<code>true</code>、
+そしてユニット型の<code>()</code>などは、リテラルで表すことができます。</p>
+<p>整数は<code>0x</code>、<code>0o</code>、<code>0b</code>などのプレフィックスをつけることで、
+16進数、8進数、2進数でも表すことができます。</p>
+<p>また、可読性のため、数値にアンダースコアを挟むことができます。 例えば
+<code>1_000</code>は<code>1000</code>と同じで、<code>0.000_001</code>は<code>0.000001</code>と同じです。</p>
+<p>コンパイラにリテラルの型を教えてあげなければいけません. 現在は、
+<code>u32</code>サフィックスでリテラル32ビット符号なし整数になり、<code>i32</code>サフィックス
+で32ビット符号付き整数になります。</p>
+<p>Rustで使える<a href="https://doc.rust-lang.org/reference/expressions.html#expression-precedence">演算子や、その優先順位</a>は、<a href="https://en.wikipedia.org/wiki/Operator_precedence#Programming_languages">Cのような言語</a>
+と似ています。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // Integer addition
+    // 整数の足し算
     println!(&quot;1 + 2 = {}&quot;, 1u32 + 2);
 
-    // Integer subtraction
+    // 整数の引き算
     println!(&quot;1 - 2 = {}&quot;, 1i32 - 2);
-    // TODO ^ Try changing `1i32` to `1u32` to see why the type is important
+    // TODO ^ `1i32`を`1u32`に変えてみて、型の重要さを実感してみてください。
 
-    // Short-circuiting boolean logic
+    // 真偽値の短絡評価
     println!(&quot;true AND false is {}&quot;, true &amp;&amp; false);
     println!(&quot;true OR false is {}&quot;, true || false);
-    println!(&quot;NOT true is {}&quot;, !true);
+    println!(&quot;NOT true is {}&quot;, !true); // 真でないものは{}
 
-    // Bitwise operations
+    // ビット演算
     println!(&quot;0011 AND 0101 is {:04b}&quot;, 0b0011u32 &amp; 0b0101);
     println!(&quot;0011 OR 0101 is {:04b}&quot;, 0b0011u32 | 0b0101);
     println!(&quot;0011 XOR 0101 is {:04b}&quot;, 0b0011u32 ^ 0b0101);
     println!(&quot;1 &lt;&lt; 5 is {}&quot;, 1u32 &lt;&lt; 5);
     println!(&quot;0x80 &gt;&gt; 2 is 0x{:x}&quot;, 0x80u32 &gt;&gt; 2);
 
-    // Use underscores to improve readability!
-    println!(&quot;One million is written as {}&quot;, 1_000_000u32);
+    // アンダースコアを使って可読性を上げてください!
+    println!(&quot;One million is written as {}&quot;, 1_000_000u32); // 100万は{}と書きます
 }
 </code></pre></pre>
 

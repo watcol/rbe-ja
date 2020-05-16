@@ -704,98 +704,97 @@ RGB (0, 0, 0) 0x000000
 </ul>
 <h3><a class="header" href="#こちらも参照-5" id="こちらも参照-5">こちらも参照:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a></p>
-<h1><a class="header" href="#primitives" id="primitives">Primitives</a></h1>
-<p>Rust provides access to a wide variety of <code>primitives</code>. A sample includes:</p>
-<h3><a class="header" href="#scalar-types" id="scalar-types">Scalar Types</a></h3>
+<h1><a class="header" href="#プリミティブ" id="プリミティブ">プリミティブ</a></h1>
+<p>Rustは、様々な<code>プリミティブ</code>を提供しています。以下がその例です。</p>
+<h3><a class="header" href="#スカラー型" id="スカラー型">スカラー型</a></h3>
 <ul>
-<li>signed integers: <code>i8</code>, <code>i16</code>, <code>i32</code>, <code>i64</code>, <code>i128</code> and <code>isize</code> (pointer size)</li>
-<li>unsigned integers: <code>u8</code>, <code>u16</code>, <code>u32</code>, <code>u64</code>, <code>u128</code> and <code>usize</code> (pointer
-size)</li>
-<li>floating point: <code>f32</code>, <code>f64</code></li>
-<li><code>char</code> Unicode scalar values like <code>'a'</code>, <code>'α'</code> and <code>'∞'</code> (4 bytes each)</li>
-<li><code>bool</code> either <code>true</code> or <code>false</code></li>
-<li>and the unit type <code>()</code>, whose only possible value is an empty tuple: <code>()</code></li>
+<li>符号付き整数: <code>i8</code>、<code>i16</code>、<code>i32</code>、<code>i64</code>、<code>i128</code>、そして<code>isize</code> (ポインタサイズ)</li>
+<li>符号なし整数: <code>u8</code>、<code>u16</code>、<code>u32</code>、<code>u64</code>、<code>u128</code>、そして<code>usize</code> (ポインタサイズ)</li>
+<li>浮動小数点: <code>f32</code>, <code>f64</code></li>
+<li><code>char</code> Unicodeのスカラー値。例えば<code>'a'</code>、<code>'α'</code>、そして<code>'∞'</code> (それぞれ4バイト)</li>
+<li><code>bool</code> <code>true</code>または<code>false</code></li>
+<li>ユニット型。唯一の値が空タプル<code>()</code>。</li>
 </ul>
-<p>Despite the value of a unit type being a tuple, it is not considered a
-compound type because it does not contain multiple values. </p>
-<h3><a class="header" href="#compound-types" id="compound-types">Compound Types</a></h3>
+<p>ユニット型はタプルですが、複数の値を含むことができないため、
+複合型ではありません。</p>
+<h3><a class="header" href="#複合型" id="複合型">複合型</a></h3>
 <ul>
-<li>arrays like <code>[1, 2, 3]</code></li>
-<li>tuples like <code>(1, true)</code></li>
+<li><code>[1, 2, 3]</code>のような配列</li>
+<li><code>(1, true)</code>のようなタプル</li>
 </ul>
-<p>Variables can always be <em>type annotated</em>. Numbers may additionally be
-annotated via a <em>suffix</em> or <em>by default</em>. Integers default to <code>i32</code> and
-floats to <code>f64</code>. Note that Rust can also infer types from context.</p>
+<p>変数は常に<em>型指定</em>可能です。数値型は更に<em>サフィックス</em>の指定が可能で、
+指定しない場合はデフォルトになります。整数値のデフォルトは<code>i32</code>で、
+浮動小数点数は<code>f64</code>です。Rustはさらに文脈から型推論ができることに注意
+してください。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
-    // Variables can be type annotated.
+    // 変数には型の注釈が付けられます。
     let logical: bool = true;
 
-    let a_float: f64 = 1.0;  // Regular annotation
-    let an_integer   = 5i32; // Suffix annotation
+    let a_float: f64 = 1.0;  // ふつうの注釈
+    let an_integer   = 5i32; // サフィックスで注釈
 
-    // Or a default will be used.
+    // デフォルトを選択することもできます。
     let default_float   = 3.0; // `f64`
     let default_integer = 7;   // `i32`
     
-    // A type can also be inferred from context 
-    let mut inferred_type = 12; // Type i64 is inferred from another line
+    //  文脈から型推論する
+    let mut inferred_type = 12; // 他の行からi64であると推論する。
     inferred_type = 4294967296i64;
     
-    // A mutable variable's value can be changed.
-    let mut mutable = 12; // Mutable `i32`
+    // 可変な変数は変更できます。
+    let mut mutable = 12; // 可変な`i32`
     mutable = 21;
     
-    // Error! The type of a variable can't be changed.
+    // エラーします! 変数の型は変更できません。
     mutable = true;
     
-    // Variables can be overwritten with shadowing.
+    // 変数はシャドーイングで上書きできます。
     let mutable = true;
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/">the <code>std</code> library</a>, <a href="variable_bindings/mut.html"><code>mut</code></a>, <a href="types/inference.html">inference</a>, and <a href="variable_bindings/scope.html">shadowing</a></p>
-<h1><a class="header" href="#literals-and-operators" id="literals-and-operators">Literals and operators</a></h1>
-<p>Integers <code>1</code>, floats <code>1.2</code>, characters <code>'a'</code>, strings <code>&quot;abc&quot;</code>, booleans <code>true</code>
-and the unit type <code>()</code> can be expressed using literals.</p>
-<p>Integers can, alternatively, be expressed using hexadecimal, octal or binary
-notation using these prefixes respectively: <code>0x</code>, <code>0o</code> or <code>0b</code>.</p>
-<p>Underscores can be inserted in numeric literals to improve readability, e.g.
-<code>1_000</code> is the same as <code>1000</code>, and <code>0.000_001</code> is the same as <code>0.000001</code>.</p>
-<p>We need to tell the compiler the type of the literals we use. For now,
-we'll use the <code>u32</code> suffix to indicate that the literal is an unsigned 32-bit
-integer, and the <code>i32</code> suffix to indicate that it's a signed 32-bit integer.</p>
-<p>The operators available and their precedence <a href="https://doc.rust-lang.org/reference/expressions.html#expression-precedence">in Rust</a> are similar to other
-<a href="https://en.wikipedia.org/wiki/Operator_precedence#Programming_languages">C-like languages</a>.</p>
+<h3><a class="header" href="#こちらも参照-6" id="こちらも参照-6">こちらも参照:</a></h3>
+<p><a href="https://doc.rust-lang.org/std/"><code>std</code>ライブラリ</a>、<a href="variable_bindings/mut.html"><code>mut</code></a>、[推論]、そして[シャドーイング]</p>
+<h1><a class="header" href="#リテラルと演算子" id="リテラルと演算子">リテラルと演算子</a></h1>
+<p>整数の<code>1</code>、浮動小数点数の<code>1.2</code>、文字の<code>'a'</code>、文字列の<code>&quot;abc&quot;</code>、真偽値の<code>true</code>、
+そしてユニット型の<code>()</code>などは、リテラルで表すことができます。</p>
+<p>整数は<code>0x</code>、<code>0o</code>、<code>0b</code>などのプレフィックスをつけることで、
+16進数、8進数、2進数でも表すことができます。</p>
+<p>また、可読性のため、数値にアンダースコアを挟むことができます。 例えば
+<code>1_000</code>は<code>1000</code>と同じで、<code>0.000_001</code>は<code>0.000001</code>と同じです。</p>
+<p>コンパイラにリテラルの型を教えてあげなければいけません. 現在は、
+<code>u32</code>サフィックスでリテラル32ビット符号なし整数になり、<code>i32</code>サフィックス
+で32ビット符号付き整数になります。</p>
+<p>Rustで使える<a href="https://doc.rust-lang.org/reference/expressions.html#expression-precedence">演算子や、その優先順位</a>は、<a href="https://en.wikipedia.org/wiki/Operator_precedence#Programming_languages">Cのような言語</a>
+と似ています。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // Integer addition
+    // 整数の足し算
     println!(&quot;1 + 2 = {}&quot;, 1u32 + 2);
 
-    // Integer subtraction
+    // 整数の引き算
     println!(&quot;1 - 2 = {}&quot;, 1i32 - 2);
-    // TODO ^ Try changing `1i32` to `1u32` to see why the type is important
+    // TODO ^ `1i32`を`1u32`に変えてみて、型の重要さを実感してみてください。
 
-    // Short-circuiting boolean logic
+    // 真偽値の短絡評価
     println!(&quot;true AND false is {}&quot;, true &amp;&amp; false);
     println!(&quot;true OR false is {}&quot;, true || false);
-    println!(&quot;NOT true is {}&quot;, !true);
+    println!(&quot;NOT true is {}&quot;, !true); // 真でないものは{}
 
-    // Bitwise operations
+    // ビット演算
     println!(&quot;0011 AND 0101 is {:04b}&quot;, 0b0011u32 &amp; 0b0101);
     println!(&quot;0011 OR 0101 is {:04b}&quot;, 0b0011u32 | 0b0101);
     println!(&quot;0011 XOR 0101 is {:04b}&quot;, 0b0011u32 ^ 0b0101);
     println!(&quot;1 &lt;&lt; 5 is {}&quot;, 1u32 &lt;&lt; 5);
     println!(&quot;0x80 &gt;&gt; 2 is 0x{:x}&quot;, 0x80u32 &gt;&gt; 2);
 
-    // Use underscores to improve readability!
-    println!(&quot;One million is written as {}&quot;, 1_000_000u32);
+    // アンダースコアを使って可読性を上げてください!
+    println!(&quot;One million is written as {}&quot;, 1_000_000u32); // 100万は{}と書きます
 }
 </code></pre></pre>
-<h1><a class="header" href="#tuples" id="tuples">Tuples</a></h1>
-<p>A tuple is a collection of values of different types. Tuples are constructed
-using parentheses <code>()</code>, and each tuple itself is a value with type signature
-<code>(T1, T2, ...)</code>, where <code>T1</code>, <code>T2</code> are the types of its members. Functions can
-use tuples to return multiple values, as tuples can hold any number of values.</p>
-<pre><pre class="playpen"><code class="language-rust editable">// Tuples can be used as function arguments and as return values
+<h1><a class="header" href="#タプル" id="タプル">タプル</a></h1>
+<p>タプルは異なる型の値の集合です。タプルは<code>()</code>を使って表し、タプル自身の型は
+<code>T1</code>、<code>T2</code>をメンバーの型だとして<code>(T1, T2, ...)</code>のように表します。タプルに
+大きさの制限がないので、関数で複数の値を返すのにタプルが使われています。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// タプルは、関数の引数や、返り値としても使えます。
 fn reverse(pair: (i32, bool)) -&gt; (bool, i32) {
     // `let` can be used to bind the members of a tuple to variables
     let (integer, boolean) = pair;
@@ -803,43 +802,43 @@ fn reverse(pair: (i32, bool)) -&gt; (bool, i32) {
     (boolean, integer)
 }
 
-// The following struct is for the activity.
+// これは演習のための構造体です。
 #[derive(Debug)]
 struct Matrix(f32, f32, f32, f32);
 
 fn main() {
-    // A tuple with a bunch of different types
+    // 複数の異なる型の値を束ねたタプル
     let long_tuple = (1u8, 2u16, 3u32, 4u64,
                       -1i8, -2i16, -3i32, -4i64,
                       0.1f32, 0.2f64,
                       'a', true);
 
-    // Values can be extracted from the tuple using tuple indexing
+    // タプルのインデックスを利用して、値を取り出すことができます。
     println!(&quot;long tuple first value: {}&quot;, long_tuple.0);
     println!(&quot;long tuple second value: {}&quot;, long_tuple.1);
 
-    // Tuples can be tuple members
+    // タプルはタプルのメンバーになれます。
     let tuple_of_tuples = ((1u8, 2u16, 2u32), (4u64, -1i8), -2i16);
 
-    // Tuples are printable
+    // タプルは出力できます。
     println!(&quot;tuple of tuples: {:?}&quot;, tuple_of_tuples);
     
-    // But long Tuples cannot be printed
+    // ただし、長いタプルは出力できません。
     // let too_long_tuple = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
     // println!(&quot;too long tuple: {:?}&quot;, too_long_tuple);
-    // TODO ^ Uncomment the above 2 lines to see the compiler error
+    // TODO ^ コンパイラのエラーを確認するために上の2行をアンコメントしてください。
 
     let pair = (1, true);
     println!(&quot;pair is {:?}&quot;, pair);
 
     println!(&quot;the reversed pair is {:?}&quot;, reverse(pair));
 
-    // To create one element tuples, the comma is required to tell them apart
-    // from a literal surrounded by parentheses
-    println!(&quot;one element tuple: {:?}&quot;, (5u32,));
-    println!(&quot;just an integer: {:?}&quot;, (5u32));
+    // 一つしか要素がないタプルは、リテラルを括弧で囲ったものと
+    // 区別するため、コンマが必要です。
+    println!(&quot;one element tuple: {:?}&quot;, (5u32,)); // 要素1つのタプル: {:?}
+    println!(&quot;just an integer: {:?}&quot;, (5u32)); // ただの整数: {:?}
 
-    //tuples can be destructured to create bindings
+    //タプルを分解してそれぞれを別の変数に束縛する。
     let tuple = (1, &quot;hello&quot;, 4.5, true);
 
     let (a, b, c, d) = tuple;
@@ -850,25 +849,25 @@ fn main() {
 
 }
 </code></pre></pre>
-<h3><a class="header" href="#activity" id="activity">Activity</a></h3>
+<h3><a class="header" href="#演習-5" id="演習-5">演習</a></h3>
 <ol>
 <li>
-<p><em>Recap</em>: Add the <code>fmt::Display</code> trait to the Matrix <code>struct</code> in the above example,
-so that if you switch from printing the debug format <code>{:?}</code> to the display
-format <code>{}</code>, you see the following output:</p>
+<p><em>復習</em>: <code>fmt::Display</code>トレイトを上の例のMatrix構造体に実装し、
+デバッグフォーマット<code>{:?}</code>をディスプレイフォーマット<code>{}</code>に変えたときに
+以下のように表示されるようにしてください。</p>
 <pre><code class="language-text">( 1.1 1.2 )
 ( 2.1 2.2 )
 </code></pre>
-<p>You may want to refer back to the example for <a href="primitives/../hello/print/print_display.html">print display</a>.</p>
+<p><a href="primitives/../hello/print/print_display.html">ディスプレイ</a>の例に戻る必要があるかもしれません。</p>
 </li>
 <li>
-<p>Add a <code>transpose</code> function using the <code>reverse</code> function as a template, which
-accepts a matrix as an argument, and returns a matrix in which two elements
-have been swapped. For example:</p>
+<p><code>reverse</code>関数をテンプレートとして、下のように、引数として
+Matrixを受け取り、2つの要素を交換したMatrixを返す関数<code>transpose</code>を追加
+してください。</p>
 <pre><code class="language-rust ignore">println!(&quot;Matrix:\n{}&quot;, matrix);
 println!(&quot;Transpose:\n{}&quot;, transpose(matrix));
 </code></pre>
-<p>results in the output:</p>
+<p>出力結果:</p>
 <pre><code class="language-text">Matrix:
 ( 1.1 1.2 )
 ( 2.1 2.2 )
@@ -878,53 +877,52 @@ Transpose:
 </code></pre>
 </li>
 </ol>
-<h1><a class="header" href="#arrays-and-slices" id="arrays-and-slices">Arrays and Slices</a></h1>
-<p>An array is a collection of objects of the same type <code>T</code>, stored in contiguous
-memory. Arrays are created using brackets <code>[]</code>, and their size, which is known
-at compile time, is part of their type signature <code>[T; size]</code>.</p>
-<p>Slices are similar to arrays, but their size is not known at compile time.
-Instead, a slice is a two-word object, the first word is a pointer to the data,
-and the second word is the length of the slice. The word size is the same as 
-usize, determined by the processor architecture eg 64 bits on an x86-64. 
-Slices can be used to borrow a section of an array, and have the type signature 
-<code>&amp;[T]</code>.</p>
+<h1><a class="header" href="#配列とスライス" id="配列とスライス">配列とスライス</a></h1>
+<p>配列は、メモリ上に連続して保存される、同じ型<code>T</code>の値の集合です。配列は角括弧<code>[]</code>
+で作ることができます。また、長さはコンパイル時にわかっていなければならず、
+<code>[T; size]</code>で型の定義ができます。</p>
+<p>Slicesは配列と似ていますが、コンパイル時に長さが決まっていなくても良いです。
+その代わり、データへのポインタと、スライスの長さという2つのデータを格納しなければ
+なりません。1つのデータのサイズはアーキテクチャ依存(例えばx86-64なら64ビット)で、
+<code>usize</code>と同じ大きさです。
+スライスは配列の一部分の借用として使うことができ、<code>&amp;[T]</code>という型指定子が使えます。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">use std::mem;
 
-// This function borrows a slice
+// この関数はスライスを借用します。
 fn analyze_slice(slice: &amp;[i32]) {
     println!(&quot;first element of the slice: {}&quot;, slice[0]);
     println!(&quot;the slice has {} elements&quot;, slice.len());
 }
 
 fn main() {
-    // Fixed-size array (type signature is superfluous)
+    // 固定長配列 (型シグネチャは余計です)
     let xs: [i32; 5] = [1, 2, 3, 4, 5];
 
-    // All elements can be initialized to the same value
+    // すべての要素を同じ値で初期化することができます。
     let ys: [i32; 500] = [0; 500];
 
-    // Indexing starts at 0
-    println!(&quot;first element of the array: {}&quot;, xs[0]);
-    println!(&quot;second element of the array: {}&quot;, xs[1]);
+    // インデックスは0から始まります。
+    println!(&quot;first element of the array: {}&quot;, xs[0]);  // 配列の最初の要素: {}
+    println!(&quot;second element of the array: {}&quot;, xs[1]);  // 配列の2つ目の要素: {}
 
-    // `len` returns the size of the array
+    // `len`は配列の長さを返します。
     println!(&quot;array size: {}&quot;, xs.len());
 
-    // Arrays are stack allocated
-    println!(&quot;array occupies {} bytes&quot;, mem::size_of_val(&amp;xs));
+    // 配列はスタック上に置かれます。
+    println!(&quot;array occupies {} bytes&quot;, mem::size_of_val(&amp;xs));  // 配列は{}バイト占有しています。
 
-    // Arrays can be automatically borrowed as slices
-    println!(&quot;borrow the whole array as a slice&quot;);
+    // 配列は自動的にスライスとして借用されます。
+    println!(&quot;borrow the whole array as a slice&quot;);  // 配列の全体をスライスとして借用する
     analyze_slice(&amp;xs);
 
-    // Slices can point to a section of an array
-    // They are of the form [starting_index..ending_index]
-    // starting_index is the first position in the slice
-    // ending_index is one more than the last position in the slice
-    println!(&quot;borrow a section of the array as a slice&quot;);
+    // スライスで配列の部分を指す
+    // [スタート..エンド]のようにして指定します。
+    // スタートはスライスの最初の位置のインデックス
+    // エンドは1より大きいスライスの最後の位置のインデックスです。
+    println!(&quot;borrow a section of the array as a slice&quot;);  // 配列の部分をスライスとして借用する。
     analyze_slice(&amp;ys[1 .. 4]);
 
-    // Out of bound indexing causes compile error
+    // 範囲外の位置を指定するとコンパイルエラーが起こる。
     println!(&quot;{}&quot;, xs[5]);
 }
 </code></pre></pre>
@@ -1019,13 +1017,13 @@ fn main() {
     println!(&quot;pair contains {:?} and {:?}&quot;, integer, decimal);
 }
 </code></pre></pre>
-<h3><a class="header" href="#activity-1" id="activity-1">Activity</a></h3>
+<h3><a class="header" href="#activity" id="activity">Activity</a></h3>
 <ol>
 <li>Add a function <code>rect_area</code> which calculates the area of a rectangle (try
 using nested destructuring).</li>
 <li>Add a function <code>square</code> which takes a <code>Point</code> and a <code>f32</code> as arguments, and returns a <code>Rectangle</code> with its lower left corner on the point, and a width and height corresponding to the <code>f32</code>.</li>
 </ol>
-<h3><a class="header" href="#see-also-1" id="see-also-1">See also:</a></h3>
+<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
 <p><a href="custom_types/../attribute.html"><code>attributes</code></a>, <a href="custom_types/../scope/lifetime.html">lifetime</a> and <a href="custom_types/../flow_control/match/destructuring.html">destructuring</a></p>
 <h1><a class="header" href="#enums" id="enums">Enums</a></h1>
 <p>The <code>enum</code> keyword allows the creation of a type which may be one of a few
@@ -1114,7 +1112,7 @@ impl VeryVerboseEnumOfThingsToDoWithNumbers {
 <p>To learn more about enums and type aliases, you can read the
 <a href="https://github.com/rust-lang/rust/pull/61682/#issuecomment-502472847">stabilization report</a> from when this feature was stabilized into
 Rust.</p>
-<h3><a class="header" href="#see-also-2" id="see-also-2">See also:</a></h3>
+<h3><a class="header" href="#see-also-1" id="see-also-1">See also:</a></h3>
 <p><a href="custom_types/../flow_control/match.html"><code>match</code></a>, <a href="custom_types/../fn.html"><code>fn</code></a>, and <a href="custom_types/../std/str.html"><code>String</code></a>, <a href="https://rust-lang.github.io/rfcs/2338-type-alias-enum-variants.html">&quot;Type alias enum variants&quot; RFC</a></p>
 <h1><a class="header" href="#use" id="use">use</a></h1>
 <p>The <code>use</code> declaration can be used so manual scoping isn't needed:</p>
@@ -1156,7 +1154,7 @@ fn main() {
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-3" id="see-also-3">See also:</a></h3>
+<h3><a class="header" href="#see-also-2" id="see-also-2">See also:</a></h3>
 <p><a href="custom_types/enum/../../flow_control/match.html"><code>match</code></a> and <a href="custom_types/enum/../../mod/use.html"><code>use</code></a> </p>
 <h1><a class="header" href="#c-like" id="c-like">C-like</a></h1>
 <p><code>enum</code> can also be used as C-like enums.</p>
@@ -1186,7 +1184,7 @@ fn main() {
     println!(&quot;violets are #{:06x}&quot;, Color::Blue as i32);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-4" id="see-also-4">See also:</a></h3>
+<h3><a class="header" href="#see-also-3" id="see-also-3">See also:</a></h3>
 <p><a href="custom_types/enum/../../types/cast.html">casting</a></p>
 <h1><a class="header" href="#testcase-linked-list" id="testcase-linked-list">Testcase: linked-list</a></h1>
 <p>A common use for <code>enums</code> is to create a linked-list:</p>
@@ -1257,7 +1255,7 @@ fn main() {
     println!(&quot;{}&quot;, list.stringify());
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-5" id="see-also-5">See also:</a></h3>
+<h3><a class="header" href="#see-also-4" id="see-also-4">See also:</a></h3>
 <p><a href="custom_types/enum/../../std/box.html"><code>Box</code></a> and <a href="custom_types/enum/../../fn/methods.html">methods</a></p>
 <h1><a class="header" href="#constants" id="constants">constants</a></h1>
 <p>Rust has two different types of constants which can be declared in any scope
@@ -1290,7 +1288,7 @@ fn main() {
     // FIXME ^ Comment out this line
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-6" id="see-also-6">See also:</a></h3>
+<h3><a class="header" href="#see-also-5" id="see-also-5">See also:</a></h3>
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/0246-const-vs-static.md">The <code>const</code>/<code>static</code> RFC</a>,
 <a href="custom_types/../scope/lifetime/static_lifetime.html"><code>'static</code> lifetime</a></p>
 <h1><a class="header" href="#variable-bindings" id="variable-bindings">Variable Bindings</a></h1>
@@ -1577,7 +1575,7 @@ fn main() {
 </code></pre></pre>
 <p>The main use of aliases is to reduce boilerplate; for example the <code>IoResult&lt;T&gt;</code> type
 is an alias for the <code>Result&lt;T, IoError&gt;</code> type.</p>
-<h3><a class="header" href="#see-also-7" id="see-also-7">See also:</a></h3>
+<h3><a class="header" href="#see-also-6" id="see-also-6">See also:</a></h3>
 <p><a href="types/../attribute.html">Attributes</a></p>
 <h1><a class="header" href="#conversion" id="conversion">Conversion</a></h1>
 <p>Primitive types can be converted to each other through <a href="types/cast.html">casting</a>.</p>
@@ -2007,7 +2005,7 @@ the collection to be modified in place.</li>
 <p>In the above snippets note the type of <code>match</code> branch, that is the key
 difference in the types of iteration. The difference in type then of course
 implies differing actions that are able to be performed.</p>
-<h3><a class="header" href="#see-also-8" id="see-also-8">See also:</a></h3>
+<h3><a class="header" href="#see-also-7" id="see-also-7">See also:</a></h3>
 <p><a href="flow_control/../trait/iter.html">Iterator</a></p>
 <h1><a class="header" href="#match" id="match">match</a></h1>
 <p>Rust provides pattern matching via the <code>match</code> keyword, which can be used like
@@ -2048,7 +2046,7 @@ a C <code>switch</code>.</p>
 <li><a href="flow_control/match/destructuring/destructure_pointers.html">Destructuring Pointers</a></li>
 <li><a href="flow_control/match/destructuring/destructure_structures.html">Destructuring Structures</a></li>
 </ul>
-<h1><a class="header" href="#tuples-1" id="tuples-1">tuples</a></h1>
+<h1><a class="header" href="#tuples" id="tuples">tuples</a></h1>
 <p>Tuples can be destructured in a <code>match</code> as follows:</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let pair = (0, -2);
@@ -2065,7 +2063,7 @@ a C <code>switch</code>.</p>
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-9" id="see-also-9">See also:</a></h3>
+<h3><a class="header" href="#see-also-8" id="see-also-8">See also:</a></h3>
 <p><a href="flow_control/match/destructuring/../../../primitives/tuples.html">Tuples</a></p>
 <h1><a class="header" href="#enums-1" id="enums-1">enums</a></h1>
 <p>An <code>enum</code> is destructured similarly:</p>
@@ -2110,7 +2108,7 @@ fn main() {
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-10" id="see-also-10">See also:</a></h3>
+<h3><a class="header" href="#see-also-9" id="see-also-9">See also:</a></h3>
 <p><a href="flow_control/match/destructuring/../../../attribute/unused.html"><code>#[allow(...)]</code></a>, <a href="https://en.wikipedia.org/wiki/Color_model">color models</a> and <a href="flow_control/match/destructuring/../../../custom_types/enum.html"><code>enum</code></a></p>
 <h1><a class="header" href="#pointersref" id="pointersref">pointers/ref</a></h1>
 <p>For pointers, a distinction needs to be made between destructuring
@@ -2196,7 +2194,7 @@ differently from a language like <code>C</code>.</p>
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-11" id="see-also-11">See also:</a></h3>
+<h3><a class="header" href="#see-also-10" id="see-also-10">See also:</a></h3>
 <p><a href="flow_control/match/destructuring/../../../custom_types/structs.html">Structs</a>, <a href="flow_control/match/destructuring/../../../scope/borrow/ref.html">The ref pattern</a></p>
 <h1><a class="header" href="#guards" id="guards">Guards</a></h1>
 <p>A <code>match</code> <em>guard</em> can be added to filter the arm.</p>
@@ -2214,7 +2212,7 @@ differently from a language like <code>C</code>.</p>
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-12" id="see-also-12">See also:</a></h3>
+<h3><a class="header" href="#see-also-11" id="see-also-11">See also:</a></h3>
 <p><a href="flow_control/match/../../primitives/tuples.html">Tuples</a></p>
 <h1><a class="header" href="#binding" id="binding">Binding</a></h1>
 <p>Indirectly accessing a variable makes it impossible to branch and use that
@@ -2257,7 +2255,7 @@ fn main() {
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-13" id="see-also-13">See also:</a></h3>
+<h3><a class="header" href="#see-also-12" id="see-also-12">See also:</a></h3>
 <p><a href="flow_control/match/../../fn.html"><code>functions</code></a>, <a href="flow_control/match/../../custom_types/enum.html"><code>enums</code></a> and <a href="flow_control/match/../../std/option.html"><code>Option</code></a></p>
 <h1><a class="header" href="#if-let" id="if-let">if let</a></h1>
 <p>For some use cases, when matching enums, <code>match</code> is awkward. For example:</p>
@@ -2370,7 +2368,7 @@ fn main() {
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-14" id="see-also-14">See also:</a></h3>
+<h3><a class="header" href="#see-also-13" id="see-also-13">See also:</a></h3>
 <p><a href="flow_control/../custom_types/enum.html"><code>enum</code></a>, <a href="flow_control/../std/option.html"><code>Option</code></a>, and the <a href="https://github.com/rust-lang/rfcs/pull/160">RFC</a></p>
 <h1><a class="header" href="#while-let" id="while-let">while let</a></h1>
 <p>Similar to <code>if let</code>, <code>while let</code> can make awkward <code>match</code> sequences
@@ -2424,7 +2422,7 @@ loop {
     // clauses. `while let` does not have these.
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-15" id="see-also-15">See also:</a></h3>
+<h3><a class="header" href="#see-also-14" id="see-also-14">See also:</a></h3>
 <p><a href="flow_control/../custom_types/enum.html"><code>enum</code></a>, <a href="flow_control/../std/option.html"><code>Option</code></a>, and the <a href="https://github.com/rust-lang/rfcs/pull/214">RFC</a></p>
 <h1><a class="header" href="#functions" id="functions">Functions</a></h1>
 <p>Functions are declared using the <code>fn</code> keyword. Its arguments are type
@@ -2726,7 +2724,7 @@ to take ownership of captured variables:</p>
     // available and uncommenting above line will not cause an error.
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-16" id="see-also-16">See also:</a></h3>
+<h3><a class="header" href="#see-also-15" id="see-also-15">See also:</a></h3>
 <p><a href="fn/closures/../../std/box.html"><code>Box</code></a> and <a href="https://doc.rust-lang.org/std/mem/fn.drop.html"><code>std::mem::drop</code></a></p>
 <h1><a class="header" href="#as-input-parameters" id="as-input-parameters">As input parameters</a></h1>
 <p>While Rust chooses how to capture variables on the fly mostly without type
@@ -2803,7 +2801,7 @@ fn main() {
     println!(&quot;3 doubled: {}&quot;, apply_to_3(double));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-17" id="see-also-17">See also:</a></h3>
+<h3><a class="header" href="#see-also-16" id="see-also-16">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/mem/fn.drop.html"><code>std::mem::drop</code></a>, <a href="https://doc.rust-lang.org/std/ops/trait.Fn.html"><code>Fn</code></a>, <a href="https://doc.rust-lang.org/std/ops/trait.FnMut.html"><code>FnMut</code></a>, <a href="fn/closures/../../generics.html">Generics</a>, <a href="fn/closures/../../generics/where.html">where</a> and <a href="https://doc.rust-lang.org/std/ops/trait.FnOnce.html"><code>FnOnce</code></a></p>
 <h1><a class="header" href="#type-anonymity" id="type-anonymity">Type anonymity</a></h1>
 <p>Closures succinctly capture variables from enclosing scopes. Does this have
@@ -2847,7 +2845,7 @@ fn main() {
     apply(print);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-18" id="see-also-18">See also:</a></h3>
+<h3><a class="header" href="#see-also-17" id="see-also-17">See also:</a></h3>
 <p><a href="https://huonw.github.io/blog/2015/05/finding-closure-in-rust/">A thorough analysis</a>, <a href="https://doc.rust-lang.org/std/ops/trait.Fn.html"><code>Fn</code></a>, <a href="https://doc.rust-lang.org/std/ops/trait.FnMut.html"><code>FnMut</code></a>,
 and <a href="https://doc.rust-lang.org/std/ops/trait.FnOnce.html"><code>FnOnce</code></a></p>
 <h1><a class="header" href="#input-functions" id="input-functions">Input functions</a></h1>
@@ -2876,7 +2874,7 @@ fn main() {
 </code></pre></pre>
 <p>As an additional note, the <code>Fn</code>, <code>FnMut</code>, and <code>FnOnce</code> <code>traits</code> dictate how
 a closure captures variables from the enclosing scope.</p>
-<h3><a class="header" href="#see-also-19" id="see-also-19">See also:</a></h3>
+<h3><a class="header" href="#see-also-18" id="see-also-18">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/ops/trait.Fn.html"><code>Fn</code></a>, <a href="https://doc.rust-lang.org/std/ops/trait.FnMut.html"><code>FnMut</code></a>, and <a href="https://doc.rust-lang.org/std/ops/trait.FnOnce.html"><code>FnOnce</code></a></p>
 <h1><a class="header" href="#as-output-parameters" id="as-output-parameters">As output parameters</a></h1>
 <p>Closures as input parameters are possible, so returning closures as
@@ -2921,7 +2919,7 @@ fn main() {
     fn_once();
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-20" id="see-also-20">See also:</a></h3>
+<h3><a class="header" href="#see-also-19" id="see-also-19">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/ops/trait.Fn.html"><code>Fn</code></a>, <a href="https://doc.rust-lang.org/std/ops/trait.FnMut.html"><code>FnMut</code></a>, <a href="fn/closures/../../generics.html">Generics</a> and <a href="fn/closures/../../trait/impl_trait.html">impl Trait</a>.</p>
 <h1><a class="header" href="#examples-in-std" id="examples-in-std">Examples in <code>std</code></a></h1>
 <p>This section contains a few examples of using closures from the <code>std</code> library.</p>
@@ -2960,7 +2958,7 @@ signature:</p>
     println!(&quot;2 in array2: {}&quot;, array2.into_iter().any(|&amp;x| x == 2));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-21" id="see-also-21">See also:</a></h3>
+<h3><a class="header" href="#see-also-20" id="see-also-20">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.any"><code>std::iter::Iterator::any</code></a></p>
 <h1><a class="header" href="#searching-through-iterators" id="searching-through-iterators">Searching through iterators</a></h1>
 <p><code>Iterator::find</code> is a function which iterates over an iterator and searches for the 
@@ -3017,7 +3015,7 @@ item, use <code>Iterator::position</code>.</p>
     assert_eq!(index_of_first_negative_number, None);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-22" id="see-also-22">See also:</a></h3>
+<h3><a class="header" href="#see-also-21" id="see-also-21">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find"><code>std::iter::Iterator::find</code></a></p>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find_map"><code>std::iter::Iterator::find_map</code></a></p>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.position"><code>std::iter::Iterator::position</code></a></p>
@@ -3304,7 +3302,7 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-23" id="see-also-23">See also:</a></h3>
+<h3><a class="header" href="#see-also-22" id="see-also-22">See also:</a></h3>
 <p><a href="mod/../generics.html">generics</a> and <a href="mod/../fn/methods.html">methods</a></p>
 <h1><a class="header" href="#the-use-declaration" id="the-use-declaration">The <code>use</code> declaration</a></h1>
 <p>The <code>use</code> declaration can be used to bind a full path to a new name, for easier
@@ -3834,7 +3832,7 @@ fn main() {
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-24" id="see-also-24">See also:</a></h3>
+<h3><a class="header" href="#see-also-23" id="see-also-23">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/reference/attributes.html#conditional-compilation">the reference</a>, <a href="https://doc.rust-lang.org/std/macro.cfg!.html"><code>cfg!</code></a>, and <a href="attribute/../macros.html">macros</a>.</p>
 <h1><a class="header" href="#custom" id="custom">Custom</a></h1>
 <p>Some conditionals like <code>target_os</code> are implicitly provided by <code>rustc</code>, but
@@ -3901,7 +3899,7 @@ fn main() {
     let _char = SingleGen('a'); // Uses `char`.
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-25" id="see-also-25">See also:</a></h3>
+<h3><a class="header" href="#see-also-24" id="see-also-24">See also:</a></h3>
 <p><a href="custom_types/structs.html"><code>structs</code></a></p>
 <h1><a class="header" href="#functions-1" id="functions-1">Functions</a></h1>
 <p>The same set of rules can be applied to functions: a type <code>T</code> becomes
@@ -3950,7 +3948,7 @@ fn main() {
     generic(SGen('c'));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-26" id="see-also-26">See also:</a></h3>
+<h3><a class="header" href="#see-also-25" id="see-also-25">See also:</a></h3>
 <p><a href="generics/../fn.html">functions</a> and <a href="generics/../custom_types/structs.html"><code>struct</code>s</a></p>
 <h1><a class="header" href="#implementation" id="implementation">Implementation</a></h1>
 <p>Similar to functions, implementations require care to remain generic.</p>
@@ -3997,7 +3995,7 @@ fn main() {
     println!(&quot;{}, {}&quot;, x.value(), y.value());
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-27" id="see-also-27">See also:</a></h3>
+<h3><a class="header" href="#see-also-26" id="see-also-26">See also:</a></h3>
 <p><a href="generics/../scope/lifetime/fn.html">functions returning references</a>, <a href="generics/../fn/methods.html"><code>impl</code></a>, and <a href="generics/../custom_types/structs.html"><code>struct</code></a></p>
 <h1><a class="header" href="#traits" id="traits">Traits</a></h1>
 <p>Of course <code>trait</code>s can also be generic. Here we define one which reimplements
@@ -4033,7 +4031,7 @@ fn main() {
     // ^ TODO: Try uncommenting these lines.
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-28" id="see-also-28">See also:</a></h3>
+<h3><a class="header" href="#see-also-27" id="see-also-27">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a>, <a href="generics/../custom_types/structs.html"><code>struct</code></a>, and <a href="generics/../trait.html"><code>trait</code></a></p>
 <h1><a class="header" href="#bounds" id="bounds">Bounds</a></h1>
 <p>When working with generics, the type parameters often must use traits as <em>bounds</em> to
@@ -4096,7 +4094,7 @@ fn main() {
 </code></pre></pre>
 <p>As an additional note, <a href="generics/../generics/where.html"><code>where</code></a> clauses can also be used to apply bounds in
 some cases to be more expressive.</p>
-<h3><a class="header" href="#see-also-29" id="see-also-29">See also:</a></h3>
+<h3><a class="header" href="#see-also-28" id="see-also-28">See also:</a></h3>
 <p><a href="generics/../hello/print.html"><code>std::fmt</code></a>, <a href="generics/../custom_types/structs.html"><code>struct</code>s</a>, and <a href="generics/../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#testcase-empty-bounds" id="testcase-empty-bounds">Testcase: empty bounds</a></h1>
 <p>A consequence of how bounds work is that even if a <code>trait</code> doesn't
@@ -4130,7 +4128,7 @@ fn main() {
     // ^ TODO: Try uncommenting this line.
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-30" id="see-also-30">See also:</a></h3>
+<h3><a class="header" href="#see-also-29" id="see-also-29">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/cmp/trait.Eq.html"><code>std::cmp::Eq</code></a>, <a href="https://doc.rust-lang.org/std/marker/trait.Copy.html"><code>std::marker::Copy</code></a>, and <a href="generics/bounds/../../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#multiple-bounds" id="multiple-bounds">Multiple bounds</a></h1>
 <p>Multiple bounds can be applied with a <code>+</code>. Like normal, different types are
@@ -4159,7 +4157,7 @@ fn main() {
     compare_types(&amp;array, &amp;vec);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-31" id="see-also-31">See also:</a></h3>
+<h3><a class="header" href="#see-also-30" id="see-also-30">See also:</a></h3>
 <p><a href="generics/../hello/print.html"><code>std::fmt</code></a> and <a href="generics/../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#where-clauses" id="where-clauses">Where clauses</a></h1>
 <p>A bound can also be expressed using a <code>where</code> clause immediately
@@ -4204,7 +4202,7 @@ fn main() {
     vec.print_in_option();
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-32" id="see-also-32">See also:</a></h3>
+<h3><a class="header" href="#see-also-31" id="see-also-31">See also:</a></h3>
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/0135-where.md">RFC</a>, <a href="generics/../custom_types/structs.html"><code>struct</code></a>, and <a href="generics/../trait.html"><code>trait</code></a></p>
 <h1><a class="header" href="#new-type-idiom" id="new-type-idiom">New Type Idiom</a></h1>
 <p>The <code>newtype</code> idiom gives compile time guarantees that the right type of value is supplied
@@ -4250,7 +4248,7 @@ fn main() {
     let years_as_primitive: i64 = years.0;
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-33" id="see-also-33">See also:</a></h3>
+<h3><a class="header" href="#see-also-32" id="see-also-32">See also:</a></h3>
 <p><a href="generics/../custom_types/structs.html"><code>structs</code></a></p>
 <h1><a class="header" href="#associated-items" id="associated-items">Associated items</a></h1>
 <p>&quot;Associated Items&quot; refers to a set of rules pertaining to <a href="https://doc.rust-lang.org/reference/items.html"><code>item</code></a>s
@@ -4258,7 +4256,7 @@ of various types. It is an extension to <code>trait</code> generics, and allows
 <code>trait</code>s to internally define new items.</p>
 <p>One such item is called an <em>associated type</em>, providing simpler usage 
 patterns when the <code>trait</code> is generic over its container type.</p>
-<h3><a class="header" href="#see-also-34" id="see-also-34">See also:</a></h3>
+<h3><a class="header" href="#see-also-33" id="see-also-33">See also:</a></h3>
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/0195-associated-items.md">RFC</a></p>
 <h1><a class="header" href="#the-problem" id="the-problem">The Problem</a></h1>
 <p>A <code>trait</code> that is generic over its container type has type specification
@@ -4315,7 +4313,7 @@ fn main() {
     println!(&quot;The difference is: {}&quot;, difference(&amp;container));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-35" id="see-also-35">See also:</a></h3>
+<h3><a class="header" href="#see-also-34" id="see-also-34">See also:</a></h3>
 <p><a href="generics/assoc_items/../../custom_types/structs.html"><code>struct</code>s</a>, and <a href="generics/assoc_items/../../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#associated-types" id="associated-types">Associated types</a></h1>
 <p>The use of &quot;Associated types&quot; improves the overall readability of code 
@@ -4446,7 +4444,7 @@ fn main() {
     //          _struct1 == _struct2);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-36" id="see-also-36">See also:</a></h3>
+<h3><a class="header" href="#see-also-35" id="see-also-35">See also:</a></h3>
 <p><a href="generics/../trait/derive.html">Derive</a>, <a href="generics/../custom_types/structs.html">struct</a>, and <a href="generics/../custom_types/structs.html">TupleStructs</a></p>
 <h1><a class="header" href="#testcase-unit-clarification" id="testcase-unit-clarification">Testcase: unit clarification</a></h1>
 <p>A useful method of unit conversions can be examined by implementing <code>Add</code>
@@ -4515,7 +4513,7 @@ fn main() {
     //let one_feter = one_foot + one_meter;
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-37" id="see-also-37">See also:</a></h3>
+<h3><a class="header" href="#see-also-36" id="see-also-36">See also:</a></h3>
 <p><a href="generics/phantom/../../scope/borrow.html">Borrowing (<code>&amp;</code>)</a>, <a href="generics/phantom/../../generics/bounds.html">Bounds (<code>X: Y</code>)</a>, <a href="generics/phantom/../../custom_types/enum.html">enum</a>, <a href="generics/phantom/../../fn/methods.html">impl &amp; self</a>,
 <a href="generics/phantom/../../trait/ops.html">Overloading</a>, <a href="generics/phantom/../../scope/borrow/ref.html">ref</a>, <a href="generics/phantom/../../trait.html">Traits (<code>X for Y</code>)</a>, and <a href="generics/phantom/../../custom_types/structs.html">TupleStructs</a>.</p>
 <h1><a class="header" href="#scoping-rules" id="scoping-rules">Scoping rules</a></h1>
@@ -4596,7 +4594,7 @@ fn main() {
     println!(&quot;Made a ToDrop!&quot;);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-38" id="see-also-38">See also:</a></h3>
+<h3><a class="header" href="#see-also-37" id="see-also-37">See also:</a></h3>
 <p><a href="scope/../std/box.html">Box</a></p>
 <h1><a class="header" href="#ownership-and-moves" id="ownership-and-moves">Ownership and moves</a></h1>
 <p>Because variables are in charge of freeing their own resources, 
@@ -4768,7 +4766,7 @@ fn main() {
     // FIXME ^ Comment out this line
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-39" id="see-also-39">See also:</a></h3>
+<h3><a class="header" href="#see-also-38" id="see-also-38">See also:</a></h3>
 <p><a href="scope/borrow/../lifetime/static_lifetime.html"><code>static</code></a></p>
 <h1><a class="header" href="#aliasing-1" id="aliasing-1">Aliasing</a></h1>
 <p>Data can be immutably borrowed any number of times, but while immutably
@@ -4971,7 +4969,7 @@ fn main() {
 <div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
 <p><a href="scope/lifetime/elision.html">elision</a> implicitly annotates lifetimes and so is different.</p>
 </div>
-<h3><a class="header" href="#see-also-40" id="see-also-40">See also:</a></h3>
+<h3><a class="header" href="#see-also-39" id="see-also-39">See also:</a></h3>
 <p><a href="scope/lifetime/../../generics.html">generics</a> and <a href="scope/lifetime/../../fn/closures.html">closures</a></p>
 <h1><a class="header" href="#functions-2" id="functions-2">Functions</a></h1>
 <p>Ignoring <a href="scope/lifetime/elision.html">elision</a>, function signatures with lifetimes have a few constraints: </p>
@@ -5026,7 +5024,7 @@ fn main() {
     print_one(&amp;t);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-41" id="see-also-41">See also:</a></h3>
+<h3><a class="header" href="#see-also-40" id="see-also-40">See also:</a></h3>
 <p><a href="scope/lifetime/fn.html">functions</a></p>
 <h1><a class="header" href="#methods-1" id="methods-1">Methods</a></h1>
 <p>Methods are annotated similarly to functions:</p>
@@ -5047,7 +5045,7 @@ fn main() {
     owner.print();
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-42" id="see-also-42">See also:</a></h3>
+<h3><a class="header" href="#see-also-41" id="see-also-41">See also:</a></h3>
 <p><a href="scope/lifetime/../../fn/methods.html">methods</a></p>
 <h1><a class="header" href="#structs-1" id="structs-1">Structs</a></h1>
 <p>Annotation of lifetimes in structures are also similar to functions:</p>
@@ -5085,7 +5083,7 @@ fn main() {
     println!(&quot;y is *not* borrowed in {:?}&quot;, number);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-43" id="see-also-43">See also:</a></h3>
+<h3><a class="header" href="#see-also-42" id="see-also-42">See also:</a></h3>
 <p><a href="scope/lifetime/../../custom_types/structs.html"><code>struct</code>s</a></p>
 <h1><a class="header" href="#traits-1" id="traits-1">Traits</a></h1>
 <p>Annotation of lifetimes in trait methods basically are similar to functions.
@@ -5110,7 +5108,7 @@ fn main() {
     println!(&quot;b is {:?}&quot;, b);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-44" id="see-also-44">See also:</a></h3>
+<h3><a class="header" href="#see-also-43" id="see-also-43">See also:</a></h3>
 <p><a href="scope/lifetime/../../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#bounds-1" id="bounds-1">Bounds</a></h1>
 <p>Just like generic types can be bounded, lifetimes (themselves generic)
@@ -5153,7 +5151,7 @@ fn main() {
     print(ref_x);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-45" id="see-also-45">See also:</a></h3>
+<h3><a class="header" href="#see-also-44" id="see-also-44">See also:</a></h3>
 <p><a href="scope/lifetime/../../generics.html">generics</a>, <a href="scope/lifetime/../../generics/bounds.html">bounds in generics</a>, and 
 <a href="scope/lifetime/../../generics/multi_bounds.html">multiple bounds in generics</a></p>
 <h1><a class="header" href="#coercion" id="coercion">Coercion</a></h1>
@@ -5275,7 +5273,7 @@ fn use_it()
 16 | }
    | - `i` dropped here while still borrowed
 </code></pre>
-<h3><a class="header" href="#see-also-46" id="see-also-46">See also:</a></h3>
+<h3><a class="header" href="#see-also-45" id="see-also-45">See also:</a></h3>
 <p><a href="scope/lifetime/../../custom_types/constants.html"><code>'static</code> constants</a></p>
 <h1><a class="header" href="#elision" id="elision">Elision</a></h1>
 <p>Some lifetime patterns are overwhelmingly common and so the borrow checker
@@ -5310,7 +5308,7 @@ fn main() {
     println!(&quot;`annotated_pass`: {}&quot;, annotated_pass(&amp;x));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-47" id="see-also-47">See also:</a></h3>
+<h3><a class="header" href="#see-also-46" id="see-also-46">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#lifetime-elision">elision</a></p>
 <h1><a class="header" href="#traits-2" id="traits-2">Traits</a></h1>
 <p>A <code>trait</code> is a collection of methods defined for an unknown type:
@@ -5448,7 +5446,7 @@ fn main() {
     println!(&quot;One foot is {} than one meter.&quot;, cmp);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-48" id="see-also-48">See also:</a></h3>
+<h3><a class="header" href="#see-also-47" id="see-also-47">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/reference/attributes.html#derive"><code>derive</code></a></p>
 <h1><a class="header" href="#returning-traits-with-dyn" id="returning-traits-with-dyn">Returning Traits with <code>dyn</code></a></h1>
 <p>The Rust compiler needs to know how much space every function's return type requires. This means all your functions have to return a concrete type. Unlike other languages, if you have a trait like <code>Animal</code>, you can't write a function that returns <code>Animal</code>, because its different implementations will need different amounts of memory. </p>
@@ -5541,7 +5539,7 @@ fn main() {
     println!(&quot;Bar + Foo = {:?}&quot;, Bar + Foo);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-49" id="see-also-49">See Also</a></h3>
+<h3><a class="header" href="#see-also-48" id="see-also-48">See Also</a></h3>
 <p><a href="https://doc.rust-lang.org/core/ops/trait.Add.html">Add</a>, <a href="https://doc.rust-lang.org/book/appendix-02-operators.html">Syntax Index</a></p>
 <h1><a class="header" href="#drop" id="drop">Drop</a></h1>
 <p>The <a href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a> trait only has one method: <code>drop</code>, which is called automatically 
@@ -5814,7 +5812,7 @@ fn comp_sci_student_greeting(student: &amp;dyn CompSciStudent) -&gt; String {
 
 fn main() {}
 </code></pre></pre>
-<h3><a class="header" href="#see-also-50" id="see-also-50">See also:</a></h3>
+<h3><a class="header" href="#see-also-49" id="see-also-49">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/book/ch19-03-advanced-traits.html#using-supertraits-to-require-one-traits-functionality-within-another-trait">The Rust Programming Language chapter on supertraits</a></p>
 <h1><a class="header" href="#disambiguating-overlapping-traits" id="disambiguating-overlapping-traits">Disambiguating overlapping traits</a></h1>
 <p>A type can implement many different traits. What if two traits both require the same name? For example, many traits might have a method named <code>get()</code>. They might even have different return types! </p>
@@ -5867,7 +5865,7 @@ fn main() {
     assert_eq!(28, age);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-51" id="see-also-51">See also:</a></h3>
+<h3><a class="header" href="#see-also-50" id="see-also-50">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/book/ch19-03-advanced-traits.html#fully-qualified-syntax-for-disambiguation-calling-methods-with-the-same-name">The Rust Programming Language chapter on Fully Qualified syntax</a></p>
 <h1><a class="header" href="#macro_rules" id="macro_rules">macro_rules!</a></h1>
 <p>Rust provides a powerful macro system that allows metaprogramming. As you've
@@ -6389,7 +6387,7 @@ fn main() {
     eat(cooked_potato);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-52" id="see-also-52">See also:</a></h3>
+<h3><a class="header" href="#see-also-51" id="see-also-51">See also:</a></h3>
 <p><a href="error/option_unwrap/../../fn/closures.html">closures</a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map"><code>Option::map()</code></a></p>
 <h1><a class="header" href="#combinators-and_then" id="combinators-and_then">Combinators: <code>and_then</code></a></h1>
 <p><code>map()</code> was described as a chainable way to simplify <code>match</code> statements. 
@@ -6454,7 +6452,7 @@ fn main() {
     eat(sushi, Day::Wednesday);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-53" id="see-also-53">See also:</a></h3>
+<h3><a class="header" href="#see-also-52" id="see-also-52">See also:</a></h3>
 <p><a href="error/option_unwrap/../../fn/closures.html">closures</a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, and <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then"><code>Option::and_then()</code></a></p>
 <h1><a class="header" href="#result" id="result"><code>Result</code></a></h1>
 <p><a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a> is a richer version of the <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a> type that
@@ -6624,7 +6622,7 @@ fn main() {
     print(multiply(&quot;t&quot;, &quot;2&quot;));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-54" id="see-also-54">See also:</a></h3>
+<h3><a class="header" href="#see-also-53" id="see-also-53">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/io/type.Result.html"><code>io::Result</code></a></p>
 <h1><a class="header" href="#early-returns" id="early-returns">Early returns</a></h1>
 <p>In the previous example, we explicitly handled the errors using combinators.
@@ -6931,7 +6929,7 @@ fn main() {
     print(double_first(strings));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-55" id="see-also-55">See also:</a></h3>
+<h3><a class="header" href="#see-also-54" id="see-also-54">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/book/ch17-02-trait-objects.html#trait-objects-perform-dynamic-dispatch">Dynamic dispatch</a> and <a href="https://doc.rust-lang.org/std/error/trait.Error.html"><code>Error</code> trait</a></p>
 <h1><a class="header" href="#other-uses-of-" id="other-uses-of-">Other uses of <code>?</code></a></h1>
 <p>Notice in the previous example that our immediate reaction to calling
@@ -6996,7 +6994,7 @@ fn main() {
 is very similar to replacing the <code>unwrap</code> calls with <code>?</code> except that the
 return types are <code>Result</code>. As a result, they must be destructured at the
 top level.</p>
-<h3><a class="header" href="#see-also-56" id="see-also-56">See also:</a></h3>
+<h3><a class="header" href="#see-also-55" id="see-also-55">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/convert/trait.From.html"><code>From::from</code></a> and <a href="https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator"><code>?</code></a></p>
 <h1><a class="header" href="#wrapping-errors" id="wrapping-errors">Wrapping errors</a></h1>
 <p>An alternative to boxing errors is to wrap them in your own error type.</p>
@@ -7073,7 +7071,7 @@ fn main() {
 <p>This adds a bit more boilerplate for handling errors and might not be needed in
 all applications. There are some libraries that can take care of the boilerplate
 for you.</p>
-<h3><a class="header" href="#see-also-57" id="see-also-57">See also:</a></h3>
+<h3><a class="header" href="#see-also-56" id="see-also-56">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/convert/trait.From.html"><code>From::from</code></a> and <a href="error/multiple_error_types/../../custom_types/enum.html"><code>Enums</code></a></p>
 <h1><a class="header" href="#iterating-over-results" id="iterating-over-results">Iterating over <code>Result</code>s</a></h1>
 <p>An <code>Iter::map</code> operation might fail, for example:</p>
@@ -7148,7 +7146,7 @@ the <code>primitives</code>. Some of these include:</p>
 <li>error handling types: <code>Result&lt;i32, i32&gt;</code></li>
 <li>heap allocated pointers: <code>Box&lt;i32&gt;</code></li>
 </ul>
-<h3><a class="header" href="#see-also-58" id="see-also-58">See also:</a></h3>
+<h3><a class="header" href="#see-also-57" id="see-also-57">See also:</a></h3>
 <p><a href="primitives.html">primitives</a> and <a href="https://doc.rust-lang.org/std/">the std library</a></p>
 <h1><a class="header" href="#box-stack-and-heap" id="box-stack-and-heap">Box, stack and heap</a></h1>
 <p>All values in Rust are stack allocated by default. Values can be <em>boxed</em>
@@ -7912,7 +7910,7 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-59" id="see-also-59">See also:</a></h3>
+<h3><a class="header" href="#see-also-58" id="see-also-58">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/rc/index.html">std::rc</a> and <a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a>.</p>
 <h1><a class="header" href="#std-misc" id="std-misc">Std misc</a></h1>
 <p>Many other types are provided by the std library to support
@@ -7923,7 +7921,7 @@ things such as:</p>
 <li>File I/O</li>
 </ul>
 <p>These expand beyond what the <a href="primitives.html">primitives</a> provide.</p>
-<h3><a class="header" href="#see-also-60" id="see-also-60">See also:</a></h3>
+<h3><a class="header" href="#see-also-59" id="see-also-59">See also:</a></h3>
 <p><a href="primitives.html">primitives</a> and <a href="https://doc.rust-lang.org/std/">the std library</a></p>
 <h1><a class="header" href="#threads" id="threads">Threads</a></h1>
 <p>Rust provides a mechanism for spawning native OS threads via the <code>spawn</code>
@@ -8075,7 +8073,7 @@ fn main() {
 What if the user decides to insert a lot of spaces? Do we <em>really</em> want to spawn 2,000 threads?
 Modify the program so that the data is always chunked into a limited number of chunks,
 defined by a static constant at the beginning of the program.</p>
-<h3><a class="header" href="#see-also-61" id="see-also-61">See also:</a></h3>
+<h3><a class="header" href="#see-also-60" id="see-also-60">See also:</a></h3>
 <ul>
 <li><a href="std_misc/threads/../threads.html">Threads</a></li>
 <li><a href="std_misc/threads/../../std/vec.html">vectors</a> and <a href="std_misc/threads/../../trait/iter.html">iterators</a></li>
@@ -8170,7 +8168,7 @@ fn main() {
 </code></pre></pre>
 <p>Be sure to check at other <code>Path</code> methods (<code>posix::Path</code> or <code>windows::Path</code>) and
 the <code>Metadata</code> struct.</p>
-<h3><a class="header" href="#see-also-62" id="see-also-62">See also:</a></h3>
+<h3><a class="header" href="#see-also-61" id="see-also-61">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/ffi/struct.OsStr.html">OsStr</a> and <a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">Metadata</a>.</p>
 <h1><a class="header" href="#file-io" id="file-io">File I/O</a></h1>
 <p>The <code>File</code> struct represents a file that has been opened (it wraps a file
@@ -8515,7 +8513,7 @@ a
     Ok(s)
 }
 </code></pre>
-<h3><a class="header" href="#see-also-63" id="see-also-63">See also:</a></h3>
+<h3><a class="header" href="#see-also-62" id="see-also-62">See also:</a></h3>
 <p><a href="std_misc/../attribute/cfg.html"><code>cfg!</code></a></p>
 <h1><a class="header" href="#program-arguments" id="program-arguments">Program arguments</a></h1>
 <h2><a class="header" href="#standard-library" id="standard-library">Standard Library</a></h2>
@@ -8699,7 +8697,7 @@ includes support for writing software tests within the language itself.</p>
 <ul>
 <li><a href="testing/dev_dependencies.html">Dev-dependencies</a></li>
 </ul>
-<h2><a class="header" href="#see-also-64" id="see-also-64">See Also</a></h2>
+<h2><a class="header" href="#see-also-63" id="see-also-63">See Also</a></h2>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch11-00-testing.html">The Book</a> chapter on testing</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a> on doc-testing</li>
@@ -9023,7 +9021,7 @@ pub fn try_div(a: i32, b: i32) -&gt; Result&lt;i32, String&gt; {
     }
 }
 </code></pre>
-<h2><a class="header" href="#see-also-65" id="see-also-65">See Also</a></h2>
+<h2><a class="header" href="#see-also-64" id="see-also-64">See Also</a></h2>
 <ul>
 <li><a href="https://github.com/rust-lang/rfcs/blob/master/text/0505-api-comment-conventions.md">RFC505</a> on documentation style</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a> on documentation guidelines</li>
@@ -9124,7 +9122,7 @@ mod tests {
     }
 }
 </code></pre>
-<h2><a class="header" href="#see-also-66" id="see-also-66">See Also</a></h2>
+<h2><a class="header" href="#see-also-65" id="see-also-65">See Also</a></h2>
 <p><a href="http://doc.crates.io/specifying-dependencies.html">Cargo</a> docs on specifying dependencies.</p>
 <h1><a class="header" href="#unsafe-operations" id="unsafe-operations">Unsafe Operations</a></h1>
 <p>As an introduction to this section, to borrow from <a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">the official docs</a>,
@@ -9306,7 +9304,7 @@ pub use crate::mem::drop;
 pub use self::async_await::*;
 </code></pre>
 <p>For documentation, <code>rustdoc</code> is widely used by the community. It's what is used to generate the <a href="https://doc.rust-lang.org/std/">std library docs</a>.</p>
-<h3><a class="header" href="#see-also-67" id="see-also-67">See also:</a></h3>
+<h3><a class="header" href="#see-also-66" id="see-also-66">See also:</a></h3>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#making-useful-documentation-comments">The Rust Book: Making Useful Documentation Comments</a></li>
 <li><a href="https://doc.rust-lang.org/rustdoc/index.html">The rustdoc Book</a></li>
@@ -9335,7 +9333,7 @@ pub use self::async_await::*;
 </code></pre>
 <h2><a class="header" href="#using-it-with-docs" id="using-it-with-docs">Using it with docs</a></h2>
 <p>You may have noticed in some of the <a href="https://doc.rust-lang.org/core/">official Rust docs</a> a button that says &quot;Run&quot;, which opens the code sample up in a new tab in Rust Playground. This feature is enabled if you use the #[doc] attribute called <a href="https://doc.rust-lang.org/rustdoc/the-doc-attribute.html#html_playground_url"><code>html_playground_url</code></a>.</p>
-<h3><a class="header" href="#see-also-68" id="see-also-68">See also:</a></h3>
+<h3><a class="header" href="#see-also-67" id="see-also-67">See also:</a></h3>
 <ul>
 <li><a href="https://play.rust-lang.org/">The Rust Playground</a></li>
 <li><a href="https://github.com/integer32llc/rust-playground/">The next-gen playpen</a></li>

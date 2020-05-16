@@ -1,61 +1,61 @@
-# Primitives
+# プリミティブ
 
-Rust provides access to a wide variety of `primitives`. A sample includes:
+Rustは、様々な`プリミティブ`を提供しています。以下がその例です。
 
 
-### Scalar Types
+### スカラー型
 
-* signed integers: `i8`, `i16`, `i32`, `i64`, `i128` and `isize` (pointer size)
-* unsigned integers: `u8`, `u16`, `u32`, `u64`, `u128` and `usize` (pointer
-  size)
-* floating point: `f32`, `f64`
-* `char` Unicode scalar values like `'a'`, `'α'` and `'∞'` (4 bytes each)
-* `bool` either `true` or `false`
-* and the unit type `()`, whose only possible value is an empty tuple: `()`
+* 符号付き整数: `i8`、`i16`、`i32`、`i64`、`i128`、そして`isize` (ポインタサイズ)
+* 符号なし整数: `u8`、`u16`、`u32`、`u64`、`u128`、そして`usize` (ポインタサイズ)
+* 浮動小数点: `f32`, `f64`
+* `char` Unicodeのスカラー値。例えば`'a'`、`'α'`、そして`'∞'` (それぞれ4バイト)
+* `bool` `true`または`false`
+* ユニット型。唯一の値が空タプル`()`。
 
-Despite the value of a unit type being a tuple, it is not considered a
-compound type because it does not contain multiple values. 
+ユニット型はタプルですが、複数の値を含むことができないため、
+複合型ではありません。
 
-### Compound Types
+### 複合型
 
-* arrays like `[1, 2, 3]`
-* tuples like `(1, true)`
+* `[1, 2, 3]`のような配列
+* `(1, true)`のようなタプル
 
-Variables can always be *type annotated*. Numbers may additionally be
-annotated via a *suffix* or *by default*. Integers default to `i32` and
-floats to `f64`. Note that Rust can also infer types from context.
+変数は常に*型指定*可能です。数値型は更に*サフィックス*の指定が可能で、
+指定しない場合はデフォルトになります。整数値のデフォルトは`i32`で、
+浮動小数点数は`f64`です。Rustはさらに文脈から型推論ができることに注意
+してください。
 
 ```rust,editable,ignore,mdbook-runnable
 fn main() {
-    // Variables can be type annotated.
+    // 変数には型の注釈が付けられます。
     let logical: bool = true;
 
-    let a_float: f64 = 1.0;  // Regular annotation
-    let an_integer   = 5i32; // Suffix annotation
+    let a_float: f64 = 1.0;  // ふつうの注釈
+    let an_integer   = 5i32; // サフィックスで注釈
 
-    // Or a default will be used.
+    // デフォルトを選択することもできます。
     let default_float   = 3.0; // `f64`
     let default_integer = 7;   // `i32`
     
-    // A type can also be inferred from context 
-    let mut inferred_type = 12; // Type i64 is inferred from another line
+    //  文脈から型推論する
+    let mut inferred_type = 12; // 他の行からi64であると推論する。
     inferred_type = 4294967296i64;
     
-    // A mutable variable's value can be changed.
-    let mut mutable = 12; // Mutable `i32`
+    // 可変な変数は変更できます。
+    let mut mutable = 12; // 可変な`i32`
     mutable = 21;
     
-    // Error! The type of a variable can't be changed.
+    // エラーします! 変数の型は変更できません。
     mutable = true;
     
-    // Variables can be overwritten with shadowing.
+    // 変数はシャドーイングで上書きできます。
     let mutable = true;
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[the `std` library][std], [`mut`][mut], [inference], and [shadowing]
+[`std`ライブラリ][std]、[`mut`][mut]、[推論]、そして[シャドーイング]
 
 [std]: https://doc.rust-lang.org/std/
 [mut]: variable_bindings/mut.md

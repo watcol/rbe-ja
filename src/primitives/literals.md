@@ -1,44 +1,44 @@
-# Literals and operators
+# リテラルと演算子
 
-Integers `1`, floats `1.2`, characters `'a'`, strings `"abc"`, booleans `true`
-and the unit type `()` can be expressed using literals.
+整数の`1`、浮動小数点数の`1.2`、文字の`'a'`、文字列の`"abc"`、真偽値の`true`、
+そしてユニット型の`()`などは、リテラルで表すことができます。
 
-Integers can, alternatively, be expressed using hexadecimal, octal or binary
-notation using these prefixes respectively: `0x`, `0o` or `0b`.
+整数は`0x`、`0o`、`0b`などのプレフィックスをつけることで、
+16進数、8進数、2進数でも表すことができます。
 
-Underscores can be inserted in numeric literals to improve readability, e.g.
-`1_000` is the same as `1000`, and `0.000_001` is the same as `0.000001`.
+また、可読性のため、数値にアンダースコアを挟むことができます。 例えば
+`1_000`は`1000`と同じで、`0.000_001`は`0.000001`と同じです。
 
-We need to tell the compiler the type of the literals we use. For now,
-we'll use the `u32` suffix to indicate that the literal is an unsigned 32-bit
-integer, and the `i32` suffix to indicate that it's a signed 32-bit integer.
+コンパイラにリテラルの型を教えてあげなければいけません. 現在は、
+`u32`サフィックスでリテラル32ビット符号なし整数になり、`i32`サフィックス
+で32ビット符号付き整数になります。
 
-The operators available and their precedence [in Rust][rust op-prec] are similar to other
-[C-like languages][op-prec].
+Rustで使える[演算子や、その優先順位][rust op-prec]は、[Cのような言語][op-prec]
+と似ています。
 
 ```rust,editable
 fn main() {
-    // Integer addition
+    // 整数の足し算
     println!("1 + 2 = {}", 1u32 + 2);
 
-    // Integer subtraction
+    // 整数の引き算
     println!("1 - 2 = {}", 1i32 - 2);
-    // TODO ^ Try changing `1i32` to `1u32` to see why the type is important
+    // TODO ^ `1i32`を`1u32`に変えてみて、型の重要さを実感してみてください。
 
-    // Short-circuiting boolean logic
+    // 真偽値の短絡評価
     println!("true AND false is {}", true && false);
     println!("true OR false is {}", true || false);
-    println!("NOT true is {}", !true);
+    println!("NOT true is {}", !true); // 真でないものは{}
 
-    // Bitwise operations
+    // ビット演算
     println!("0011 AND 0101 is {:04b}", 0b0011u32 & 0b0101);
     println!("0011 OR 0101 is {:04b}", 0b0011u32 | 0b0101);
     println!("0011 XOR 0101 is {:04b}", 0b0011u32 ^ 0b0101);
     println!("1 << 5 is {}", 1u32 << 5);
     println!("0x80 >> 2 is 0x{:x}", 0x80u32 >> 2);
 
-    // Use underscores to improve readability!
-    println!("One million is written as {}", 1_000_000u32);
+    // アンダースコアを使って可読性を上げてください!
+    println!("One million is written as {}", 1_000_000u32); // 100万は{}と書きます
 }
 ```
 

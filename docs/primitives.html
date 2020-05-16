@@ -147,56 +147,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#primitives" id="primitives">Primitives</a></h1>
-<p>Rust provides access to a wide variety of <code>primitives</code>. A sample includes:</p>
-<h3><a class="header" href="#scalar-types" id="scalar-types">Scalar Types</a></h3>
+                        <h1><a class="header" href="#プリミティブ" id="プリミティブ">プリミティブ</a></h1>
+<p>Rustは、様々な<code>プリミティブ</code>を提供しています。以下がその例です。</p>
+<h3><a class="header" href="#スカラー型" id="スカラー型">スカラー型</a></h3>
 <ul>
-<li>signed integers: <code>i8</code>, <code>i16</code>, <code>i32</code>, <code>i64</code>, <code>i128</code> and <code>isize</code> (pointer size)</li>
-<li>unsigned integers: <code>u8</code>, <code>u16</code>, <code>u32</code>, <code>u64</code>, <code>u128</code> and <code>usize</code> (pointer
-size)</li>
-<li>floating point: <code>f32</code>, <code>f64</code></li>
-<li><code>char</code> Unicode scalar values like <code>'a'</code>, <code>'α'</code> and <code>'∞'</code> (4 bytes each)</li>
-<li><code>bool</code> either <code>true</code> or <code>false</code></li>
-<li>and the unit type <code>()</code>, whose only possible value is an empty tuple: <code>()</code></li>
+<li>符号付き整数: <code>i8</code>、<code>i16</code>、<code>i32</code>、<code>i64</code>、<code>i128</code>、そして<code>isize</code> (ポインタサイズ)</li>
+<li>符号なし整数: <code>u8</code>、<code>u16</code>、<code>u32</code>、<code>u64</code>、<code>u128</code>、そして<code>usize</code> (ポインタサイズ)</li>
+<li>浮動小数点: <code>f32</code>, <code>f64</code></li>
+<li><code>char</code> Unicodeのスカラー値。例えば<code>'a'</code>、<code>'α'</code>、そして<code>'∞'</code> (それぞれ4バイト)</li>
+<li><code>bool</code> <code>true</code>または<code>false</code></li>
+<li>ユニット型。唯一の値が空タプル<code>()</code>。</li>
 </ul>
-<p>Despite the value of a unit type being a tuple, it is not considered a
-compound type because it does not contain multiple values. </p>
-<h3><a class="header" href="#compound-types" id="compound-types">Compound Types</a></h3>
+<p>ユニット型はタプルですが、複数の値を含むことができないため、
+複合型ではありません。</p>
+<h3><a class="header" href="#複合型" id="複合型">複合型</a></h3>
 <ul>
-<li>arrays like <code>[1, 2, 3]</code></li>
-<li>tuples like <code>(1, true)</code></li>
+<li><code>[1, 2, 3]</code>のような配列</li>
+<li><code>(1, true)</code>のようなタプル</li>
 </ul>
-<p>Variables can always be <em>type annotated</em>. Numbers may additionally be
-annotated via a <em>suffix</em> or <em>by default</em>. Integers default to <code>i32</code> and
-floats to <code>f64</code>. Note that Rust can also infer types from context.</p>
+<p>変数は常に<em>型指定</em>可能です。数値型は更に<em>サフィックス</em>の指定が可能で、
+指定しない場合はデフォルトになります。整数値のデフォルトは<code>i32</code>で、
+浮動小数点数は<code>f64</code>です。Rustはさらに文脈から型推論ができることに注意
+してください。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
-    // Variables can be type annotated.
+    // 変数には型の注釈が付けられます。
     let logical: bool = true;
 
-    let a_float: f64 = 1.0;  // Regular annotation
-    let an_integer   = 5i32; // Suffix annotation
+    let a_float: f64 = 1.0;  // ふつうの注釈
+    let an_integer   = 5i32; // サフィックスで注釈
 
-    // Or a default will be used.
+    // デフォルトを選択することもできます。
     let default_float   = 3.0; // `f64`
     let default_integer = 7;   // `i32`
     
-    // A type can also be inferred from context 
-    let mut inferred_type = 12; // Type i64 is inferred from another line
+    //  文脈から型推論する
+    let mut inferred_type = 12; // 他の行からi64であると推論する。
     inferred_type = 4294967296i64;
     
-    // A mutable variable's value can be changed.
-    let mut mutable = 12; // Mutable `i32`
+    // 可変な変数は変更できます。
+    let mut mutable = 12; // 可変な`i32`
     mutable = 21;
     
-    // Error! The type of a variable can't be changed.
+    // エラーします! 変数の型は変更できません。
     mutable = true;
     
-    // Variables can be overwritten with shadowing.
+    // 変数はシャドーイングで上書きできます。
     let mutable = true;
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/">the <code>std</code> library</a>, <a href="variable_bindings/mut.html"><code>mut</code></a>, <a href="types/inference.html">inference</a>, and <a href="variable_bindings/scope.html">shadowing</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="https://doc.rust-lang.org/std/"><code>std</code>ライブラリ</a>、<a href="variable_bindings/mut.html"><code>mut</code></a>、[推論]、そして[シャドーイング]</p>
 
                     </main>
 

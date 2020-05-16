@@ -147,12 +147,11 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#tuples" id="tuples">Tuples</a></h1>
-<p>A tuple is a collection of values of different types. Tuples are constructed
-using parentheses <code>()</code>, and each tuple itself is a value with type signature
-<code>(T1, T2, ...)</code>, where <code>T1</code>, <code>T2</code> are the types of its members. Functions can
-use tuples to return multiple values, as tuples can hold any number of values.</p>
-<pre><pre class="playpen"><code class="language-rust editable">// Tuples can be used as function arguments and as return values
+                        <h1><a class="header" href="#タプル" id="タプル">タプル</a></h1>
+<p>タプルは異なる型の値の集合です。タプルは<code>()</code>を使って表し、タプル自身の型は
+<code>T1</code>、<code>T2</code>をメンバーの型だとして<code>(T1, T2, ...)</code>のように表します。タプルに
+大きさの制限がないので、関数で複数の値を返すのにタプルが使われています。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// タプルは、関数の引数や、返り値としても使えます。
 fn reverse(pair: (i32, bool)) -&gt; (bool, i32) {
     // `let` can be used to bind the members of a tuple to variables
     let (integer, boolean) = pair;
@@ -160,43 +159,43 @@ fn reverse(pair: (i32, bool)) -&gt; (bool, i32) {
     (boolean, integer)
 }
 
-// The following struct is for the activity.
+// これは演習のための構造体です。
 #[derive(Debug)]
 struct Matrix(f32, f32, f32, f32);
 
 fn main() {
-    // A tuple with a bunch of different types
+    // 複数の異なる型の値を束ねたタプル
     let long_tuple = (1u8, 2u16, 3u32, 4u64,
                       -1i8, -2i16, -3i32, -4i64,
                       0.1f32, 0.2f64,
                       'a', true);
 
-    // Values can be extracted from the tuple using tuple indexing
+    // タプルのインデックスを利用して、値を取り出すことができます。
     println!(&quot;long tuple first value: {}&quot;, long_tuple.0);
     println!(&quot;long tuple second value: {}&quot;, long_tuple.1);
 
-    // Tuples can be tuple members
+    // タプルはタプルのメンバーになれます。
     let tuple_of_tuples = ((1u8, 2u16, 2u32), (4u64, -1i8), -2i16);
 
-    // Tuples are printable
+    // タプルは出力できます。
     println!(&quot;tuple of tuples: {:?}&quot;, tuple_of_tuples);
     
-    // But long Tuples cannot be printed
+    // ただし、長いタプルは出力できません。
     // let too_long_tuple = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
     // println!(&quot;too long tuple: {:?}&quot;, too_long_tuple);
-    // TODO ^ Uncomment the above 2 lines to see the compiler error
+    // TODO ^ コンパイラのエラーを確認するために上の2行をアンコメントしてください。
 
     let pair = (1, true);
     println!(&quot;pair is {:?}&quot;, pair);
 
     println!(&quot;the reversed pair is {:?}&quot;, reverse(pair));
 
-    // To create one element tuples, the comma is required to tell them apart
-    // from a literal surrounded by parentheses
-    println!(&quot;one element tuple: {:?}&quot;, (5u32,));
-    println!(&quot;just an integer: {:?}&quot;, (5u32));
+    // 一つしか要素がないタプルは、リテラルを括弧で囲ったものと
+    // 区別するため、コンマが必要です。
+    println!(&quot;one element tuple: {:?}&quot;, (5u32,)); // 要素1つのタプル: {:?}
+    println!(&quot;just an integer: {:?}&quot;, (5u32)); // ただの整数: {:?}
 
-    //tuples can be destructured to create bindings
+    //タプルを分解してそれぞれを別の変数に束縛する。
     let tuple = (1, &quot;hello&quot;, 4.5, true);
 
     let (a, b, c, d) = tuple;
@@ -207,25 +206,25 @@ fn main() {
 
 }
 </code></pre></pre>
-<h3><a class="header" href="#activity" id="activity">Activity</a></h3>
+<h3><a class="header" href="#演習" id="演習">演習</a></h3>
 <ol>
 <li>
-<p><em>Recap</em>: Add the <code>fmt::Display</code> trait to the Matrix <code>struct</code> in the above example,
-so that if you switch from printing the debug format <code>{:?}</code> to the display
-format <code>{}</code>, you see the following output:</p>
+<p><em>復習</em>: <code>fmt::Display</code>トレイトを上の例のMatrix構造体に実装し、
+デバッグフォーマット<code>{:?}</code>をディスプレイフォーマット<code>{}</code>に変えたときに
+以下のように表示されるようにしてください。</p>
 <pre><code class="language-text">( 1.1 1.2 )
 ( 2.1 2.2 )
 </code></pre>
-<p>You may want to refer back to the example for <a href="../hello/print/print_display.html">print display</a>.</p>
+<p><a href="../hello/print/print_display.html">ディスプレイ</a>の例に戻る必要があるかもしれません。</p>
 </li>
 <li>
-<p>Add a <code>transpose</code> function using the <code>reverse</code> function as a template, which
-accepts a matrix as an argument, and returns a matrix in which two elements
-have been swapped. For example:</p>
+<p><code>reverse</code>関数をテンプレートとして、下のように、引数として
+Matrixを受け取り、2つの要素を交換したMatrixを返す関数<code>transpose</code>を追加
+してください。</p>
 <pre><code class="language-rust ignore">println!(&quot;Matrix:\n{}&quot;, matrix);
 println!(&quot;Transpose:\n{}&quot;, transpose(matrix));
 </code></pre>
-<p>results in the output:</p>
+<p>出力結果:</p>
 <pre><code class="language-text">Matrix:
 ( 1.1 1.2 )
 ( 2.1 2.2 )
