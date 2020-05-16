@@ -1,53 +1,53 @@
-# Testcase: List
+# テストケース: リスト
 
-Implementing `fmt::Display` for a structure where the elements must each be
-handled sequentially is tricky. The problem is that each `write!` generates a
-`fmt::Result`. Proper handling of this requires dealing with *all* the
-results. Rust provides the `?` operator for exactly this purpose.
+要素が順番に処理されていくような構造体に対して`fmt::Display`を実装するのは
+トリッキーです。なぜなら、それぞれの`write!`が`fmt::Result`を返すからです。
+適切に処理するには*すべての*Resultに対して処理を行わなければいけません。
+Rust はこのような目的のために`?`演算子を用意しています。
 
-Using `?` on `write!` looks like this:
+次のように`?`を`write!`に対して使えます。
 
 ```rust,ignore
-// Try `write!` to see if it errors. If it errors, return
-// the error. Otherwise continue.
+// `write!`を実行し、エラーが出た場合はerrorを返し、
+// そうでなければ処理を続行する。
 write!(f, "{}", value)?;
 ```
 
-Alternatively, you can also use the `try!` macro, which works the same way. 
-This is a bit more verbose and no longer recommended, but you may still see it in
-older Rust code. Using `try!` looks like this:
+もう1つ、同じように動く`try!`マクロを使うこともできます。
+これは少し冗長であり、もはや推奨されていませんが、古い
+Rustのコードを読むときは。このように`try!`を使っています。
 
 ```rust,ignore
 try!(write!(f, "{}", value));
 ```
 
-With `?` available, implementing `fmt::Display` for a `Vec` is
-straightforward:
+`?`を使うことができれば、`fmt::Display`を`Vec`に実装する
+のはより簡単です。
 
 ```rust,editable
-use std::fmt; // Import the `fmt` module.
+use std::fmt; // `fmt`モジュールをインポートする。
 
-// Define a structure named `List` containing a `Vec`.
+// `vec`を含む構造体`List`を実装する。
 struct List(Vec<i32>);
 
 impl fmt::Display for List {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        // Extract the value using tuple indexing,
-        // and create a reference to `vec`.
+        // タプルインデックスで要素を展開し。
+        // `vec`という参照を作る。
         let vec = &self.0;
 
         write!(f, "[")?;
 
-        // Iterate over `v` in `vec` while enumerating the iteration
-        // count in `count`.
+        // `v`で`vec`を反復し、enumerateで
+        // `count`にカウントを取得する。
         for (count, v) in vec.iter().enumerate() {
-            // For every element except the first, add a comma.
-            // Use the ? operator, or try!, to return on errors.
+            // 最初の要素以外、全ての要素の前にコンマをつける。
+            // ?演算子かtry!を使って、エラーのときにそれを返す。
             if count != 0 { write!(f, ", ")?; }
             write!(f, "{}", v)?;
         }
 
-        // Close the opened bracket and return a fmt::Result value.
+        // 開いた括弧を閉じ、fmt::Resultを返す。
         write!(f, "]")
     }
 }
@@ -58,15 +58,16 @@ fn main() {
 }
 ```
 
-### Activity
+### 演習
 
-Try changing the program so that the index of each element in the vector is also printed. The new output should look like this:
+ベクタのインデックスも表示するようにプログラムを変更しましょう。
+新しい出力は以下のようになるはずです。
 
 ```rust,ignore
 [0: 1, 1: 2, 2: 3]
 ```
 
-### See also:
+### こちらも参照:
 
 [`for`][for], [`ref`][ref], [`Result`][result], [`struct`][struct],
 [`?`][q_mark], and [`vec!`][vec]

@@ -1,51 +1,50 @@
-# Comments
+# コメント
 
-Any program requires comments, and Rust supports
-a few different varieties:
+どんなプログラムもコメントを必要とします。Rustはいくつかの形
+をサポートしています。
 
-* *Regular comments* which are ignored by the compiler:
-   * `// Line comments which go to the end of the line.`
-   * `/* Block comments which go to the closing delimiter. */`
-* *Doc comments* which are parsed into HTML library
-  [documentation][docs]:
-   * `/// Generate library docs for the following item.`
-   * `//! Generate library docs for the enclosing item.`
+* コンパイラに無視される*普通のコメント*
+   * `// 行の終わりまで続く行コメント。`
+   * `/* コメントを終了するデリミタまで続くブロックコメント */`
+* HTMLライブラリに解析される*Docコメント*
+  [ドキュメント][docs]:
+   * `/// 下の要素のライブラリドキュメントを生成する。`
+   * `//! //!で囲った要素のライブラリドキュメントを生成する。`
 
 ```rust,editable
 fn main() {
-    // This is an example of a line comment
-    // There are two slashes at the beginning of the line
-    // And nothing written inside these will be read by the compiler
+    // これは行コメントの例です。
+    // 行頭に2つのスラッシュがあります。
+    // この中のものはすべてコンパイラに読まれません。
 
     // println!("Hello, world!");
 
-    // Run it. See? Now try deleting the two slashes, and run it again.
+    // これを実行してみてください。わかりましたか? 次に2つのスラッシュを消して、もう1度実行してください。
 
     /* 
-     * This is another type of comment, a block comment. In general,
-     * line comments are the recommended comment style. But
-     * block comments are extremely useful for temporarily disabling
-     * chunks of code. /* Block comments can be /* nested, */ */
-     * so it takes only a few keystrokes to comment out everything
-     * in this main() function. /*/*/* Try it yourself! */*/*/
+     * これはもう1つのタイプのコメント、ブロックコメントです。通常、
+     * 行コメントが推奨されます。しかし、ブロックコメントはある部分のコードを
+     * 無効化するのに有用です。/* ブロックコメントは /* ネストできます。 */ */
+     * なので少しのキーストロークで main()関数をすべてコメントアウトできます。
+     * /*/*/* 試してみてください! */*/*/
      */
 
     /*
-    Note: The previous column of `*` was entirely for style. There's
-    no actual need for it.
+    注意: 前の行の`*`は完全にスタイルのためのものです。本当は
+    必要ありません。
     */
 
-    // You can manipulate expressions more easily with block comments
-    // than with line comments. Try deleting the comment delimiters
-    // to change the result:
+    // ブロックコメントで、行コメントよりも簡単に式を
+    // 操ることができます。 コメントデリミタを削除して
+    // 結果を変えてみてください。
     let x = 5 + /* 90 + */ 5;
     println!("Is `x` 10 or 100? x = {}", x);
 }
 
 ```
 
-### See also:
+### こちらも参照:
 
-[Library documentation][docs]
+[ライブラリドキュメント][docs]
 
 [docs]: ../meta/doc.md

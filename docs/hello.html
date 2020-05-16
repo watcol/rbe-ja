@@ -148,35 +148,33 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#hello-world" id="hello-world">Hello World</a></h1>
-<p>This is the source code of the traditional Hello World program.</p>
-<pre><pre class="playpen"><code class="language-rust editable">// This is a comment, and is ignored by the compiler
-// You can test this code by clicking the &quot;Run&quot; button over there -&gt;
-// or if you prefer to use your keyboard, you can use the &quot;Ctrl + Enter&quot; shortcut
+<p>こちらが伝統的な「Hello World」プログラムのソースコードです。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// これはコメントで、コンパイラに無視されます。
+// ここにある&quot;Run&quot;ボタンをクリックするとコードをテストできます -&gt;
+// キーボードを使いたければ、&quot;Ctrl + Enter&quot;ショートカットを使うことができます
 
-// This code is editable, feel free to hack it!
-// You can always return to the original code by clicking the &quot;Reset&quot; button -&gt;
+// このコードは編集できます。自由にハックしてください!
+// &quot;Reset&quot;ボタンをクリックするといつでも元のコードに戻すことができます -&gt;
 
-// This is the main function
+// これがmain関数です
 fn main() {
-    // Statements here are executed when the compiled binary is called
+    // ここにある式はバイナリが呼び出されたときに実行されます。
 
-    // Print text to the console
+    // テキストをコンソールに出力します
     println!(&quot;Hello World!&quot;);
 }
 </code></pre></pre>
-<p><code>println!</code> is a <a href="macros.html"><em>macro</em></a> that prints text to the
-console.</p>
-<p>A binary can be generated using the Rust compiler: <code>rustc</code>.</p>
+<p><code>println!</code>はテキストをコンソールに出力する<a href="macros.html"><em>マクロ</em></a>です。</p>
+<p>Rustのコンパイラ<code>rustc</code>を使うことでバイナリを生成できます。</p>
 <pre><code class="language-bash">$ rustc hello.rs
 </code></pre>
-<p><code>rustc</code> will produce a <code>hello</code> binary that can be executed.</p>
+<p><code>rustc</code>は<code>hello</code>実行可能バイナリを出力します。</p>
 <pre><code class="language-bash">$ ./hello
 Hello World!
 </code></pre>
-<h3><a class="header" href="#activity" id="activity">Activity</a></h3>
-<p>Click 'Run' above to see the expected output. Next, add a new
-line with a second <code>println!</code> macro so that the output
-shows:</p>
+<h3><a class="header" href="#演習" id="演習">演習</a></h3>
+<p>'Run'で出力を確認してください. 次に, このように出力する
+、2つ目の<code>println!</code>マクロを使った行を追加してください。</p>
 <pre><code class="language-text">Hello World!
 I'm a Rustacean!
 </code></pre>

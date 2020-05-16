@@ -147,46 +147,46 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#testcase-list" id="testcase-list">Testcase: List</a></h1>
-<p>Implementing <code>fmt::Display</code> for a structure where the elements must each be
-handled sequentially is tricky. The problem is that each <code>write!</code> generates a
-<code>fmt::Result</code>. Proper handling of this requires dealing with <em>all</em> the
-results. Rust provides the <code>?</code> operator for exactly this purpose.</p>
-<p>Using <code>?</code> on <code>write!</code> looks like this:</p>
-<pre><code class="language-rust ignore">// Try `write!` to see if it errors. If it errors, return
-// the error. Otherwise continue.
+                        <h1><a class="header" href="#テストケース-リスト" id="テストケース-リスト">テストケース: リスト</a></h1>
+<p>要素が順番に処理されていくような構造体に対して<code>fmt::Display</code>を実装するのは
+トリッキーです。なぜなら、それぞれの<code>write!</code>が<code>fmt::Result</code>を返すからです。
+適切に処理するには<em>すべての</em>Resultに対して処理を行わなければいけません。
+Rust はこのような目的のために<code>?</code>演算子を用意しています。</p>
+<p>次のように<code>?</code>を<code>write!</code>に対して使えます。</p>
+<pre><code class="language-rust ignore">// `write!`を実行し、エラーが出た場合はerrorを返し、
+// そうでなければ処理を続行する。
 write!(f, &quot;{}&quot;, value)?;
 </code></pre>
-<p>Alternatively, you can also use the <code>try!</code> macro, which works the same way. 
-This is a bit more verbose and no longer recommended, but you may still see it in
-older Rust code. Using <code>try!</code> looks like this:</p>
+<p>もう1つ、同じように動く<code>try!</code>マクロを使うこともできます。
+これは少し冗長であり、もはや推奨されていませんが、古い
+Rustのコードを読むときは。このように<code>try!</code>を使っています。</p>
 <pre><code class="language-rust ignore">try!(write!(f, &quot;{}&quot;, value));
 </code></pre>
-<p>With <code>?</code> available, implementing <code>fmt::Display</code> for a <code>Vec</code> is
-straightforward:</p>
-<pre><pre class="playpen"><code class="language-rust editable">use std::fmt; // Import the `fmt` module.
+<p><code>?</code>を使うことができれば、<code>fmt::Display</code>を<code>Vec</code>に実装する
+のはより簡単です。</p>
+<pre><pre class="playpen"><code class="language-rust editable">use std::fmt; // `fmt`モジュールをインポートする。
 
-// Define a structure named `List` containing a `Vec`.
+// `vec`を含む構造体`List`を実装する。
 struct List(Vec&lt;i32&gt;);
 
 impl fmt::Display for List {
     fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
-        // Extract the value using tuple indexing,
-        // and create a reference to `vec`.
+        // タプルインデックスで要素を展開し。
+        // `vec`という参照を作る。
         let vec = &amp;self.0;
 
         write!(f, &quot;[&quot;)?;
 
-        // Iterate over `v` in `vec` while enumerating the iteration
-        // count in `count`.
+        // `v`で`vec`を反復し、enumerateで
+        // `count`にカウントを取得する。
         for (count, v) in vec.iter().enumerate() {
-            // For every element except the first, add a comma.
-            // Use the ? operator, or try!, to return on errors.
+            // 最初の要素以外、全ての要素の前にコンマをつける。
+            // ?演算子かtry!を使って、エラーのときにそれを返す。
             if count != 0 { write!(f, &quot;, &quot;)?; }
             write!(f, &quot;{}&quot;, v)?;
         }
 
-        // Close the opened bracket and return a fmt::Result value.
+        // 開いた括弧を閉じ、fmt::Resultを返す。
         write!(f, &quot;]&quot;)
     }
 }
@@ -196,11 +196,12 @@ fn main() {
     println!(&quot;{}&quot;, v);
 }
 </code></pre></pre>
-<h3><a class="header" href="#activity" id="activity">Activity</a></h3>
-<p>Try changing the program so that the index of each element in the vector is also printed. The new output should look like this:</p>
+<h3><a class="header" href="#演習" id="演習">演習</a></h3>
+<p>ベクタのインデックスも表示するようにプログラムを変更しましょう。
+新しい出力は以下のようになるはずです。</p>
 <pre><code class="language-rust ignore">[0: 1, 1: 2, 2: 3]
 </code></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
 <p><a href="../../../flow_control/for.html"><code>for</code></a>, <a href="../../../scope/borrow/ref.html"><code>ref</code></a>, <a href="../../../std/result.html"><code>Result</code></a>, <a href="../../../custom_types/structs.html"><code>struct</code></a>,
 <a href="../../../std/result/question_mark.html"><code>?</code></a>, and <a href="../../../std/vec.html"><code>vec!</code></a></p>
 

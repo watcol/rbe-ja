@@ -147,56 +147,55 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#debug" id="debug">Debug</a></h1>
-<p>All types which want to use <code>std::fmt</code> formatting <code>traits</code> require an
-implementation to be printable. Automatic implementations are only provided
-for types such as in the <code>std</code> library. All others <em>must</em> be manually
-implemented somehow.</p>
-<p>The <code>fmt::Debug</code> <code>trait</code> makes this very straightforward. <em>All</em> types can
-<code>derive</code> (automatically create) the <code>fmt::Debug</code> implementation. This is
-not true for <code>fmt::Display</code> which must be manually implemented.</p>
+                        <h1><a class="header" href="#デバッグ" id="デバッグ">デバッグ</a></h1>
+<p><code>std::fmt</code>のフォーマット用の<code>トレイト</code>を使用したい型は、すべてプリント可能
+なように実装されている必要があります。<code>std</code>ライブラリにあるような型にしか
+実装は提供されていません。他は手動で実装<em>しなければいけません</em>。</p>
+<p><code>fmt::Debug</code>という<code>トレイト</code>でこれを簡略化できます。<em>すべての</em>型は
+<code>fmt::Debug</code>の実装を<code>derive</code>(自動で作成)できるからです。ただし、
+<code>fmt::Display</code>の場合は手動で実装しなければいけません。</p>
 <pre><pre class="playpen"><code class="language-rust">
 <span class="boring">#![allow(unused_variables)]
 </span><span class="boring">fn main() {
-</span>// This structure cannot be printed either with `fmt::Display` or
-// with `fmt::Debug`.
+</span>// この構造体は`fmt::Display`でも
+// `fmt::Debug`でもプリントできません。
 struct UnPrintable(i32);
 
-// The `derive` attribute automatically creates the implementation
-// required to make this `struct` printable with `fmt::Debug`.
+// `derive`属性は、自動的にこの`struct`を`fmt::Debug`で
+// プリントできるように実装を作成します。
 #[derive(Debug)]
 struct DebugPrintable(i32);
 <span class="boring">}
 </span></code></pre></pre>
-<p>All <code>std</code> library types automatically are printable with <code>{:?}</code> too:</p>
-<pre><pre class="playpen"><code class="language-rust editable">// Derive the `fmt::Debug` implementation for `Structure`. `Structure`
-// is a structure which contains a single `i32`.
+<p>すべての<code>std</code>ライブラリの型も自動的に<code>{:?}</code>でプリントできます。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// `fmt::Debug`の実装を`Structure`にderiveする. `Structure`
+// は一つの`i32`をメンバに持っています。
 #[derive(Debug)]
 struct Structure(i32);
 
-// Put a `Structure` inside of the structure `Deep`. Make it printable
-// also.
+// `Structure`を中に持つ構造体`Deep`を作る。 これもプリント可能
+// にする。
 #[derive(Debug)]
 struct Deep(Structure);
 
 fn main() {
-    // Printing with `{:?}` is similar to with `{}`.
+    // `{:?}`は`{}`と似たようなものです。
     println!(&quot;{:?} months in a year.&quot;, 12);
     println!(&quot;{1:?} {0:?} is the {actor:?} name.&quot;,
              &quot;Slater&quot;,
              &quot;Christian&quot;,
              actor=&quot;actor's&quot;);
 
-    // `Structure` is printable!
+    // `Structure`はプリントできます!
     println!(&quot;Now {:?} will print!&quot;, Structure(3));
     
-    // The problem with `derive` is there is no control over how
-    // the results look. What if I want this to just show a `7`?
+    // `derive`の問題点は、結果の見た目を制御できない点です。
+    // 出力を`7`だけにするにはどうすればよいでしょう?
     println!(&quot;Now {:?} will print!&quot;, Deep(Structure(7)));
 }
 </code></pre></pre>
-<p>So <code>fmt::Debug</code> definitely makes this printable but sacrifices some
-elegance. Rust also provides &quot;pretty printing&quot; with <code>{:#?}</code>.</p>
+<p><code>fmt::Debug</code>は確実にプリントを可能にしてくれるのですが、ある意味で美しさを
+犠牲にしています。Rustは<code>{:#?}</code>による「美しいプリント」も提供しています。</p>
 <pre><pre class="playpen"><code class="language-rust editable">#[derive(Debug)]
 struct Person&lt;'a&gt; {
     name: &amp;'a str,
@@ -208,14 +207,14 @@ fn main() {
     let age = 27;
     let peter = Person { name, age };
 
-    // Pretty print
+    // 美しいプリント
     println!(&quot;{:#?}&quot;, peter);
 }
 </code></pre></pre>
-<p>One can manually implement <code>fmt::Display</code> to control the display.</p>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/reference/attributes.html">attributes</a>, <a href="../../trait/derive.html"><code>derive</code></a>, <a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>,
-and <a href="../../custom_types/structs.html"><code>struct</code></a></p>
+<p>出力をコントロールするために手動で<code>fmt::Display</code>を実装することもできます。</p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="https://doc.rust-lang.org/reference/attributes.html">属性</a>, <a href="../../trait/derive.html"><code>derive</code></a>, <a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>,
+そして<a href="../../custom_types/structs.html"><code>struct</code></a></p>
 
                     </main>
 

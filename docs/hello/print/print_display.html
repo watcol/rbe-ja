@@ -147,75 +147,74 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#display" id="display">Display</a></h1>
-<p><code>fmt::Debug</code> hardly looks compact and clean, so it is often advantageous to
-customize the output appearance. This is done by manually implementing
-<a href="https://doc.rust-lang.org/std/fmt/"><code>fmt::Display</code></a>, which uses the <code>{}</code> print marker. Implementing it
-looks like this:</p>
+                        <h1><a class="header" href="#ディスプレイ" id="ディスプレイ">ディスプレイ</a></h1>
+<p><code>fmt::Debug</code>はコンパクトでもきれいでもありません。なので、たいていの場合は
+出力をカスタマイズするのが好ましいでしょう。これは<code>{}</code>プリントマーカーを使う
+<a href="https://doc.rust-lang.org/std/fmt/"><code>fmt::Display</code></a>を手動で実装することで可能です。次のように実装できます。</p>
 <pre><pre class="playpen"><code class="language-rust">
 <span class="boring">#![allow(unused_variables)]
 </span><span class="boring">fn main() {
-</span>// Import (via `use`) the `fmt` module to make it available.
+</span>// (`use`で) `fmt`モジュールをインポートすることで利用可能にします。
 use std::fmt;
 
-// Define a structure for which `fmt::Display` will be implemented. This is
-// a tuple struct named `Structure` that contains an `i32`.
+// を`fmt::Display`実装する構造体を定義します。これは`i32`を含む
+// `Structure`というタプル構造体です。
 struct Structure(i32);
 
-// To use the `{}` marker, the trait `fmt::Display` must be implemented
-// manually for the type.
+// `{}`マーカーを使用するには、その型のための`fmt::Display`トレイトが手動で
+// 実装されている必要があります。
 impl fmt::Display for Structure {
-    // This trait requires `fmt` with this exact signature.
+    // このトレイとは`fmt`が想定通りのものであることを要求します。
     fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
-        // Write strictly the first element into the supplied output
-        // stream: `f`. Returns `fmt::Result` which indicates whether the
-        // operation succeeded or failed. Note that `write!` uses syntax which
-        // is very similar to `println!`.
+        // 必ず最初の要素が出力されるようにします。
+        // `f`ストリームはオペレーションが成功したがどうかを表す`fmt::Result`
+        // を返します。`write!`は`println!`にとても良く似た構文を持っていることに
+        // 注目してください。
         write!(f, &quot;{}&quot;, self.0)
     }
 }
 <span class="boring">}
 </span></code></pre></pre>
-<p><code>fmt::Display</code> may be cleaner than <code>fmt::Debug</code> but this presents
-a problem for the <code>std</code> library. How should ambiguous types be displayed?
-For example, if the <code>std</code> library implemented a single style for all
-<code>Vec&lt;T&gt;</code>, what style should it be? Would it be either of these two?</p>
+<p><code>fmt::Display</code>は<code>fmt::Debug</code>よりも簡潔に見えますが、<code>std</code>ライブラリでは
+問題が生じます。曖昧な型ではどのように表示すればよいでしょうか?
+例えば、<code>std</code> ライブラリがすべての<code>Vec&lt;T&gt;</code>に対して同じスタイルを提供する
+とすれば、どのスタイルにすれば良いでしょう? 以下のどちらを選べばよいでしょうか?</p>
 <ul>
-<li><code>Vec&lt;path&gt;</code>: <code>/:/etc:/home/username:/bin</code> (split on <code>:</code>)</li>
-<li><code>Vec&lt;number&gt;</code>: <code>1,2,3</code> (split on <code>,</code>)</li>
+<li><code>Vec&lt;path&gt;</code>: <code>/:/etc:/home/username:/bin</code> (<code>:</code>で分割)</li>
+<li><code>Vec&lt;number&gt;</code>: <code>1,2,3</code> (<code>,</code>で分割)</li>
 </ul>
-<p>No, because there is no ideal style for all types and the <code>std</code> library
-doesn't presume to dictate one. <code>fmt::Display</code> is not implemented for <code>Vec&lt;T&gt;</code>
-or for any other generic containers. <code>fmt::Debug</code> must then be used for these
-generic cases.</p>
-<p>This is not a problem though because for any new <em>container</em> type which is
-<em>not</em> generic,<code>fmt::Display</code> can be implemented.</p>
-<pre><pre class="playpen"><code class="language-rust editable">use std::fmt; // Import `fmt`
+<p>どちらも正解ではありません。あらゆる方に対して理想的なスタイルは存在しませんし、
+<code>std</code>ライブラリがそれを提供しているわけではありません。<code>fmt::Display</code>は<code>Vec&lt;T&gt;</code>
+などのジェネリックなコンテナには定義していません。このような場合は<code>fmt::Debug</code>
+<code>fmt::Debug</code>を使用するべきです。</p>
+<p>ジェネリックで<em>ない</em>ような<em>コンテナ</em>型ではこのような問題は生じませんので、
+<code>fmt::Display</code>を実装できます。</p>
+<pre><pre class="playpen"><code class="language-rust editable">use std::fmt; // `fmt`をインポート
 
-// A structure holding two numbers. `Debug` will be derived so the results can
-// be contrasted with `Display`.
+// 構造体は2つの値を持っています。出力を`Display`と比較するために
+// `Debug`をderiveしています。
 #[derive(Debug)]
 struct MinMax(i64, i64);
 
-// Implement `Display` for `MinMax`.
+// `Display`を`MinMax`に実装する。
 impl fmt::Display for MinMax {
     fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
-        // Use `self.number` to refer to each positional data point.
+        // `self.数字`でそれぞれの位置のデータを参照できます。
         write!(f, &quot;({}, {})&quot;, self.0, self.1)
     }
 }
 
-// Define a structure where the fields are nameable for comparison.
+// 比較のため、フィールド上の点に名前をつける構造体を定義しましょう。
 #[derive(Debug)]
 struct Point2D {
     x: f64,
     y: f64,
 }
 
-// Similarly, implement `Display` for `Point2D`
+// `Display`を`Point2D`にも実装しましょう
 impl fmt::Display for Point2D {
     fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
-        // Customize so only `x` and `y` are denoted.
+        // `x`と`y`のみが明示的になるようにカスタマイズ。
         write!(f, &quot;x: {}, y: {}&quot;, self.x, self.y)
     }
 }
@@ -240,25 +239,23 @@ fn main() {
     println!(&quot;Display: {}&quot;, point);
     println!(&quot;Debug: {:?}&quot;, point);
 
-    // Error. Both `Debug` and `Display` were implemented, but `{:b}`
-    // requires `fmt::Binary` to be implemented. This will not work.
+    // `Debug`と`Display`は実装されていますが、`{:b}`は、`fmt::Binary`
+    // が実装されていないと使えないので、この例はエラーになります。
     // println!(&quot;What does Point2D look like in binary: {:b}?&quot;, point);
 }
 </code></pre></pre>
-<p>So, <code>fmt::Display</code> has been implemented but <code>fmt::Binary</code> has not, and
-therefore cannot be used. <code>std::fmt</code> has many such <a href="../../trait.html"><code>traits</code></a> and
-each requires its own implementation. This is detailed further in
-<a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>.</p>
-<h3><a class="header" href="#activity" id="activity">Activity</a></h3>
-<p>After checking the output of the above example, use the <code>Point2D</code> struct as a
-guide to add a Complex struct to the example. When printed in the same
-way, the output should be:</p>
+<p><code>fmt::Display</code>は実装されていますが、<code>fmt::Binary</code> されていないので、
+使うことができません。<code>std::fmt</code>は多くのこのような<a href="../../trait.html"><code>トレイト</code></a>があり、
+それぞれに独自の実装が必要です。詳細は<a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>を参照してください。</p>
+<h3><a class="header" href="#演習" id="演習">演習</a></h3>
+<p>上の例の出力を確認して、<code>Point2D</code>構造体を参考にして、例として複素数構造体を定義
+しましょう. うまくいけば、次のように出力されます。</p>
 <pre><code class="language-txt">Display: 3.3 + 7.2i
 Debug: Complex { real: 3.3, imag: 7.2 }
 </code></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../../trait/derive.html"><code>derive</code></a>, <a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>, <a href="../../macros.html">macros</a>, <a href="../../custom_types/structs.html"><code>struct</code></a>,
-<a href="../../trait.html"><code>trait</code></a>, and <a href="../../mod/use.html">use</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="../../trait/derive.html"><code>derive</code></a>, <a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a>, <a href="../../macros.html">マクロ</a>, <a href="../../custom_types/structs.html"><code>struct</code></a>,
+<a href="../../trait.html"><code>trait</code></a>, そして<a href="../../mod/use.html">use</a></p>
 
                     </main>
 

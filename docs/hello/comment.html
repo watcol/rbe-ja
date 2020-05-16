@@ -147,57 +147,56 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#comments" id="comments">Comments</a></h1>
-<p>Any program requires comments, and Rust supports
-a few different varieties:</p>
+                        <h1><a class="header" href="#コメント" id="コメント">コメント</a></h1>
+<p>どんなプログラムもコメントを必要とします。Rustはいくつかの形
+をサポートしています。</p>
 <ul>
-<li><em>Regular comments</em> which are ignored by the compiler:
+<li>コンパイラに無視される<em>普通のコメント</em>
 <ul>
-<li><code>// Line comments which go to the end of the line.</code></li>
-<li><code>/* Block comments which go to the closing delimiter. */</code></li>
+<li><code>// 行の終わりまで続く行コメント。</code></li>
+<li><code>/* コメントを終了するデリミタまで続くブロックコメント */</code></li>
 </ul>
 </li>
-<li><em>Doc comments</em> which are parsed into HTML library
-<a href="../meta/doc.html">documentation</a>:
+<li>HTMLライブラリに解析される<em>Docコメント</em>
+<a href="../meta/doc.html">ドキュメント</a>:
 <ul>
-<li><code>/// Generate library docs for the following item.</code></li>
-<li><code>//! Generate library docs for the enclosing item.</code></li>
+<li><code>/// 下の要素のライブラリドキュメントを生成する。</code></li>
+<li><code>//! //!で囲った要素のライブラリドキュメントを生成する。</code></li>
 </ul>
 </li>
 </ul>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // This is an example of a line comment
-    // There are two slashes at the beginning of the line
-    // And nothing written inside these will be read by the compiler
+    // これは行コメントの例です。
+    // 行頭に2つのスラッシュがあります。
+    // この中のものはすべてコンパイラに読まれません。
 
     // println!(&quot;Hello, world!&quot;);
 
-    // Run it. See? Now try deleting the two slashes, and run it again.
+    // これを実行してみてください。わかりましたか? 次に2つのスラッシュを消して、もう1度実行してください。
 
     /* 
-     * This is another type of comment, a block comment. In general,
-     * line comments are the recommended comment style. But
-     * block comments are extremely useful for temporarily disabling
-     * chunks of code. /* Block comments can be /* nested, */ */
-     * so it takes only a few keystrokes to comment out everything
-     * in this main() function. /*/*/* Try it yourself! */*/*/
+     * これはもう1つのタイプのコメント、ブロックコメントです。通常、
+     * 行コメントが推奨されます。しかし、ブロックコメントはある部分のコードを
+     * 無効化するのに有用です。/* ブロックコメントは /* ネストできます。 */ */
+     * なので少しのキーストロークで main()関数をすべてコメントアウトできます。
+     * /*/*/* 試してみてください! */*/*/
      */
 
     /*
-    Note: The previous column of `*` was entirely for style. There's
-    no actual need for it.
+    注意: 前の行の`*`は完全にスタイルのためのものです。本当は
+    必要ありません。
     */
 
-    // You can manipulate expressions more easily with block comments
-    // than with line comments. Try deleting the comment delimiters
-    // to change the result:
+    // ブロックコメントで、行コメントよりも簡単に式を
+    // 操ることができます。 コメントデリミタを削除して
+    // 結果を変えてみてください。
     let x = 5 + /* 90 + */ 5;
     println!(&quot;Is `x` 10 or 100? x = {}&quot;, x);
 }
 
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../meta/doc.html">Library documentation</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="../meta/doc.html">ライブラリドキュメント</a></p>
 
                     </main>
 

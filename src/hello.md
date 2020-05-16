@@ -1,45 +1,43 @@
 # Hello World
 
-This is the source code of the traditional Hello World program.
+こちらが伝統的な「Hello World」プログラムのソースコードです。
 
 ```rust,editable
-// This is a comment, and is ignored by the compiler
-// You can test this code by clicking the "Run" button over there ->
-// or if you prefer to use your keyboard, you can use the "Ctrl + Enter" shortcut
+// これはコメントで、コンパイラに無視されます。
+// ここにある"Run"ボタンをクリックするとコードをテストできます ->
+// キーボードを使いたければ、"Ctrl + Enter"ショートカットを使うことができます
 
-// This code is editable, feel free to hack it!
-// You can always return to the original code by clicking the "Reset" button ->
+// このコードは編集できます。自由にハックしてください!
+// "Reset"ボタンをクリックするといつでも元のコードに戻すことができます ->
 
-// This is the main function
+// これがmain関数です
 fn main() {
-    // Statements here are executed when the compiled binary is called
+    // ここにある式はバイナリが呼び出されたときに実行されます。
 
-    // Print text to the console
+    // テキストをコンソールに出力します
     println!("Hello World!");
 }
 ```
 
-`println!` is a [*macro*][macros] that prints text to the
-console.
+`println!`はテキストをコンソールに出力する[*マクロ*][macros]です。
 
-A binary can be generated using the Rust compiler: `rustc`.
+Rustのコンパイラ`rustc`を使うことでバイナリを生成できます。
 
 ```bash
 $ rustc hello.rs
 ```
 
-`rustc` will produce a `hello` binary that can be executed.
+`rustc`は`hello`実行可能バイナリを出力します。
 
 ```bash
 $ ./hello
 Hello World!
 ```
 
-### Activity
+### 演習
 
-Click 'Run' above to see the expected output. Next, add a new
-line with a second `println!` macro so that the output
-shows:
+'Run'で出力を確認してください. 次に, このように出力する
+、2つ目の`println!`マクロを使った行を追加してください。
 
 ```text
 Hello World!

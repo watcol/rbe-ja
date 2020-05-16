@@ -1,18 +1,18 @@
-# Formatting
+# フォーマット
 
-We've seen that formatting is specified via a *format string*:
+文字列がどのようにフォーマットされるかは*フォーマット文字列*によって決まります。
 
 * `format!("{}", foo)` -> `"3735928559"`
 * `format!("0x{:X}", foo)` ->
   [`"0xDEADBEEF"`][deadbeef]
 * `format!("0o{:o}", foo)` -> `"0o33653337357"`
 
-The same variable (`foo`) can be formatted differently depending on which
-*argument type* is used: `X` vs `o` vs *unspecified*.
+同じ変数(`foo`)が`X`、`o`、*指定なし*のような様々な引数タイプ
+によってフォーマットされます。
 
-This formatting functionality is implemented via traits, and there is one trait
-for each argument type. The most common formatting trait is `Display`, which
-handles cases where the argument type is left unspecified: `{}` for instance.
+これらのフォーマットはそれぞれの引数タイプに応じたトレイトによって定義されています。
+最も一般的なトレイとは`Display`で、これは引数タイプが未指定(例えば`{}`)のときに
+呼び出されます。
 
 ```rust,editable
 use std::fmt::{self, Formatter, Display};
@@ -26,13 +26,13 @@ struct City {
 }
 
 impl Display for City {
-    // `f` is a buffer, and this method must write the formatted string into it
+    // `f`はバッファで、ここにフォーマットした結果を書き込む必要があります。
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         let lat_c = if self.lat >= 0.0 { 'N' } else { 'S' };
         let lon_c = if self.lon >= 0.0 { 'E' } else { 'W' };
 
-        // `write!` is like `format!`, but it will write the formatted string
-        // into a buffer (the first argument)
+        // `write!`は`format!`のようなものですが、これはフォーマットされた文字列を
+        // 第1引数に指定されたバッファに書き込みます。
         write!(f, "{}: {:.3}°{} {:.3}°{}",
                self.name, self.lat.abs(), lat_c, self.lon.abs(), lon_c)
     }
@@ -58,19 +58,19 @@ fn main() {
         Color { red: 0, green: 3, blue: 254 },
         Color { red: 0, green: 0, blue: 0 },
     ].iter() {
-        // Switch this to use {} once you've added an implementation
-        // for fmt::Display.
+        // fmt::Displayに実装を追加したら、そちらを使うように変更
+        // してください。
         println!("{:?}", *color);
     }
 }
 ```
 
-You can view a [full list of formatting traits][fmt_traits] and their argument
-types in the [`std::fmt`][fmt] documentation.
+[フォーマット用のトレイト一覧][fmt_traits]とその引数タイプ[`std::fmt`][fmt]
+をドキュメントで確認できます。
 
-### Activity
-Add an implementation of the `fmt::Display` trait for the `Color` struct above
-so that the output displays as:
+### 演習
+次のように出力する、上の`Color`構造体のための`fmt::Display`トレイトの実装を
+してください。
 
 ```text
 RGB (128, 255, 90) 0x80FF5A
@@ -78,11 +78,11 @@ RGB (0, 3, 254) 0x0003FE
 RGB (0, 0, 0) 0x000000
 ```
 
-Two hints if you get stuck:
- * You [may need to list each color more than once][named_parameters],
- * You can [pad with zeros to a width of 2][fmt_width] with `:02`.
+詰まったら次の2つがヒントになるかもしれません。
+ * [それぞれの色を2回以上出力する必要があるかもしれません][named_parameters],
+ * `:02`で[2桁ゼロ埋め][fmt_width] できます。
 
-### See also:
+### こちらも参照:
 
 [`std::fmt`][fmt]
 
