@@ -69,7 +69,7 @@ fn main() {
 
 ### こちらも参照:
 
-[`for`][for], [`ref`][ref], [`Result`][result], [`構造体`][struct],
+[`for`][for], [`ref`][ref], [`Result`][result], [`struct`][struct],
 [`?`][q_mark], and [`vec!`][vec]
 
 [for]: ../../../flow_control/for.md

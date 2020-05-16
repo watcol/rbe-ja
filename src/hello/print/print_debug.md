@@ -73,8 +73,8 @@ fn main() {
 
 ### こちらも参照:
 
-[属性][attributes], [`継承`][derive], [`std::fmt`][fmt],
-そして[`構造体`][structs]
+[属性][attributes], [`derive`][derive], [`std::fmt`][fmt],
+そして[`structs`][structs]
 
 [attributes]: https://doc.rust-lang.org/reference/attributes.html
 [derive]: ../../trait/derive.md
