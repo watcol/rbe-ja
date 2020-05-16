@@ -593,7 +593,7 @@ struct List(Vec&lt;i32&gt;);
 
 impl fmt::Display for List {
     fn fmt(&amp;self, f: &amp;mut fmt::Formatter) -&gt; fmt::Result {
-        // タプルインデックスで要素を展開し。
+        // タプルインデックスで要素を展開し、
         // `vec`という参照を作る。
         let vec = &amp;self.0;
 
