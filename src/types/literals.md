@@ -1,24 +1,23 @@
-# Literals
+# リテラル
 
-Numeric literals can be type annotated by adding the type as a suffix. As an example, 
-to specify that the literal `42` should have the type `i32`, write `42i32`.
+数値リテラルはサフィックスで型の注釈が付けられます。例として、
+`42`というリテラルの型を`i32`であると指定するには、`42i32`と書きます。
 
-The type of unsuffixed numeric literals will depend on how they are used. If no
-constraint exists, the compiler will use `i32` for integers, and `f64` for
-floating-point numbers.
+サフィックスされていない数値リテラルの型は、それががどう使われるかによります。もし
+制約がなければ、コンパイラは整数に`i32`を、浮動小数点数に`f64`を使います。
 
 ```rust,editable
 fn main() {
-    // Suffixed literals, their types are known at initialization
+    // サフィックスされたリテラル。これらの型は初期化時に特定されます。
     let x = 1u8;
     let y = 2u32;
     let z = 3f32;
 
-    // Unsuffixed literals, their types depend on how they are used
+    // サフィックスされていないリテラル。どのように使われるかによって型が決まる。
     let i = 1;
     let f = 1.0;
 
-    // `size_of_val` returns the size of a variable in bytes
+    // `size_of_val` は変数のバイト数を返します。
     println!("size of `x` in bytes: {}", std::mem::size_of_val(&x));
     println!("size of `y` in bytes: {}", std::mem::size_of_val(&y));
     println!("size of `z` in bytes: {}", std::mem::size_of_val(&z));
@@ -27,14 +26,13 @@ fn main() {
 }
 ```
 
-There are some concepts used in the previous code that haven't been explained
-yet, here's a brief explanation for the impatient readers:
+このコードにはまだ説明していないいくつかのまだ説明していない概念が使われています。
+ここで短気な読者のために簡単に説明します。
 
-* `std::mem::size_of_val` is a function, but called with its *full path*. Code
-  can be split in logical units called *modules*. In this case, the
-  `size_of_val` function is defined in the `mem` module, and the `mem` module
-  is defined in the `std` *crate*. For more details, see
-  [modules][mod] and [crates][crate].
+* `std::mem::size_of_val`は関数ですが、*フルパス*で呼び出されています。コードは
+  *モジュール*と呼ばれる論理ユニットで分割できます。ここでは、`size_of_val`関数は
+  `mem`モジュールで定義され、`mem`モジュールは`std`*クレート*で定義されています。
+  詳細は、[モジュール][mod]と[クレート][crate]を見てください。
 
 [mod]: ../mod.md
 [crate]: ../crates.md

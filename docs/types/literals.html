@@ -147,23 +147,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#literals" id="literals">Literals</a></h1>
-<p>Numeric literals can be type annotated by adding the type as a suffix. As an example, 
-to specify that the literal <code>42</code> should have the type <code>i32</code>, write <code>42i32</code>.</p>
-<p>The type of unsuffixed numeric literals will depend on how they are used. If no
-constraint exists, the compiler will use <code>i32</code> for integers, and <code>f64</code> for
-floating-point numbers.</p>
+                        <h1><a class="header" href="#リテラル" id="リテラル">リテラル</a></h1>
+<p>数値リテラルはサフィックスで型の注釈が付けられます。例として、
+<code>42</code>というリテラルの型を<code>i32</code>であると指定するには、<code>42i32</code>と書きます。</p>
+<p>サフィックスされていない数値リテラルの型は、それががどう使われるかによります。もし
+制約がなければ、コンパイラは整数に<code>i32</code>を、浮動小数点数に<code>f64</code>を使います。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // Suffixed literals, their types are known at initialization
+    // サフィックスされたリテラル。これらの型は初期化時に特定されます。
     let x = 1u8;
     let y = 2u32;
     let z = 3f32;
 
-    // Unsuffixed literals, their types depend on how they are used
+    // サフィックスされていないリテラル。どのように使われるかによって型が決まる。
     let i = 1;
     let f = 1.0;
 
-    // `size_of_val` returns the size of a variable in bytes
+    // `size_of_val` は変数のバイト数を返します。
     println!(&quot;size of `x` in bytes: {}&quot;, std::mem::size_of_val(&amp;x));
     println!(&quot;size of `y` in bytes: {}&quot;, std::mem::size_of_val(&amp;y));
     println!(&quot;size of `z` in bytes: {}&quot;, std::mem::size_of_val(&amp;z));
@@ -171,14 +170,13 @@ floating-point numbers.</p>
     println!(&quot;size of `f` in bytes: {}&quot;, std::mem::size_of_val(&amp;f));
 }
 </code></pre></pre>
-<p>There are some concepts used in the previous code that haven't been explained
-yet, here's a brief explanation for the impatient readers:</p>
+<p>このコードにはまだ説明していないいくつかのまだ説明していない概念が使われています。
+ここで短気な読者のために簡単に説明します。</p>
 <ul>
-<li><code>std::mem::size_of_val</code> is a function, but called with its <em>full path</em>. Code
-can be split in logical units called <em>modules</em>. In this case, the
-<code>size_of_val</code> function is defined in the <code>mem</code> module, and the <code>mem</code> module
-is defined in the <code>std</code> <em>crate</em>. For more details, see
-<a href="../mod.html">modules</a> and <a href="../crates.html">crates</a>.</li>
+<li><code>std::mem::size_of_val</code>は関数ですが、<em>フルパス</em>で呼び出されています。コードは
+<em>モジュール</em>と呼ばれる論理ユニットで分割できます。ここでは、<code>size_of_val</code>関数は
+<code>mem</code>モジュールで定義され、<code>mem</code>モジュールは<code>std</code><em>クレート</em>で定義されています。
+詳細は、<a href="../mod.html">モジュール</a>と<a href="../crates.html">クレート</a>を見てください。</li>
 </ul>
 
                     </main>

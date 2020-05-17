@@ -1,26 +1,26 @@
-# Aliasing
+# エイリアシング
 
-The `type` statement can be used to give a new name to an existing type. Types
-must have `UpperCamelCase` names, or the compiler will raise a warning. The
-exception to this rule are the primitive types: `usize`, `f32`, etc.
+`type`文は存在する型に新しい名前を付けるのに使えます。型は`UpperCamelCase`
+(単語のはじめが大文字)の名前を持つ必要があり、そうでないとコンパイラは警告
+を出します。ただし、`usize`、`f32`などのプリミティブ型は例外です。
 
 ```rust,editable
-// `NanoSecond` is a new name for `u64`.
+// `NanoSecond`は`u64`の新しい名前です。
 type NanoSecond = u64;
 type Inch = u64;
 
-// Use an attribute to silence warning.
+// 警告が出ないように属性を付けます。
 #[allow(non_camel_case_types)]
 type u64_t = u64;
-// TODO ^ Try removing the attribute
+// TODO ^ 属性を消してみてください。
 
 fn main() {
     // `NanoSecond` = `Inch` = `u64_t` = `u64`.
     let nanoseconds: NanoSecond = 5 as u64_t;
     let inches: Inch = 2 as u64_t;
 
-    // Note that type aliases *don't* provide any extra type safety, because
-    // aliases are *not* new types
+    // 型エイリアスは新しい型ではないので、余分な型安全性を提供しない
+    // ことに注意してください。
     println!("{} nanoseconds + {} inches = {} unit?",
              nanoseconds,
              inches,
@@ -28,9 +28,9 @@ fn main() {
 }
 ```
 
-The main use of aliases is to reduce boilerplate; for example the `IoResult<T>` type
-is an alias for the `Result<T, IoError>` type.
+エイリアスは主に冗長性を軽減するために使われます。例えば、`IoResult<T>`型は
+`Result<T, IoError>`型のエイリアスです。
 
-### See also:
+### こちらも参照
 
-[Attributes](../attribute.md)
+[属性](../attribute.md)

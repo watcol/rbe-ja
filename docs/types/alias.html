@@ -147,36 +147,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#aliasing" id="aliasing">Aliasing</a></h1>
-<p>The <code>type</code> statement can be used to give a new name to an existing type. Types
-must have <code>UpperCamelCase</code> names, or the compiler will raise a warning. The
-exception to this rule are the primitive types: <code>usize</code>, <code>f32</code>, etc.</p>
-<pre><pre class="playpen"><code class="language-rust editable">// `NanoSecond` is a new name for `u64`.
+                        <h1><a class="header" href="#エイリアシング" id="エイリアシング">エイリアシング</a></h1>
+<p><code>type</code>文は存在する型に新しい名前を付けるのに使えます。型は<code>UpperCamelCase</code>
+(単語のはじめが大文字)の名前を持つ必要があり、そうでないとコンパイラは警告
+を出します。ただし、<code>usize</code>、<code>f32</code>などのプリミティブ型は例外です。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// `NanoSecond`は`u64`の新しい名前です。
 type NanoSecond = u64;
 type Inch = u64;
 
-// Use an attribute to silence warning.
+// 警告が出ないように属性を付けます。
 #[allow(non_camel_case_types)]
 type u64_t = u64;
-// TODO ^ Try removing the attribute
+// TODO ^ 属性を消してみてください。
 
 fn main() {
     // `NanoSecond` = `Inch` = `u64_t` = `u64`.
     let nanoseconds: NanoSecond = 5 as u64_t;
     let inches: Inch = 2 as u64_t;
 
-    // Note that type aliases *don't* provide any extra type safety, because
-    // aliases are *not* new types
+    // 型エイリアスは新しい型ではないので、余分な型安全性を提供しない
+    // ことに注意してください。
     println!(&quot;{} nanoseconds + {} inches = {} unit?&quot;,
              nanoseconds,
              inches,
              nanoseconds + inches);
 }
 </code></pre></pre>
-<p>The main use of aliases is to reduce boilerplate; for example the <code>IoResult&lt;T&gt;</code> type
-is an alias for the <code>Result&lt;T, IoError&gt;</code> type.</p>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../attribute.html">Attributes</a></p>
+<p>エイリアスは主に冗長性を軽減するために使われます。例えば、<code>IoResult&lt;T&gt;</code>型は
+<code>Result&lt;T, IoError&gt;</code>型のエイリアスです。</p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照</a></h3>
+<p><a href="../attribute.html">属性</a></p>
 
                     </main>
 

@@ -1,28 +1,26 @@
-# Inference
+# 推論
 
-The type inference engine is pretty smart. It does more than looking at the
-type of the value expression
-during an initialization. It also looks at how the variable is used afterwards 
-to infer its type. Here's an advanced example of type inference:
+型推論システムはとても賢いです。初期化時の式の値の型だけでなく、
+その変数が後でどのように使われるかによって型を推論します。
+ここに型推論についての高度な例があります。
 
 ```rust,editable
 fn main() {
-    // Because of the annotation, the compiler knows that `elem` has type u8.
+    // 注釈によって、コンパイラは`elem`の型がu8であることを知ります。
     let elem = 5u8;
 
-    // Create an empty vector (a growable array).
+    // 空のベクター(可変長配列)を作ります。
     let mut vec = Vec::new();
-    // At this point the compiler doesn't know the exact type of `vec`, it
-    // just knows that it's a vector of something (`Vec<_>`).
+    // この時点では、コンパイラは`vec`の型を正確には知りません。
+    // なにかのベクター(`Vec<_>`)であることだけわかっています。
 
-    // Insert `elem` in the vector.
+    // `elem`をベクターにプッシュします。
     vec.push(elem);
-    // Aha! Now the compiler knows that `vec` is a vector of `u8`s (`Vec<u8>`)
-    // TODO ^ Try commenting out the `vec.push(elem)` line
+    // ああ! 今、コンパイラは`vec`が`u8`のベクター(`Vec<u8>`)であることを知りました。
+    // TODO ^ `vec.push(elem)`行をコメントアウトしてみてください。
 
     println!("{:?}", vec);
 }
 ```
 
-No type annotation of variables was needed, the compiler is happy and so is the
-programmer!
+型の注釈が必要なくなると、コンパイラもプログラマも幸せになれます!
