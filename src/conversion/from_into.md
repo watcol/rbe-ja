@@ -1,24 +1,24 @@
-# `From` and `Into`
+# `From`と`Into`
 
-The [`From`] and [`Into`] traits are inherently linked, and this is actually part of
-its implementation. If you are able to convert type A from type B, then it
-should be easy to believe that we should be able to convert type B to type A.
+[`From`]トレイトと[`Into`]トレイとは本質的にリンクされていて、これは実際には
+その実装の一部です。もし型Aから型Bに変換できたら、型Bから型Aに変換できると
+信じるのは簡単でしょう。
 
 ## `From`
 
-The [`From`] trait allows for a type to define how to create itself from another
-type, hence providing a very simple mechanism for converting between several
-types. There are numerous implementations of this trait within the standard
-library for conversion of primitive and common types.
+[`From`]トレイトで、他の型からどのように自分自身を作ることができるかを定義できます。
+これによって、いくつかの型と変換するとてもシンプルなメカニズムを提供しています。
+標準ライブラリに、一般的な型とプリミティブ型を変換するための、このトレイトの
+数多くの実装があります。
 
-For example we can easily convert a `str` into a `String`
+例として、`str`は`String`に簡単に変換できます。
 
 ```rust
 let my_str = "hello";
 let my_string = String::from(my_str);
 ```
 
-We can do similar for defining a conversion for our own type.
+同じように、独自の型に対して実装できます。
 
 ```rust,editable
 use std::convert::From;
@@ -42,13 +42,12 @@ fn main() {
 
 ## `Into`
 
-The [`Into`] trait is simply the reciprocal of the `From` trait. That is, if you
-have implemented the `From` trait for your type, `Into` will call it when
-necessary.
+[`Into`]トレイトは単純に`From`トレイトの逆です。もし`From`トレイトが
+あなたの型に実装されていたら、`Into`は必要に応じてこれを呼び出します。
 
-Using the `Into` trait will typically require specification of the type to
-convert into as the compiler is unable to determine this most of the time.
-However this is a small trade-off considering we get the functionality for free.
+コンパイラはほとんどの場合変換する型を決めることができないので、`Into`
+トレイトを使うには、それを指定する必要があります。しかし、これは自由に
+機能が得られることを考えれば小さなトレードオフです。
 
 ```rust,editable
 use std::convert::From;
@@ -66,7 +65,7 @@ impl From<i32> for Number {
 
 fn main() {
     let int = 5;
-    // Try removing the type declaration
+    // 型の宣言を削除してみてください
     let num: Number = int.into();
     println!("My number is {:?}", num);
 }

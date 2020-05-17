@@ -147,11 +147,10 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#tryfrom-and-tryinto" id="tryfrom-and-tryinto"><code>TryFrom</code> and <code>TryInto</code></a></h1>
-<p>Similar to <a href="from_into.html"><code>From</code> and <code>Into</code></a>, <a href="https://doc.rust-lang.org/std/convert/trait.TryFrom.html"><code>TryFrom</code></a> and <a href="https://doc.rust-lang.org/std/convert/trait.TryInto.html"><code>TryInto</code></a> are
-generic traits for converting between types. Unlike <code>From</code>/<code>Into</code>, the
-<code>TryFrom</code>/<code>TryInto</code> traits are used for fallible conversions, and as such,
-return <a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a>s.</p>
+                        <h1><a class="header" href="#tryfromとtryinto" id="tryfromとtryinto"><code>TryFrom</code>と<code>TryInto</code></a></h1>
+<p>S<a href="from_into.html"><code>From</code>と<code>Into</code></a>に似ていますが、<a href="https://doc.rust-lang.org/std/convert/trait.TryFrom.html"><code>TryFrom</code></a>と<a href="https://doc.rust-lang.org/std/convert/trait.TryInto.html"><code>TryInto</code></a>は
+型を変換するための汎用的なトレイトです。<code>From</code>/<code>Into</code>とは違い、<code>TryFrom</code>/
+<code>TryInto</code>は、失敗するかもしれない変換ができ、<a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a>を返します。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::convert::TryFrom;
 use std::convert::TryInto;
 

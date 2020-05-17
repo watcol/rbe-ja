@@ -147,16 +147,16 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#from-and-into" id="from-and-into"><code>From</code> and <code>Into</code></a></h1>
-<p>The <a href="https://doc.rust-lang.org/std/convert/trait.From.html"><code>From</code></a> and <a href="https://doc.rust-lang.org/std/convert/trait.Into.html"><code>Into</code></a> traits are inherently linked, and this is actually part of
-its implementation. If you are able to convert type A from type B, then it
-should be easy to believe that we should be able to convert type B to type A.</p>
+                        <h1><a class="header" href="#fromとinto" id="fromとinto"><code>From</code>と<code>Into</code></a></h1>
+<p><a href="https://doc.rust-lang.org/std/convert/trait.From.html"><code>From</code></a>トレイトと<a href="https://doc.rust-lang.org/std/convert/trait.Into.html"><code>Into</code></a>トレイとは本質的にリンクされていて、これは実際には
+その実装の一部です。もし型Aから型Bに変換できたら、型Bから型Aに変換できると
+信じるのは簡単でしょう。</p>
 <h2><a class="header" href="#from" id="from"><code>From</code></a></h2>
-<p>The <a href="https://doc.rust-lang.org/std/convert/trait.From.html"><code>From</code></a> trait allows for a type to define how to create itself from another
-type, hence providing a very simple mechanism for converting between several
-types. There are numerous implementations of this trait within the standard
-library for conversion of primitive and common types.</p>
-<p>For example we can easily convert a <code>str</code> into a <code>String</code></p>
+<p><a href="https://doc.rust-lang.org/std/convert/trait.From.html"><code>From</code></a>トレイトで、他の型からどのように自分自身を作ることができるかを定義できます。
+これによって、いくつかの型と変換するとてもシンプルなメカニズムを提供しています。
+標準ライブラリに、一般的な型とプリミティブ型を変換するための、このトレイトの
+数多くの実装があります。</p>
+<p>例として、<code>str</code>は<code>String</code>に簡単に変換できます。</p>
 <pre><pre class="playpen"><code class="language-rust">
 <span class="boring">#![allow(unused_variables)]
 </span><span class="boring">fn main() {
@@ -164,7 +164,7 @@ library for conversion of primitive and common types.</p>
 let my_string = String::from(my_str);
 <span class="boring">}
 </span></code></pre></pre>
-<p>We can do similar for defining a conversion for our own type.</p>
+<p>同じように、独自の型に対して実装できます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::convert::From;
 
 #[derive(Debug)]
@@ -184,12 +184,11 @@ fn main() {
 }
 </code></pre></pre>
 <h2><a class="header" href="#into" id="into"><code>Into</code></a></h2>
-<p>The <a href="https://doc.rust-lang.org/std/convert/trait.Into.html"><code>Into</code></a> trait is simply the reciprocal of the <code>From</code> trait. That is, if you
-have implemented the <code>From</code> trait for your type, <code>Into</code> will call it when
-necessary.</p>
-<p>Using the <code>Into</code> trait will typically require specification of the type to
-convert into as the compiler is unable to determine this most of the time.
-However this is a small trade-off considering we get the functionality for free.</p>
+<p><a href="https://doc.rust-lang.org/std/convert/trait.Into.html"><code>Into</code></a>トレイトは単純に<code>From</code>トレイトの逆です。もし<code>From</code>トレイトが
+あなたの型に実装されていたら、<code>Into</code>は必要に応じてこれを呼び出します。</p>
+<p>コンパイラはほとんどの場合変換する型を決めることができないので、<code>Into</code>
+トレイトを使うには、それを指定する必要があります。しかし、これは自由に
+機能が得られることを考えれば小さなトレードオフです。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::convert::From;
 
 #[derive(Debug)]
@@ -205,7 +204,7 @@ impl From&lt;i32&gt; for Number {
 
 fn main() {
     let int = 5;
-    // Try removing the type declaration
+    // 型の宣言を削除してみてください
     let num: Number = int.into();
     println!(&quot;My number is {:?}&quot;, num);
 }

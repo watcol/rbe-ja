@@ -147,12 +147,11 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#to-and-from-strings" id="to-and-from-strings">To and from Strings</a></h1>
-<h2><a class="header" href="#converting-to-string" id="converting-to-string">Converting to String</a></h2>
-<p>To convert any type to a <code>String</code> is as simple as implementing the <a href="https://doc.rust-lang.org/std/string/trait.ToString.html"><code>ToString</code></a>
-trait for the type. Rather than doing so directly, you should implement the
-<a href="https://doc.rust-lang.org/std/fmt/trait.Display.html"><code>fmt::Display</code></a> trait which automagically provides <a href="https://doc.rust-lang.org/std/string/trait.ToString.html"><code>ToString</code></a> and
-also allows printing the type as discussed in the section on <a href="../hello/print.html"><code>print!</code></a>.</p>
+                        <h1><a class="header" href="#stringsから変換stringに変換" id="stringsから変換stringに変換">Stringsから変換、Stringに変換</a></h1>
+<h2><a class="header" href="#stringに変換" id="stringに変換">Stringに変換</a></h2>
+<p>ある型から<code>String</code>に変換するには、その型に<a href="https://doc.rust-lang.org/std/string/trait.ToString.html"><code>ToString</code></a>トレイトを実装するだけで
+良いです。 直接実装するより、<a href="../hello/print.html"><code>print!</code></a>節で説明したように、<a href="https://doc.rust-lang.org/std/string/trait.ToString.html"><code>ToString</code></a>を
+自動的に提供する<a href="https://doc.rust-lang.org/std/fmt/trait.Display.html"><code>fmt::Display</code></a>トレイトを実装した方が良いです。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::fmt;
 
 struct Circle {
@@ -170,15 +169,13 @@ fn main() {
     println!(&quot;{}&quot;, circle.to_string());
 }
 </code></pre></pre>
-<h2><a class="header" href="#parsing-a-string" id="parsing-a-string">Parsing a String</a></h2>
-<p>One of the more common types to convert a string into is a number. The idiomatic
-approach to this is to use the <a href="https://doc.rust-lang.org/std/primitive.str.html#method.parse"><code>parse</code></a> function and either to arrange for
-type inference or to specify the type to parse using the 'turbofish' syntax.
-Both alternatives are shown in the following example.</p>
-<p>This will convert the string into the type specified so long as the <a href="https://doc.rust-lang.org/std/str/trait.FromStr.html"><code>FromStr</code></a>
-trait is implemented for that type. This is implemented for numerous types
-within the standard library. To obtain this functionality on a user defined type
-simply implement the <a href="https://doc.rust-lang.org/std/str/trait.FromStr.html"><code>FromStr</code></a> trait for that type.</p>
+<h2><a class="header" href="#stringを解析する" id="stringを解析する">Stringを解析する</a></h2>
+<p>文字列から変換される最も一般的な型は数値型です。慣用的なアプローチは、
+<a href="https://doc.rust-lang.org/std/primitive.str.html#method.parse"><code>parse</code></a>関数を使い、型推論か「ターボフィッシュ(turbofish)」構文を
+使って型を指定することです。両方の例が以下に紹介されています。</p>
+<p>これで文字列をその型に<a href="https://doc.rust-lang.org/std/str/trait.FromStr.html"><code>FromStr</code></a>トレイトが実装されている限り、指定した型に変換することが
+できます。これは標準ライブラリ内の数多くの型で実装できます。この機能をユーザー定義型に
+追加するには、単純に<a href="https://doc.rust-lang.org/std/str/trait.FromStr.html"><code>FromStr</code></a>トレイトを実装すればよいだけです。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let parsed: i32 = &quot;5&quot;.parse().unwrap();
     let turbo_parsed = &quot;10&quot;.parse::&lt;i32&gt;().unwrap();

@@ -1,12 +1,11 @@
-# Conversion
+# 変換
 
-Primitive types can be converted to each other through [casting].
+プリミティブ型は[キャスト][casting]で変換できます。
 
-Rust addresses conversion between custom types (i.e., `struct` and `enum`)
-by the use of [traits]. The generic
-conversions will use the [`From`] and [`Into`] traits. However there are more
-specific ones for the more common cases, in particular when converting to and
-from `String`s.
+Rustはカスタム型(`struct`と`enum`のこと)の変換を[トレイト][traits]を使って
+処理しています。汎用的な変換は[`From`]トレイトや[`Into`]トレイトを使って行われます。
+しかし、 特に`String`へ、`String`からの変換など、より一般的なケースのため、より
+具体的な変換が必要になることがあります。
 
 [casting]: types/cast.md
 [traits]: trait.md

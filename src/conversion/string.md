@@ -1,11 +1,10 @@
-# To and from Strings
+# Stringsから変換、Stringに変換
 
-## Converting to String
+## Stringに変換
 
-To convert any type to a `String` is as simple as implementing the [`ToString`]
-trait for the type. Rather than doing so directly, you should implement the
-[`fmt::Display`][Display] trait which automagically provides [`ToString`] and
-also allows printing the type as discussed in the section on [`print!`][print].
+ある型から`String`に変換するには、その型に[`ToString`]トレイトを実装するだけで
+良いです。 直接実装するより、[`print!`][print]節で説明したように、[`ToString`]を
+自動的に提供する[`fmt::Display`][Display]トレイトを実装した方が良いです。
 
 ```rust,editable
 use std::fmt;
@@ -26,17 +25,15 @@ fn main() {
 }
 ```
 
-## Parsing a String
+## Stringを解析する
 
-One of the more common types to convert a string into is a number. The idiomatic
-approach to this is to use the [`parse`] function and either to arrange for
-type inference or to specify the type to parse using the 'turbofish' syntax.
-Both alternatives are shown in the following example.
+文字列から変換される最も一般的な型は数値型です。慣用的なアプローチは、
+[`parse`]関数を使い、型推論か「ターボフィッシュ(turbofish)」構文を
+使って型を指定することです。両方の例が以下に紹介されています。
 
-This will convert the string into the type specified so long as the [`FromStr`]
-trait is implemented for that type. This is implemented for numerous types
-within the standard library. To obtain this functionality on a user defined type
-simply implement the [`FromStr`] trait for that type.
+これで文字列をその型に[`FromStr`]トレイトが実装されている限り、指定した型に変換することが
+できます。これは標準ライブラリ内の数多くの型で実装できます。この機能をユーザー定義型に
+追加するには、単純に[`FromStr`]トレイトを実装すればよいだけです。
 
 ```rust,editable
 fn main() {
