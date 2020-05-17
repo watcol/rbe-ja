@@ -1,11 +1,11 @@
-# Destructuring
+# 分割代入
 
-A `match` block can destructure items in a variety of ways.
+`match`ブロックで、は様々な方法でアイテムを分割代入できます。
 
-* [Destructuring Tuples][tuple]
-* [Destructuring Enums][enum]
-* [Destructuring Pointers][refs]
-* [Destructuring Structures][struct]
+* [タプルの分割代入][tuple]
+* [Enumの分割代入][enum]
+* [ポインタの分割代入][refs]
+* [構造体の分割代入][struct]
 
 
 [enum]: destructuring/destructure_enum.md

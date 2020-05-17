@@ -148,13 +148,13 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#while" id="while">while</a></h1>
-<p>The <code>while</code> keyword can be used to run a loop while a condition is true.</p>
-<p>Let's write the infamous <a href="https://en.wikipedia.org/wiki/Fizz_buzz">FizzBuzz</a> using a <code>while</code> loop.</p>
+<p><code>while</code>キーワードは条件が真である間ループするのに使います。</p>
+<p>悪名高き<a href="https://en.wikipedia.org/wiki/Fizz_buzz">FizzBuzz</a>を<code>while</code>ループで書いてみましょう。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // A counter variable
+    // カウンタ変数
     let mut n = 1;
 
-    // Loop while `n` is less than 101
+    // `n`が101より小さい間ループする
     while n &lt; 101 {
         if n % 15 == 0 {
             println!(&quot;fizzbuzz&quot;);
@@ -166,7 +166,7 @@
             println!(&quot;{}&quot;, n);
         }
 
-        // Increment counter
+        // カウンタをインクリメントする
         n += 1;
     }
 }

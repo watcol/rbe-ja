@@ -1,29 +1,29 @@
-# Nesting and labels
+# ネストとラベル
 
-It's possible to `break` or `continue` outer loops when dealing with nested
-loops. In these cases, the loops must be annotated with some `'label`, and the
-label must be passed to the `break`/`continue` statement.
+ネストされたループを扱っている時、外側のループを`break`、`continue` できます。
+その時は、ループはラベル`'label`で注釈されている必要があり、`break`/`continue`文
+にラベルを渡さなければいけません。
 
 ```rust,editable
 #![allow(unreachable_code)]
 
 fn main() {
     'outer: loop {
-        println!("Entered the outer loop");
+        println!("Entered the outer loop");  // 外側のループに入りました
 
         'inner: loop {
-            println!("Entered the inner loop");
+            println!("Entered the inner loop");  // 内側のループに入りました
 
-            // This would break only the inner loop
+            // 内側のループだけから抜けます
             //break;
 
-            // This breaks the outer loop
+            // 外側のループを抜けます
             break 'outer;
         }
 
-        println!("This point will never be reached");
+        println!("This point will never be reached");  // ここは決して実行されません
     }
 
-    println!("Exited the outer loop");
+    println!("Exited the outer loop");  // 外側のループを出ました
 }
 ```

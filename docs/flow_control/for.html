@@ -147,15 +147,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#for-loops" id="for-loops">for loops</a></h1>
-<h2><a class="header" href="#for-and-range" id="for-and-range">for and range</a></h2>
-<p>The <code>for in</code> construct can be used to iterate through an <code>Iterator</code>.
-One of the easiest ways to create an iterator is to use the range
-notation <code>a..b</code>. This yields values from <code>a</code> (inclusive) to <code>b</code>
-(exclusive) in steps of one.</p>
-<p>Let's write FizzBuzz using <code>for</code> instead of <code>while</code>.</p>
+                        <h1><a class="header" href="#forループ" id="forループ">forループ</a></h1>
+<h2><a class="header" href="#forとrange" id="forとrange">forとrange</a></h2>
+<p><code>for in</code>文は<code>イテレータ</code>を使って繰り返し処理をするのに使います。
+イテレータを作る最も簡単な方法の一つは、<code>a..b</code>のように書くことです。
+これは<code>a</code>(含む)から<code>b</code>(除く)までの数値を順に産出(<code>yield</code>)します。</p>
+<p><code>while</code>の代わりに<code>for</code>を使ってFizzBuzzを書いてみましょう。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // `n` will take the values: 1, 2, ..., 100 in each iteration
+    // `n`はそれぞれの繰り返しで1, 2, ..., 100の値をとります
     for n in 1..101 {
         if n % 15 == 0 {
             println!(&quot;fizzbuzz&quot;);
@@ -169,10 +168,10 @@ notation <code>a..b</code>. This yields values from <code>a</code> (inclusive) t
     }
 }
 </code></pre></pre>
-<p>Alternatively, <code>a..=b</code> can be used for a range that is inclusive on both ends.
-The above can be written as:</p>
+<p>代わりに<code>a..=b</code>で両端を含むことができます。
+上の例は次のように書けます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // `n` will take the values: 1, 2, ..., 100 in each iteration
+    // `n`はそれぞれの繰り返しで1, 2, ..., 100の値をとります
     for n in 1..=100 {
         if n % 15 == 0 {
             println!(&quot;fizzbuzz&quot;);
@@ -186,33 +185,31 @@ The above can be written as:</p>
     }
 }
 </code></pre></pre>
-<h2><a class="header" href="#for-and-iterators" id="for-and-iterators">for and iterators</a></h2>
-<p>The <code>for in</code> construct is able to interact with an <code>Iterator</code> in several ways.
-As discussed in the section on the <a href="../trait/iter.html">Iterator</a> trait, by default the <code>for</code>
-loop will apply the <code>into_iter</code> function to the collection. However, this is
-not the only means of converting collections into iterators.</p>
-<p><code>into_iter</code>, <code>iter</code> and <code>iter_mut</code> all handle the conversion of a collection
-into an iterator in different ways, by providing different views on the data
-within.</p>
+<h2><a class="header" href="#forとイテレータ" id="forとイテレータ">forとイテレータ</a></h2>
+<p><code>for in</code>文は<code>イテレータ</code>といくつかの方法で相互作用することができます。
+<a href="../trait/iter.html">イテレータ</a>トレイトの節で議論したように、デフォルトで<code>for</code>ループは
+コレクションの<code>into_iter</code>関数を実行しますが、これだけがコレクションを
+イテレータに変換するわけではありません。</p>
+<p><code>into_iter</code>、<code>iter</code>、<code>iter_mut</code>はその中のデータに対する異なる見方を使って、
+違った方法でコレクションをイテレータに変換します。</p>
 <ul>
-<li><code>iter</code> - This borrows each element of the collection through each iteration.
-Thus leaving the collection untouched and available for reuse after the loop.</li>
+<li><code>iter</code> - これは、コレクションの各要素を各イテレーションで借用します。
+コレクション変更しないため、ループの後に再利用できます。</li>
 </ul>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
 
     for name in names.iter() {
         match name {
-            &amp;&quot;Ferris&quot; =&gt; println!(&quot;There is a rustacean among us!&quot;),
+            &amp;&quot;Ferris&quot; =&gt; println!(&quot;There is a rustacean among us!&quot;),  // 私達のようなRustaceanがいます
             _ =&gt; println!(&quot;Hello {}&quot;, name),
         }
     }
 }
 </code></pre></pre>
 <ul>
-<li><code>into_iter</code> - This consumes the collection so that on each iteration the exact
-data is provided. Once the collection has been consumed it is no longer
-available for reuse as it has been 'moved' within the loop.</li>
+<li><code>into_iter</code> - これはコレクションを消費し、各繰り返しで正確なデータを提供します。
+一度コレクションが消費されると、データを「move」し、もはや再利用できないようになります。</li>
 </ul>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
@@ -226,8 +223,8 @@ available for reuse as it has been 'moved' within the loop.</li>
 }
 </code></pre></pre>
 <ul>
-<li><code>iter_mut</code> - This mutably borrows each element of the collection, allowing for
-the collection to be modified in place.</li>
+<li><code>iter_mut</code> - コレクションの各要素を可変的に借用し、コレクションをその場で変更できる
+ようにします。</li>
 </ul>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let mut names = vec![&quot;Bob&quot;, &quot;Frank&quot;, &quot;Ferris&quot;];
@@ -242,11 +239,10 @@ the collection to be modified in place.</li>
     println!(&quot;names: {:?}&quot;, names);
 }
 </code></pre></pre>
-<p>In the above snippets note the type of <code>match</code> branch, that is the key
-difference in the types of iteration. The difference in type then of course
-implies differing actions that are able to be performed.</p>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../trait/iter.html">Iterator</a></p>
+<p>上記の例では<code>match</code>分岐の型が、繰り返しのタイプの違いを示すキーになります。
+タイプの違いによって、違った振る舞いができることが分かるでしょう。</p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="../trait/iter.html">イテレータ</a></p>
 
                     </main>
 

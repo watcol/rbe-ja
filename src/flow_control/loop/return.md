@@ -1,9 +1,8 @@
-# Returning from loops
+# ループの返り値
 
-One of the uses of a `loop` is to retry an operation until it succeeds. If the
-operation returns a value though, you might need to pass it to the rest of the
-code: put it after the `break`, and it will be returned by the `loop`
-expression.
+`loop`の使い道の一つは成功するまでオペレーションを繰り返すことです。オペレーション
+が値を返す時、それを残りのコードに渡す必要があるかもしれません。
+それを`break`に渡せば、`loop`式から値が返されます。
 
 ```rust,editable
 fn main() {

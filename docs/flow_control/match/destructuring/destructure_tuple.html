@@ -147,25 +147,25 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#tuples" id="tuples">tuples</a></h1>
-<p>Tuples can be destructured in a <code>match</code> as follows:</p>
+                        <h1><a class="header" href="#タプル" id="タプル">タプル</a></h1>
+<p>タプルは<code>match</code>内で以下のように分割代入できます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let pair = (0, -2);
-    // TODO ^ Try different values for `pair`
+    // TODO ^ `pair`を違う値にして試してみてください
 
-    println!(&quot;Tell me about {:?}&quot;, pair);
-    // Match can be used to destructure a tuple
+    println!(&quot;Tell me about {:?}&quot;, pair);  // {:?}について教えて
+    // matchはタプルの分割代入に使えます。
     match pair {
-        // Destructure the second
-        (0, y) =&gt; println!(&quot;First is `0` and `y` is `{:?}`&quot;, y),
-        (x, 0) =&gt; println!(&quot;`x` is `{:?}` and last is `0`&quot;, x),
-        _      =&gt; println!(&quot;It doesn't matter what they are&quot;),
-        // `_` means don't bind the value to a variable
+        // 2つ目を分割代入する
+        (0, y) =&gt; println!(&quot;First is `0` and `y` is `{:?}`&quot;, y),  // 最初は`0`で`y`は`{:?}`です
+        (x, 0) =&gt; println!(&quot;`x` is `{:?}` and last is `0`&quot;, x),  // `x`は`{:?}`で最後は`0`です
+        _      =&gt; println!(&quot;It doesn't matter what they are&quot;),  // これが何なのかわかりません
+        // `_` は値を変数として束縛しないことを意味します。
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../../../primitives/tuples.html">Tuples</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="../../../primitives/tuples.html">タプル</a></p>
 
                     </main>
 

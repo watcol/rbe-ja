@@ -147,11 +147,10 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#returning-from-loops" id="returning-from-loops">Returning from loops</a></h1>
-<p>One of the uses of a <code>loop</code> is to retry an operation until it succeeds. If the
-operation returns a value though, you might need to pass it to the rest of the
-code: put it after the <code>break</code>, and it will be returned by the <code>loop</code>
-expression.</p>
+                        <h1><a class="header" href="#ループの返り値" id="ループの返り値">ループの返り値</a></h1>
+<p><code>loop</code>の使い道の一つは成功するまでオペレーションを繰り返すことです。オペレーション
+が値を返す時、それを残りのコードに渡す必要があるかもしれません。
+それを<code>break</code>に渡せば、<code>loop</code>式から値が返されます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let mut counter = 0;
 

@@ -148,32 +148,31 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#loop" id="loop">loop</a></h1>
-<p>Rust provides a <code>loop</code> keyword to indicate an infinite loop.</p>
-<p>The <code>break</code> statement can be used to exit a loop at anytime, whereas the
-<code>continue</code> statement can be used to skip the rest of the iteration and start a
-new one.</p>
+<p>Rustは、無限ループを作る<code>loop</code>キーワードを提供しています。</p>
+<p><code>break</code>文でいつでもループを抜けることができ、<code>continue</code>文で残りの
+部分を飛ばして次の繰り返しに進むことができます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let mut count = 0u32;
 
-    println!(&quot;Let's count until infinity!&quot;);
+    println!(&quot;Let's count until infinity!&quot;);  // 無限まで数えましょう!
 
-    // Infinite loop
+    // 無限ループ
     loop {
         count += 1;
 
         if count == 3 {
             println!(&quot;three&quot;);
 
-            // Skip the rest of this iteration
+            // 残りの処理を飛ばして次に行く。
             continue;
         }
 
         println!(&quot;{}&quot;, count);
 
         if count == 5 {
-            println!(&quot;OK, that's enough&quot;);
+            println!(&quot;OK, that's enough&quot;);  // OK, これで十分
 
-            // Exit this loop
+            // このループを抜ける
             break;
         }
     }

@@ -1,34 +1,33 @@
 # loop
 
-Rust provides a `loop` keyword to indicate an infinite loop.
+Rustは、無限ループを作る`loop`キーワードを提供しています。
 
-The `break` statement can be used to exit a loop at anytime, whereas the
-`continue` statement can be used to skip the rest of the iteration and start a
-new one.
+`break`文でいつでもループを抜けることができ、`continue`文で残りの
+部分を飛ばして次の繰り返しに進むことができます。
 
 ```rust,editable
 fn main() {
     let mut count = 0u32;
 
-    println!("Let's count until infinity!");
+    println!("Let's count until infinity!");  // 無限まで数えましょう!
 
-    // Infinite loop
+    // 無限ループ
     loop {
         count += 1;
 
         if count == 3 {
             println!("three");
 
-            // Skip the rest of this iteration
+            // 残りの処理を飛ばして次に行く。
             continue;
         }
 
         println!("{}", count);
 
         if count == 5 {
-            println!("OK, that's enough");
+            println!("OK, that's enough");  // OK, これで十分
 
-            // Exit this loop
+            // このループを抜ける
             break;
         }
     }

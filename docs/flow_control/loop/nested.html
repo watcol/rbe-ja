@@ -147,30 +147,30 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#nesting-and-labels" id="nesting-and-labels">Nesting and labels</a></h1>
-<p>It's possible to <code>break</code> or <code>continue</code> outer loops when dealing with nested
-loops. In these cases, the loops must be annotated with some <code>'label</code>, and the
-label must be passed to the <code>break</code>/<code>continue</code> statement.</p>
+                        <h1><a class="header" href="#ネストとラベル" id="ネストとラベル">ネストとラベル</a></h1>
+<p>ネストされたループを扱っている時、外側のループを<code>break</code>、<code>continue</code> できます。
+その時は、ループはラベル<code>'label</code>で注釈されている必要があり、<code>break</code>/<code>continue</code>文
+にラベルを渡さなければいけません。</p>
 <pre><pre class="playpen"><code class="language-rust editable">#![allow(unreachable_code)]
 
 fn main() {
     'outer: loop {
-        println!(&quot;Entered the outer loop&quot;);
+        println!(&quot;Entered the outer loop&quot;);  // 外側のループに入りました
 
         'inner: loop {
-            println!(&quot;Entered the inner loop&quot;);
+            println!(&quot;Entered the inner loop&quot;);  // 内側のループに入りました
 
-            // This would break only the inner loop
+            // 内側のループだけから抜けます
             //break;
 
-            // This breaks the outer loop
+            // 外側のループを抜けます
             break 'outer;
         }
 
-        println!(&quot;This point will never be reached&quot;);
+        println!(&quot;This point will never be reached&quot;);  // ここは決して実行されません
     }
 
-    println!(&quot;Exited the outer loop&quot;);
+    println!(&quot;Exited the outer loop&quot;);  // 外側のループを出ました
 }
 </code></pre></pre>
 
