@@ -1,4 +1,3 @@
-# Flow of Control
-
-An essential part of any programming languages are ways to modify control flow:
-`if`/`else`, `for`, and others. Let's talk about them in Rust.
+# フロー制御
+`if`/`else`、`for`などのフロー制御は、あらゆるプログラミング言語にとって
+重要な要素です。Rustのフロー制御について見ていきましょう。

@@ -42,7 +42,7 @@
 
 - [式](expression.md)
 
-- [制御フロー](flow_control.md)
+- [フロー制御](flow_control.md)
     - [if/else](flow_control/if_else.md)
     - [loop](flow_control/loop.md)
         - [ネストとラベル](flow_control/loop/nested.md)

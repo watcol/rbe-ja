@@ -1,36 +1,35 @@
 # if/else
 
-Branching with `if`-`else` is similar to other languages. Unlike many of them,
-the boolean condition doesn't need to be surrounded by parentheses, and each
-condition is followed by a block. `if`-`else` conditionals are expressions,
-and, all branches must return the same type.
+`if`-`else`での条件分岐は他の言語とほぼ同じです。多くの言語と違って、
+条件を括弧で囲む必要はありません。また、条件の後にはブロックが続きます。
+`if`-`else`は式の一種であり、すべての枝が同じ型を返す必要があります。
 
 ```rust,editable
 fn main() {
     let n = 5;
 
     if n < 0 {
-        print!("{} is negative", n);
+        print!("{} is negative", n);  // {}は負です
     } else if n > 0 {
-        print!("{} is positive", n);
+        print!("{} is positive", n);  // {}は正です
     } else {
-        print!("{} is zero", n);
+        print!("{} is zero", n);  // {}はゼロです
     }
 
     let big_n =
         if n < 10 && n > -10 {
-            println!(", and is a small number, increase ten-fold");
+            println!(", and is a small number, increase ten-fold");  // そして、小さいので、10倍します
 
-            // This expression returns an `i32`.
+            // この式は`i32`を返します。
             10 * n
         } else {
-            println!(", and is a big number, halve the number");
+            println!(", and is a big number, halve the number");  // そして、大きいので、半分にします
 
-            // This expression must return an `i32` as well.
+            // この式は`i32`を返す必要があります
             n / 2
-            // TODO ^ Try suppressing this expression with a semicolon.
+            // TODO ^ この式にセミコロンを付けてみてください。
         };
-    //   ^ Don't forget to put a semicolon here! All `let` bindings need it.
+    //   ^ ここにセミコロンを付けるのを忘れないでください! すべての`let`文に必要です。
 
     println!("{} -> {}", n, big_n);
 }
