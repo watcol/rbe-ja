@@ -1,34 +1,34 @@
-# Expressions
+# 式
 
-A Rust program is (mostly) made up of a series of statements:
+Rustプログラムは(ほとんど)文の集合でできています。
 
 ```
 fn main() {
-    // statement
-    // statement
-    // statement
+    // 文
+    // 文
+    // 文
 }
 ```
 
-There are a few kinds of statements in Rust. The most common two are declaring
-a variable binding, and using a `;` with an expression:
+Rustの文にはいくつかの種類があります。最も一般的な2つは変数束縛と、
+`;`を使った式です。
 
 ```
 fn main() {
-    // variable binding
+    // 変数束縛
     let x = 5;
 
-    // expression;
+    // 式;
     x;
     x + 1;
     15;
 }
 ```
 
-Blocks are expressions too, so they can be used as values in
-assignments. The last expression in the block will be assigned to the
-place expression such as a local variable. However, if the last expression of the block ends with a
-semicolon, the return value will be `()`.
+ブロックも式です。なので、値として扱うことができます。その場合、
+ブロックの最後の式がローカル変数のような場所を表す式に代入されます。
+ただし、ブロックの最後の式がセミコロンで終わる場合は、返り値は`()`に
+なります。
 
 ```rust,editable
 fn main() {
@@ -43,7 +43,7 @@ fn main() {
     };
 
     let z = {
-        // The semicolon suppresses this expression and `()` is assigned to `z`
+        // セミコロンがあるので、`z`には`()`が代入されます。
         2 * x;
     };
 
