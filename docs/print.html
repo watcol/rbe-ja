@@ -1285,98 +1285,96 @@ fn main() {
 <h3><a class="header" href="#こちらも参照-12" id="こちらも参照-12">こちらも参照:</a></h3>
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/0246-const-vs-static.md">The <code>const</code>/<code>static</code> RFC</a>,
 <a href="custom_types/../scope/lifetime/static_lifetime.html"><code>'static</code>ライフタイム</a></p>
-<h1><a class="header" href="#variable-bindings" id="variable-bindings">Variable Bindings</a></h1>
-<p>Rust provides type safety via static typing. Variable bindings can be type
-annotated when declared. However, in most cases, the compiler will be able
-to infer the type of the variable from the context, heavily reducing the
-annotation burden.</p>
-<p>Values (like literals) can be bound to variables, using the <code>let</code> binding.</p>
+<h1><a class="header" href="#変数束縛" id="変数束縛">変数束縛</a></h1>
+<p>Rustは静的型付けによる型安全性を提供しています。宣言時に型注釈をつけることもできますが、
+ほとんどの場合、注釈の労力を軽減するため、コンパイラが変数の型を文脈から推論することが
+できます。</p>
+<p>(リテラルのような)値は、<code>let</code>を使って変数に束縛することができます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let an_integer = 1u32;
     let a_boolean = true;
     let unit = ();
 
-    // copy `an_integer` into `copied_integer`
+    // `an_integer`を`copied_integer`にコピーする
     let copied_integer = an_integer;
 
     println!(&quot;An integer: {:?}&quot;, copied_integer);
     println!(&quot;A boolean: {:?}&quot;, a_boolean);
     println!(&quot;Meet the unit value: {:?}&quot;, unit);
 
-    // The compiler warns about unused variable bindings; these warnings can
-    // be silenced by prefixing the variable name with an underscore
+    // コンパイラは、使われていない変数の束縛に対して警告をします。
+    // 変数名の最初にアンダースコアを付けることによって無効化できます。
     let _unused_variable = 3u32;
 
     let noisy_unused_variable = 2u32;
-    // FIXME ^ Prefix with an underscore to suppress the warning
+    // FIXME ^ 警告を消すため、アンダースコアを付けてください。
 }
 </code></pre></pre>
-<h1><a class="header" href="#mutability" id="mutability">Mutability</a></h1>
-<p>Variable bindings are immutable by default, but this can be overridden using
-the <code>mut</code> modifier.</p>
+<h1><a class="header" href="#可変性" id="可変性">可変性</a></h1>
+<p>変数束縛はデフォルトで不変ですが、<code>mut</code>修飾子で上書きできます。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
     let _immutable_binding = 1;
     let mut mutable_binding = 1;
 
-    println!(&quot;Before mutation: {}&quot;, mutable_binding);
+    println!(&quot;Before mutation: {}&quot;, mutable_binding); // 変更する前: {}
 
     // Ok
     mutable_binding += 1;
 
-    println!(&quot;After mutation: {}&quot;, mutable_binding);
+    println!(&quot;After mutation: {}&quot;, mutable_binding); // 変更した後: {}
 
-    // Error!
+    // エラー!
     _immutable_binding += 1;
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください。
 }
 </code></pre></pre>
-<p>The compiler will throw a detailed diagnostic about mutability errors.</p>
-<h1><a class="header" href="#scope-and-shadowing" id="scope-and-shadowing">Scope and Shadowing</a></h1>
-<p>Variable bindings have a scope, and are constrained to live in a <em>block</em>. A
-block is a collection of statements enclosed by braces <code>{}</code>. Also, <a href="https://en.wikipedia.org/wiki/Variable_shadowing">variable
-shadowing</a> is allowed.</p>
+<p>コンパイラは可変性に関するエラーに対して詳細な診断をします。</p>
+<h1><a class="header" href="#スコープとシャドーイング" id="スコープとシャドーイング">スコープとシャドーイング</a></h1>
+<p>変数束縛は、スコープを持ち、それは<em>ブロック</em>内で有効です。ブロックは、
+波括弧<code>{}</code>でくくられた文の集合のことです。さらに、<a href="https://en.wikipedia.org/wiki/Variable_shadowing">変数のシャドーイング
+</a>も許可されています。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
-    // This binding lives in the main function
+    // この束縛はmain関数内で有効です。
     let long_lived_binding = 1;
 
-    // This is a block, and has a smaller scope than the main function
+    // これはブロックで、main関数より小さいスコープを持っています。
     {
-        // This binding only exists in this block
+        // このブロック内でのみ有効。
         let short_lived_binding = 2;
 
         println!(&quot;inner short: {}&quot;, short_lived_binding);
 
-        // This binding *shadows* the outer one
+        // 外側の束縛を*覆い隠す*ことができます。
         let long_lived_binding = 5_f32;
 
         println!(&quot;inner long: {}&quot;, long_lived_binding);
     }
-    // End of the block
+    // ブロックの終わり
 
-    // Error! `short_lived_binding` doesn't exist in this scope
+    // エラー! `short_lived_binding`はこのスコープに存在しません。
     println!(&quot;outer short: {}&quot;, short_lived_binding);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください。
 
     println!(&quot;outer long: {}&quot;, long_lived_binding);
     
-    // This binding also *shadows* the previous binding
+    // この束縛も前の束縛を*覆い隠し*ます。
     let long_lived_binding = 'a';
     
     println!(&quot;outer long: {}&quot;, long_lived_binding);
 }
 </code></pre></pre>
-<h1><a class="header" href="#declare-first" id="declare-first">Declare first</a></h1>
-<p>It's possible to declare variable bindings first, and initialize them later.
-However, this form is seldom used, as it may lead to the use of uninitialized
-variables.</p>
+<h1><a class="header" href="#宣言" id="宣言">宣言</a></h1>
+<p>変数を最初に宣言して、後で初期化することができます。
+しかし、初期化されていない変数を使う危険性があるので、めったに
+使いません。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
-    // Declare a variable binding
+    // 変数束縛の宣言
     let a_binding;
 
     {
         let x = 2;
 
-        // Initialize the binding
+        // 束縛の初期化
         a_binding = x * x;
     }
 
@@ -1384,35 +1382,34 @@ variables.</p>
 
     let another_binding;
 
-    // Error! Use of uninitialized binding
+    // エラー! 初期化されていない変数を使用しています。
     println!(&quot;another binding: {}&quot;, another_binding);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトする
 
     another_binding = 1;
 
     println!(&quot;another binding: {}&quot;, another_binding);
 }
 </code></pre></pre>
-<p>The compiler forbids use of uninitialized variables, as this would lead to
-undefined behavior.</p>
-<h1><a class="header" href="#freezing" id="freezing">Freezing</a></h1>
-<p>When data is bound by the same name immutably, it also <em>freezes</em>. <em>Frozen</em> data can't be 
-modified until the immutable binding goes out of scope:</p>
+<p>未定義な動作をする危険があるので、コンパイラは初期化されていない変数の使用を禁止しています。</p>
+<h1><a class="header" href="#フリーズ" id="フリーズ">フリーズ</a></h1>
+<p>データが同じ名前の不変な変数に覆い隠された時、これも<em>フリーズ</em>します。
+<em>フリーズされた</em>データは、不変な束縛がスコープを外れるまで、変更できません。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
     let mut _mutable_integer = 7i32;
 
     {
-        // Shadowing by immutable `_mutable_integer`
+        // 不変な`_mutable_integer`で覆い隠す
         let _mutable_integer = _mutable_integer;
 
-        // Error! `_mutable_integer` is frozen in this scope
+        // エラー! `_mutable_integer`はこのスコープではフリーズされています。
         _mutable_integer = 50;
-        // FIXME ^ Comment out this line
+        // FIXME ^ この行をコメントアウトする
 
-        // `_mutable_integer` goes out of scope
+        // `_mutable_integer`がスコープを出る
     }
 
-    // Ok! `_mutable_integer` is not frozen in this scope
+    // Ok! このスコープでは`_mutable_integer`はフリーズされていません。
     _mutable_integer = 3;
 }
 </code></pre></pre>
@@ -4643,7 +4640,7 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 </code></pre></pre>
-<h1><a class="header" href="#mutability-1" id="mutability-1">Mutability</a></h1>
+<h1><a class="header" href="#mutability" id="mutability">Mutability</a></h1>
 <p>Mutability of data can be changed when ownership is transferred.</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let immutable_box = Box::new(5u32);
@@ -4709,7 +4706,7 @@ fn main() {
     eat_box_i32(boxed_i32);
 }
 </code></pre></pre>
-<h1><a class="header" href="#mutability-2" id="mutability-2">Mutability</a></h1>
+<h1><a class="header" href="#mutability-1" id="mutability-1">Mutability</a></h1>
 <p>Mutable data can be mutably borrowed using <code>&amp;mut T</code>. This is called 
 a <em>mutable reference</em> and gives read/write access to the borrower.
 In contrast, <code>&amp;T</code> borrows the data via an immutable reference, and 

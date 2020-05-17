@@ -1,24 +1,24 @@
-# Freezing
+# フリーズ
 
-When data is bound by the same name immutably, it also *freezes*. *Frozen* data can't be 
-modified until the immutable binding goes out of scope:
+データが同じ名前の不変な変数に覆い隠された時、これも*フリーズ*します。
+*フリーズされた*データは、不変な束縛がスコープを外れるまで、変更できません。
 
 ```rust,editable,ignore,mdbook-runnable
 fn main() {
     let mut _mutable_integer = 7i32;
 
     {
-        // Shadowing by immutable `_mutable_integer`
+        // 不変な`_mutable_integer`で覆い隠す
         let _mutable_integer = _mutable_integer;
 
-        // Error! `_mutable_integer` is frozen in this scope
+        // エラー! `_mutable_integer`はこのスコープではフリーズされています。
         _mutable_integer = 50;
-        // FIXME ^ Comment out this line
+        // FIXME ^ この行をコメントアウトする
 
-        // `_mutable_integer` goes out of scope
+        // `_mutable_integer`がスコープを出る
     }
 
-    // Ok! `_mutable_integer` is not frozen in this scope
+    // Ok! このスコープでは`_mutable_integer`はフリーズされていません。
     _mutable_integer = 3;
 }
 ```

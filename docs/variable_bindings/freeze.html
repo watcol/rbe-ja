@@ -147,24 +147,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#freezing" id="freezing">Freezing</a></h1>
-<p>When data is bound by the same name immutably, it also <em>freezes</em>. <em>Frozen</em> data can't be 
-modified until the immutable binding goes out of scope:</p>
+                        <h1><a class="header" href="#フリーズ" id="フリーズ">フリーズ</a></h1>
+<p>データが同じ名前の不変な変数に覆い隠された時、これも<em>フリーズ</em>します。
+<em>フリーズされた</em>データは、不変な束縛がスコープを外れるまで、変更できません。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
     let mut _mutable_integer = 7i32;
 
     {
-        // Shadowing by immutable `_mutable_integer`
+        // 不変な`_mutable_integer`で覆い隠す
         let _mutable_integer = _mutable_integer;
 
-        // Error! `_mutable_integer` is frozen in this scope
+        // エラー! `_mutable_integer`はこのスコープではフリーズされています。
         _mutable_integer = 50;
-        // FIXME ^ Comment out this line
+        // FIXME ^ この行をコメントアウトする
 
-        // `_mutable_integer` goes out of scope
+        // `_mutable_integer`がスコープを出る
     }
 
-    // Ok! `_mutable_integer` is not frozen in this scope
+    // Ok! このスコープでは`_mutable_integer`はフリーズされていません。
     _mutable_integer = 3;
 }
 </code></pre></pre>

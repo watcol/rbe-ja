@@ -147,18 +147,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#declare-first" id="declare-first">Declare first</a></h1>
-<p>It's possible to declare variable bindings first, and initialize them later.
-However, this form is seldom used, as it may lead to the use of uninitialized
-variables.</p>
+                        <h1><a class="header" href="#宣言" id="宣言">宣言</a></h1>
+<p>変数を最初に宣言して、後で初期化することができます。
+しかし、初期化されていない変数を使う危険性があるので、めったに
+使いません。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
-    // Declare a variable binding
+    // 変数束縛の宣言
     let a_binding;
 
     {
         let x = 2;
 
-        // Initialize the binding
+        // 束縛の初期化
         a_binding = x * x;
     }
 
@@ -166,17 +166,16 @@ variables.</p>
 
     let another_binding;
 
-    // Error! Use of uninitialized binding
+    // エラー! 初期化されていない変数を使用しています。
     println!(&quot;another binding: {}&quot;, another_binding);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトする
 
     another_binding = 1;
 
     println!(&quot;another binding: {}&quot;, another_binding);
 }
 </code></pre></pre>
-<p>The compiler forbids use of uninitialized variables, as this would lead to
-undefined behavior.</p>
+<p>未定義な動作をする危険があるので、コンパイラは初期化されていない変数の使用を禁止しています。</p>
 
                     </main>
 

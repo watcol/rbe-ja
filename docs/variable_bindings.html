@@ -147,30 +147,29 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#variable-bindings" id="variable-bindings">Variable Bindings</a></h1>
-<p>Rust provides type safety via static typing. Variable bindings can be type
-annotated when declared. However, in most cases, the compiler will be able
-to infer the type of the variable from the context, heavily reducing the
-annotation burden.</p>
-<p>Values (like literals) can be bound to variables, using the <code>let</code> binding.</p>
+                        <h1><a class="header" href="#変数束縛" id="変数束縛">変数束縛</a></h1>
+<p>Rustは静的型付けによる型安全性を提供しています。宣言時に型注釈をつけることもできますが、
+ほとんどの場合、注釈の労力を軽減するため、コンパイラが変数の型を文脈から推論することが
+できます。</p>
+<p>(リテラルのような)値は、<code>let</code>を使って変数に束縛することができます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let an_integer = 1u32;
     let a_boolean = true;
     let unit = ();
 
-    // copy `an_integer` into `copied_integer`
+    // `an_integer`を`copied_integer`にコピーする
     let copied_integer = an_integer;
 
     println!(&quot;An integer: {:?}&quot;, copied_integer);
     println!(&quot;A boolean: {:?}&quot;, a_boolean);
     println!(&quot;Meet the unit value: {:?}&quot;, unit);
 
-    // The compiler warns about unused variable bindings; these warnings can
-    // be silenced by prefixing the variable name with an underscore
+    // コンパイラは、使われていない変数の束縛に対して警告をします。
+    // 変数名の最初にアンダースコアを付けることによって無効化できます。
     let _unused_variable = 3u32;
 
     let noisy_unused_variable = 2u32;
-    // FIXME ^ Prefix with an underscore to suppress the warning
+    // FIXME ^ 警告を消すため、アンダースコアを付けてください。
 }
 </code></pre></pre>
 

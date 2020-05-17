@@ -147,35 +147,35 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#scope-and-shadowing" id="scope-and-shadowing">Scope and Shadowing</a></h1>
-<p>Variable bindings have a scope, and are constrained to live in a <em>block</em>. A
-block is a collection of statements enclosed by braces <code>{}</code>. Also, <a href="https://en.wikipedia.org/wiki/Variable_shadowing">variable
-shadowing</a> is allowed.</p>
+                        <h1><a class="header" href="#スコープとシャドーイング" id="スコープとシャドーイング">スコープとシャドーイング</a></h1>
+<p>変数束縛は、スコープを持ち、それは<em>ブロック</em>内で有効です。ブロックは、
+波括弧<code>{}</code>でくくられた文の集合のことです。さらに、<a href="https://en.wikipedia.org/wiki/Variable_shadowing">変数のシャドーイング
+</a>も許可されています。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
-    // This binding lives in the main function
+    // この束縛はmain関数内で有効です。
     let long_lived_binding = 1;
 
-    // This is a block, and has a smaller scope than the main function
+    // これはブロックで、main関数より小さいスコープを持っています。
     {
-        // This binding only exists in this block
+        // このブロック内でのみ有効。
         let short_lived_binding = 2;
 
         println!(&quot;inner short: {}&quot;, short_lived_binding);
 
-        // This binding *shadows* the outer one
+        // 外側の束縛を*覆い隠す*ことができます。
         let long_lived_binding = 5_f32;
 
         println!(&quot;inner long: {}&quot;, long_lived_binding);
     }
-    // End of the block
+    // ブロックの終わり
 
-    // Error! `short_lived_binding` doesn't exist in this scope
+    // エラー! `short_lived_binding`はこのスコープに存在しません。
     println!(&quot;outer short: {}&quot;, short_lived_binding);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください。
 
     println!(&quot;outer long: {}&quot;, long_lived_binding);
     
-    // This binding also *shadows* the previous binding
+    // この束縛も前の束縛を*覆い隠し*ます。
     let long_lived_binding = 'a';
     
     println!(&quot;outer long: {}&quot;, long_lived_binding);

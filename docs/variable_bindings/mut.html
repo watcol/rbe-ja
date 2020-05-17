@@ -147,26 +147,25 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#mutability" id="mutability">Mutability</a></h1>
-<p>Variable bindings are immutable by default, but this can be overridden using
-the <code>mut</code> modifier.</p>
+                        <h1><a class="header" href="#可変性" id="可変性">可変性</a></h1>
+<p>変数束縛はデフォルトで不変ですが、<code>mut</code>修飾子で上書きできます。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
     let _immutable_binding = 1;
     let mut mutable_binding = 1;
 
-    println!(&quot;Before mutation: {}&quot;, mutable_binding);
+    println!(&quot;Before mutation: {}&quot;, mutable_binding); // 変更する前: {}
 
     // Ok
     mutable_binding += 1;
 
-    println!(&quot;After mutation: {}&quot;, mutable_binding);
+    println!(&quot;After mutation: {}&quot;, mutable_binding); // 変更した後: {}
 
-    // Error!
+    // エラー!
     _immutable_binding += 1;
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください。
 }
 </code></pre></pre>
-<p>The compiler will throw a detailed diagnostic about mutability errors.</p>
+<p>コンパイラは可変性に関するエラーに対して詳細な診断をします。</p>
 
                     </main>
 

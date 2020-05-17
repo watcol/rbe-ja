@@ -1,18 +1,18 @@
-# Declare first
+# 宣言
 
-It's possible to declare variable bindings first, and initialize them later.
-However, this form is seldom used, as it may lead to the use of uninitialized
-variables.
+変数を最初に宣言して、後で初期化することができます。
+しかし、初期化されていない変数を使う危険性があるので、めったに
+使いません。
 
 ```rust,editable,ignore,mdbook-runnable
 fn main() {
-    // Declare a variable binding
+    // 変数束縛の宣言
     let a_binding;
 
     {
         let x = 2;
 
-        // Initialize the binding
+        // 束縛の初期化
         a_binding = x * x;
     }
 
@@ -20,9 +20,9 @@ fn main() {
 
     let another_binding;
 
-    // Error! Use of uninitialized binding
+    // エラー! 初期化されていない変数を使用しています。
     println!("another binding: {}", another_binding);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトする
 
     another_binding = 1;
 
@@ -30,5 +30,4 @@ fn main() {
 }
 ```
 
-The compiler forbids use of uninitialized variables, as this would lead to
-undefined behavior.
+未定義な動作をする危険があるので、コンパイラは初期化されていない変数の使用を禁止しています。
