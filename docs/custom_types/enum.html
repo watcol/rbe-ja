@@ -147,35 +147,33 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#enums" id="enums">Enums</a></h1>
-<p>The <code>enum</code> keyword allows the creation of a type which may be one of a few
-different variants. Any variant which is valid as a <code>struct</code> is also valid as
-an <code>enum</code>.</p>
-<pre><pre class="playpen"><code class="language-rust editable">// Create an `enum` to classify a web event. Note how both
-// names and type information together specify the variant:
-// `PageLoad != PageUnload` and `KeyPress(char) != Paste(String)`.
-// Each is different and independent.
+                        <h1><a class="header" href="#enum" id="enum">Enum</a></h1>
+<p><code>enum</code>はいくつかの型から1つ選ぶような型を作るときに使う。<code>構造体</code>の定義を満たすものは
+すべて<code>enum</code>内で使える。</p>
+<pre><pre class="playpen"><code class="language-rust editable">//  Webのイベントを分類するのに`enum`を使う。名前と型情報を
+// 合わせて列挙子を定義することに注意してください。
+// `PageLoad != PageUnload`で、`KeyPress(char) != Paste(String)`です。
+// それぞれは異なっていて、独立です。
 enum WebEvent {
-    // An `enum` may either be `unit-like`,
+    // `enum`は`unit`や、
     PageLoad,
     PageUnload,
-    // like tuple structs,
+    // タプル構造体や、
     KeyPress(char),
     Paste(String),
-    // or c-like structures.
+    // cライク構造体のようにできます。
     Click { x: i64, y: i64 },
 }
 
-// A function which takes a `WebEvent` enum as an argument and
-// returns nothing.
+// `WebEvent` enumを引数としてとり、何も返さない関数。
 fn inspect(event: WebEvent) {
     match event {
         WebEvent::PageLoad =&gt; println!(&quot;page loaded&quot;),
         WebEvent::PageUnload =&gt; println!(&quot;page unloaded&quot;),
-        // Destructure `c` from inside the `enum`.
+        // `enum`内の`c`を分割代入する。
         WebEvent::KeyPress(c) =&gt; println!(&quot;pressed '{}'.&quot;, c),
         WebEvent::Paste(s) =&gt; println!(&quot;pasted \&quot;{}\&quot;.&quot;, s),
-        // Destructure `Click` into `x` and `y`.
+        // `Click`を`x`と`y`に分割代入する。
         WebEvent::Click { x, y } =&gt; {
             println!(&quot;clicked at x={}, y={}.&quot;, x, y);
         },
@@ -184,7 +182,7 @@ fn inspect(event: WebEvent) {
 
 fn main() {
     let pressed = WebEvent::KeyPress('x');
-    // `to_owned()` creates an owned `String` from a string slice.
+    // `to_owned()`は文字列のスライスから所有権を持つ`String`を作成します。
     let pasted  = WebEvent::Paste(&quot;my text&quot;.to_owned());
     let click   = WebEvent::Click { x: 20, y: 80 };
     let load    = WebEvent::PageLoad;
@@ -198,25 +196,25 @@ fn main() {
 }
 
 </code></pre></pre>
-<h2><a class="header" href="#type-aliases" id="type-aliases">Type aliases</a></h2>
-<p>If you use a type alias, you can refer to each enum variant via its alias.
-This might be useful if the enum's name is too long or too generic, and you
-want to rename it.</p>
+<h2><a class="header" href="#型エイリアス" id="型エイリアス">型エイリアス</a></h2>
+<p>型エイリアスを使うと、そのエイリアスからenumの列挙子を参照できます。
+これはenumの名前が長過ぎたり、汎用的すぎたりして、名前を変えたいときに
+使えるかもしれません。</p>
 <pre><pre class="playpen"><code class="language-rust editable">enum VeryVerboseEnumOfThingsToDoWithNumbers {
     Add,
     Subtract,
 }
 
-// Creates a type alias
+// 型エイリアスを作る
 type Operations = VeryVerboseEnumOfThingsToDoWithNumbers;
 
 fn main() {
-    // We can refer to each variant via its alias, not its long and inconvenient
-    // name.
+    // エイリアスを通してenumを参照できます。
+    // 長くも不便でもないです。
     let x = Operations::Add;
 }
 </code></pre></pre>
-<p>The most common place you'll see this is in <code>impl</code> blocks using the <code>Self</code> alias.</p>
+<p>これの最も一般的な使い道は、<code>impl</code>ブロック内で<code>Self</code>エイリアスとして使われるときです。</p>
 <pre><pre class="playpen"><code class="language-rust editable">enum VeryVerboseEnumOfThingsToDoWithNumbers {
     Add,
     Subtract,
@@ -231,11 +229,10 @@ impl VeryVerboseEnumOfThingsToDoWithNumbers {
     }
 }
 </code></pre></pre>
-<p>To learn more about enums and type aliases, you can read the
-<a href="https://github.com/rust-lang/rust/pull/61682/#issuecomment-502472847">stabilization report</a> from when this feature was stabilized into
-Rust.</p>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../flow_control/match.html"><code>match</code></a>, <a href="../fn.html"><code>fn</code></a>, and <a href="../std/str.html"><code>String</code></a>, <a href="https://rust-lang.github.io/rfcs/2338-type-alias-enum-variants.html">&quot;Type alias enum variants&quot; RFC</a></p>
+<p>enumと型エイリアスについてもっと知りたければ、この機能がRustの安定版に導入されたときの
+<a href="https://github.com/rust-lang/rust/pull/61682/#issuecomment-502472847">安定化レポート</a>を読んでください。</p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="../flow_control/match.html"><code>match</code></a>、<a href="../fn.html"><code>fn</code></a>、そして<a href="../std/str.html"><code>String</code></a>、<a href="https://rust-lang.github.io/rfcs/2338-type-alias-enum-variants.html">&quot;Type alias enum variants&quot; RFC</a></p>
 
                     </main>
 

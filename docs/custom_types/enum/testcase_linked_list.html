@@ -147,52 +147,52 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#testcase-linked-list" id="testcase-linked-list">Testcase: linked-list</a></h1>
-<p>A common use for <code>enums</code> is to create a linked-list:</p>
+                        <h1><a class="header" href="#テストケース-連結リスト" id="テストケース-連結リスト">テストケース: 連結リスト</a></h1>
+<p><code>enums</code>は連結リストを作るのに適当です。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use crate::List::*;
 
 enum List {
-    // Cons: Tuple struct that wraps an element and a pointer to the next node
+    // Cons: 要素と次のノードを指すポインタからなるタプル構造体
     Cons(u32, Box&lt;List&gt;),
-    // Nil: A node that signifies the end of the linked list
+    // Nil: 連結リストの終わりを指すノード
     Nil,
 }
 
-// Methods can be attached to an enum
+// enumに関連付けられた関数
 impl List {
-    // Create an empty list
+    // 空のリストを作る。
     fn new() -&gt; List {
-        // `Nil` has type `List`
+        // `Nil`は`List`型を持つ
         Nil
     }
 
-    // Consume a list, and return the same list with a new element at its front
+    // リストを受け取り、前に要素を追加したものを返す。
     fn prepend(self, elem: u32) -&gt; List {
-        // `Cons` also has type List
+        // `Cons`も`List`型を持つ。
         Cons(elem, Box::new(self))
     }
 
-    // Return the length of the list
+    // Listの長さを返す
     fn len(&amp;self) -&gt; u32 {
-        // `self` has to be matched, because the behavior of this method
-        // depends on the variant of `self`
-        // `self` has type `&amp;List`, and `*self` has type `List`, matching on a
-        // concrete type `T` is preferred over a match on a reference `&amp;T`
+        // このメソッドの振る舞いは`self`の列挙子によって変化するため、
+        // matchを使う必要があります。
+        // `self`の型は`&amp;List`なので、`*self`の型は`List`になる。match
+        // するときは参照`&amp;T`より実体`T`を使う方が好ましい。
         match *self {
-            // Can't take ownership of the tail, because `self` is borrowed;
-            // instead take a reference to the tail
+            // `self`は借用なので、tailの所有権は取れない。
+            // 代わりにtailの参照を取る。
             Cons(_, ref tail) =&gt; 1 + tail.len(),
-            // Base Case: An empty list has zero length
+            // 空リストの長さは0
             Nil =&gt; 0
         }
     }
 
-    // Return representation of the list as a (heap allocated) string
+    // Listを(ヒープ上の)文字列として返す。
     fn stringify(&amp;self) -&gt; String {
         match *self {
             Cons(head, ref tail) =&gt; {
-                // `format!` is similar to `print!`, but returns a heap
-                // allocated string instead of printing to the console
+                // `format!`は`print!`に似ているが、コンソールに出力せず、
+                // ヒープ上の文字列を返す。
                 format!(&quot;{}, {}&quot;, head, tail.stringify())
             },
             Nil =&gt; {
@@ -203,21 +203,21 @@ impl List {
 }
 
 fn main() {
-    // Create an empty linked list
+    // 空リストを作る
     let mut list = List::new();
 
-    // Prepend some elements
+    // 要素をいくつか追加する
     list = list.prepend(1);
     list = list.prepend(2);
     list = list.prepend(3);
 
-    // Show the final state of the list
+    // 最終的なリストの状態を見る
     println!(&quot;linked list has length: {}&quot;, list.len());
     println!(&quot;{}&quot;, list.stringify());
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../../std/box.html"><code>Box</code></a> and <a href="../../fn/methods.html">methods</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="../../std/box.html"><code>Box</code></a>と<a href="../../fn/methods.html">メソッド</a></p>
 
                     </main>
 

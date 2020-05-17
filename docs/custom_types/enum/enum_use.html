@@ -148,8 +148,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#use" id="use">use</a></h1>
-<p>The <code>use</code> declaration can be used so manual scoping isn't needed:</p>
-<pre><pre class="playpen"><code class="language-rust editable">// An attribute to hide warnings for unused code.
+<p><code>use</code>宣言を使うと、変数のスコープを絶対名で指定する必要がなくなります。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// 使われていないコードの警告をなくす属性
 #![allow(dead_code)]
 
 enum Status {
@@ -163,32 +163,32 @@ enum Work {
 }
 
 fn main() {
-    // Explicitly `use` each name so they are available without
-    // manual scoping.
+    // 明示的に名前を指定して`use`して、
+    // 絶対名で指定しなくても使用できるようになる。
     use crate::Status::{Poor, Rich};
-    // Automatically `use` each name inside `Work`.
+    // `Work`の中の名前をすべて自動的に`use`する。
     use crate::Work::*;
 
-    // Equivalent to `Status::Poor`.
+    // `Status::Poor`と等しい。
     let status = Poor;
-    // Equivalent to `Work::Civilian`.
+    // `Work::Civilian`と等しい。
     let work = Civilian;
 
     match status {
-        // Note the lack of scoping because of the explicit `use` above.
-        Rich =&gt; println!(&quot;The rich have lots of money!&quot;),
-        Poor =&gt; println!(&quot;The poor have no money...&quot;),
+        // 上で`use`しているので、スコープは不要です。
+        Rich =&gt; println!(&quot;The rich have lots of money!&quot;),  // 富豪はたくさんの金を持っています!
+        Poor =&gt; println!(&quot;The poor have no money...&quot;),  // 貧民は金を持っていません...
     }
 
     match work {
-        // Note again the lack of scoping.
-        Civilian =&gt; println!(&quot;Civilians work!&quot;),
-        Soldier  =&gt; println!(&quot;Soldiers fight!&quot;),
+        // これも同じです。
+        Civilian =&gt; println!(&quot;Civilians work!&quot;),  // 民間人は働きます!
+        Soldier  =&gt; println!(&quot;Soldiers fight!&quot;),  // 兵士は戦います!
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../../flow_control/match.html"><code>match</code></a> and <a href="../../mod/use.html"><code>use</code></a> </p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="../../flow_control/match.html"><code>match</code></a>と<a href="../../mod/use.html"><code>use</code></a> </p>
 
                     </main>
 

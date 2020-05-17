@@ -1,8 +1,8 @@
-# Custom Types
+# カスタム型
 
-Rust custom data types are formed mainly through the two keywords:
+Rustのカスタムデータ型は主にこの2つのキーワードで作ることができます。
 
-* `struct`: define a structure
-* `enum`: define an enumeration
+* `struct`: 構造体を定義する
+* `enum`: 列挙体を定義する
 
-Constants can also be created via the `const` and `static` keywords.
+定数は`const`や`static`キーワードで作ることができます。

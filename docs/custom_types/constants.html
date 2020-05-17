@@ -147,40 +147,40 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#constants" id="constants">constants</a></h1>
-<p>Rust has two different types of constants which can be declared in any scope
-including global. Both require explicit type annotation:</p>
+                        <h1><a class="header" href="#定数" id="定数">定数</a></h1>
+<p>Rustには2つの異なるタイプの定数があり、グローバルスコープを含むすべての場所で
+宣言できます。どちらも明示的な型注釈が必要です。</p>
 <ul>
-<li><code>const</code>: An unchangeable value (the common case).</li>
-<li><code>static</code>: A possibly <code>mut</code>able variable with <a href="../scope/lifetime/static_lifetime.html"><code>'static</code></a> lifetime.
-The static lifetime is inferred and does not have to be specified.
-Accessing or modifying a mutable static variable is <a href="../unsafe.html"><code>unsafe</code></a>.</li>
+<li><code>const</code>: 変更できない値(普通はこっち)。</li>
+<li><code>static</code>: <code>mut</code>にすることができる<a href="../scope/lifetime/static_lifetime.html"><code>'static</code></a>ライフタイムを持つ変数。
+'staticライフタイムであることは推論されるので、明示的に指定しなくても良い。
+可変なstatic変数にアクセス、変更することは<a href="../unsafe.html"><code>unsafe</code></a>です。</li>
 </ul>
-<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// Globals are declared outside all other scopes.
+<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// グローバル変数はあらゆるスコープの外で定義します。
 static LANGUAGE: &amp;str = &quot;Rust&quot;;
-const THRESHOLD: i32 = 10;
+const THRESHOLD: i32 = 10;  // THRESHOLD: しきい値
 
 fn is_big(n: i32) -&gt; bool {
-    // Access constant in some function
+    // 関数内から定数を参照
     n &gt; THRESHOLD
 }
 
 fn main() {
     let n = 16;
 
-    // Access constant in the main thread
+    // main関数で定数にアクセス
     println!(&quot;This is {}&quot;, LANGUAGE);
     println!(&quot;The threshold is {}&quot;, THRESHOLD);
     println!(&quot;{} is {}&quot;, n, if is_big(n) { &quot;big&quot; } else { &quot;small&quot; });
 
-    // Error! Cannot modify a `const`.
+    // エラー: `const`は変更できません。
     THRESHOLD = 5;
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/0246-const-vs-static.md">The <code>const</code>/<code>static</code> RFC</a>,
-<a href="../scope/lifetime/static_lifetime.html"><code>'static</code> lifetime</a></p>
+<a href="../scope/lifetime/static_lifetime.html"><code>'static</code>ライフタイム</a></p>
 
                     </main>
 

@@ -147,19 +147,19 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#c-like" id="c-like">C-like</a></h1>
-<p><code>enum</code> can also be used as C-like enums.</p>
-<pre><pre class="playpen"><code class="language-rust editable">// An attribute to hide warnings for unused code.
+                        <h1><a class="header" href="#cライクなenum" id="cライクなenum">CライクなEnum</a></h1>
+<p><code>enum</code>はCライクにも使えます。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// 使用されていないコードの警告をなくす属性
 #![allow(dead_code)]
 
-// enum with implicit discriminator (starts at 0)
+// 値を明示しない場合、0から順に入る。
 enum Number {
     Zero,
     One,
     Two,
 }
 
-// enum with explicit discriminator
+// 明確な指定をするenum
 enum Color {
     Red = 0xff0000,
     Green = 0x00ff00,
@@ -167,16 +167,16 @@ enum Color {
 }
 
 fn main() {
-    // `enums` can be cast as integers.
+    // `enums`は整数にキャストできる。
     println!(&quot;zero is {}&quot;, Number::Zero as i32);
     println!(&quot;one is {}&quot;, Number::One as i32);
 
-    println!(&quot;roses are #{:06x}&quot;, Color::Red as i32);
-    println!(&quot;violets are #{:06x}&quot;, Color::Blue as i32);
+    println!(&quot;roses are #{:06x}&quot;, Color::Red as i32);  // バラは#{:06x}
+    println!(&quot;violets are #{:06x}&quot;, Color::Blue as i32);  // スミレは#{:06x}
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../../types/cast.html">casting</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="../../types/cast.html">キャスト</a></p>
 
                     </main>
 

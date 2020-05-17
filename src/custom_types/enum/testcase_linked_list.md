@@ -1,52 +1,52 @@
-# Testcase: linked-list
+# テストケース: 連結リスト
 
-A common use for `enums` is to create a linked-list:
+`enums`は連結リストを作るのに適当です。
 
 ```rust,editable
 use crate::List::*;
 
 enum List {
-    // Cons: Tuple struct that wraps an element and a pointer to the next node
+    // Cons: 要素と次のノードを指すポインタからなるタプル構造体
     Cons(u32, Box<List>),
-    // Nil: A node that signifies the end of the linked list
+    // Nil: 連結リストの終わりを指すノード
     Nil,
 }
 
-// Methods can be attached to an enum
+// enumに関連付けられた関数
 impl List {
-    // Create an empty list
+    // 空のリストを作る。
     fn new() -> List {
-        // `Nil` has type `List`
+        // `Nil`は`List`型を持つ
         Nil
     }
 
-    // Consume a list, and return the same list with a new element at its front
+    // リストを受け取り、前に要素を追加したものを返す。
     fn prepend(self, elem: u32) -> List {
-        // `Cons` also has type List
+        // `Cons`も`List`型を持つ。
         Cons(elem, Box::new(self))
     }
 
-    // Return the length of the list
+    // Listの長さを返す
     fn len(&self) -> u32 {
-        // `self` has to be matched, because the behavior of this method
-        // depends on the variant of `self`
-        // `self` has type `&List`, and `*self` has type `List`, matching on a
-        // concrete type `T` is preferred over a match on a reference `&T`
+        // このメソッドの振る舞いは`self`の列挙子によって変化するため、
+        // matchを使う必要があります。
+        // `self`の型は`&List`なので、`*self`の型は`List`になる。match
+        // するときは参照`&T`より実体`T`を使う方が好ましい。
         match *self {
-            // Can't take ownership of the tail, because `self` is borrowed;
-            // instead take a reference to the tail
+            // `self`は借用なので、tailの所有権は取れない。
+            // 代わりにtailの参照を取る。
             Cons(_, ref tail) => 1 + tail.len(),
-            // Base Case: An empty list has zero length
+            // 空リストの長さは0
             Nil => 0
         }
     }
 
-    // Return representation of the list as a (heap allocated) string
+    // Listを(ヒープ上の)文字列として返す。
     fn stringify(&self) -> String {
         match *self {
             Cons(head, ref tail) => {
-                // `format!` is similar to `print!`, but returns a heap
-                // allocated string instead of printing to the console
+                // `format!`は`print!`に似ているが、コンソールに出力せず、
+                // ヒープ上の文字列を返す。
                 format!("{}, {}", head, tail.stringify())
             },
             Nil => {
@@ -57,23 +57,23 @@ impl List {
 }
 
 fn main() {
-    // Create an empty linked list
+    // 空リストを作る
     let mut list = List::new();
 
-    // Prepend some elements
+    // 要素をいくつか追加する
     list = list.prepend(1);
     list = list.prepend(2);
     list = list.prepend(3);
 
-    // Show the final state of the list
+    // 最終的なリストの状態を見る
     println!("linked list has length: {}", list.len());
     println!("{}", list.stringify());
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`Box`][box] and [methods][methods]
+[`Box`][box]と[メソッド][methods]
 
 [box]: ../../std/box.md
 [methods]: ../../fn/methods.md

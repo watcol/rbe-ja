@@ -1,9 +1,9 @@
 # use
 
-The `use` declaration can be used so manual scoping isn't needed:
+`use`宣言を使うと、変数のスコープを絶対名で指定する必要がなくなります。
 
 ```rust,editable
-// An attribute to hide warnings for unused code.
+// 使われていないコードの警告をなくす属性
 #![allow(dead_code)]
 
 enum Status {
@@ -17,34 +17,34 @@ enum Work {
 }
 
 fn main() {
-    // Explicitly `use` each name so they are available without
-    // manual scoping.
+    // 明示的に名前を指定して`use`して、
+    // 絶対名で指定しなくても使用できるようになる。
     use crate::Status::{Poor, Rich};
-    // Automatically `use` each name inside `Work`.
+    // `Work`の中の名前をすべて自動的に`use`する。
     use crate::Work::*;
 
-    // Equivalent to `Status::Poor`.
+    // `Status::Poor`と等しい。
     let status = Poor;
-    // Equivalent to `Work::Civilian`.
+    // `Work::Civilian`と等しい。
     let work = Civilian;
 
     match status {
-        // Note the lack of scoping because of the explicit `use` above.
-        Rich => println!("The rich have lots of money!"),
-        Poor => println!("The poor have no money..."),
+        // 上で`use`しているので、スコープは不要です。
+        Rich => println!("The rich have lots of money!"),  // 富豪はたくさんの金を持っています!
+        Poor => println!("The poor have no money..."),  // 貧民は金を持っていません...
     }
 
     match work {
-        // Note again the lack of scoping.
-        Civilian => println!("Civilians work!"),
-        Soldier  => println!("Soldiers fight!"),
+        // これも同じです。
+        Civilian => println!("Civilians work!"),  // 民間人は働きます!
+        Soldier  => println!("Soldiers fight!"),  // 兵士は戦います!
     }
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`match`][match] and [`use`][use] 
+[`match`][match]と[`use`][use] 
 
 [use]: ../../mod/use.md
 [match]: ../../flow_control/match.md

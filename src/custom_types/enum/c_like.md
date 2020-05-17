@@ -1,19 +1,19 @@
-# C-like
+# CライクなEnum
 
-`enum` can also be used as C-like enums.
+`enum`はCライクにも使えます。
 
 ```rust,editable
-// An attribute to hide warnings for unused code.
+// 使用されていないコードの警告をなくす属性
 #![allow(dead_code)]
 
-// enum with implicit discriminator (starts at 0)
+// 値を明示しない場合、0から順に入る。
 enum Number {
     Zero,
     One,
     Two,
 }
 
-// enum with explicit discriminator
+// 明確な指定をするenum
 enum Color {
     Red = 0xff0000,
     Green = 0x00ff00,
@@ -21,17 +21,17 @@ enum Color {
 }
 
 fn main() {
-    // `enums` can be cast as integers.
+    // `enums`は整数にキャストできる。
     println!("zero is {}", Number::Zero as i32);
     println!("one is {}", Number::One as i32);
 
-    println!("roses are #{:06x}", Color::Red as i32);
-    println!("violets are #{:06x}", Color::Blue as i32);
+    println!("roses are #{:06x}", Color::Red as i32);  // バラは#{:06x}
+    println!("violets are #{:06x}", Color::Blue as i32);  // スミレは#{:06x}
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[casting][cast]
+[キャスト][cast]
 
 [cast]: ../../types/cast.md

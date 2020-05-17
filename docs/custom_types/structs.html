@@ -147,98 +147,95 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#structures" id="structures">Structures</a></h1>
-<p>There are three types of structures (&quot;structs&quot;) that can be created using the
-<code>struct</code> keyword:</p>
+                        <h1><a class="header" href="#構造体" id="構造体">構造体</a></h1>
+<p><code>struct</code>キーワードで作ることができる構造体には3つのタイプがあります。</p>
 <ul>
-<li>Tuple structs, which are, basically, named tuples.</li>
-<li>The classic <a href="https://en.wikipedia.org/wiki/Struct_(C_programming_language)">C structs</a></li>
-<li>Unit structs, which are field-less, are useful for generics.</li>
+<li>タプル構造体。基本的な名前がついたタプル。</li>
+<li>古典的な<a href="https://en.wikipedia.org/wiki/Struct_(C_programming_language)">Cの構造体</a></li>
+<li>ユニット構造体。フィールドを持たず、ジェネリックを扱うときに有用です。</li>
 </ul>
 <pre><pre class="playpen"><code class="language-rust editable">#[derive(Debug)]
 struct Person&lt;'a&gt; {
-    // The 'a defines a lifetime
+    // 'aでライフタイムを定義しています。
     name: &amp;'a str,
     age: u8,
 }
 
-// A unit struct
+// ユニット構造体
 struct Unit;
 
-// A tuple struct
+// タプル構造体
 struct Pair(i32, f32);
 
-// A struct with two fields
+// 2個のフィールドを持つ構造体
 struct Point {
     x: f32,
     y: f32,
 }
 
-// Structs can be reused as fields of another struct
+// 構造体は構造体のフィールドとして再利用できます。
 #[allow(dead_code)]
 struct Rectangle {
-    // A rectangle can be specified by where the top left and bottom right
+    // 長方形は左上と右下の位置で定義できます。
     // corners are in space.
     top_left: Point,
     bottom_right: Point,
 }
 
 fn main() {
-    // Create struct with field init shorthand
+    // 構造体を作って簡潔に初期化する。
     let name = &quot;Peter&quot;;
     let age = 27;
     let peter = Person { name, age };
 
-    // Print debug struct
+    // 構造体のデバッグプリント
     println!(&quot;{:?}&quot;, peter);
 
 
-    // Instantiate a `Point`
+    // `Point`をインスタンス化する
     let point: Point = Point { x: 10.3, y: 0.4 };
 
-    // Access the fields of the point
+    // Pointのフィールドにアクセスする
     println!(&quot;point coordinates: ({}, {})&quot;, point.x, point.y);
 
-    // Make a new point by using struct update syntax to use the fields of our
-    // other one
+    // アップデート構文で他の構造体のフィールドを再利用して新しい構造体を作る。
     let bottom_right = Point { x: 5.2, ..point };
 
-    // `bottom_right.y` will be the same as `point.y` because we used that field
-    // from `point`
+    // `point`からフィールドを再利用したため、`bottom_right.y`は`point.y`と
+    // 同じになります。
     println!(&quot;second point: ({}, {})&quot;, bottom_right.x, bottom_right.y);
 
-    // Destructure the point using a `let` binding
+    // `let`でpointを分割代入して束縛する
     let Point { x: top_edge, y: left_edge } = point;
 
     let _rectangle = Rectangle {
-        // struct instantiation is an expression too
+        // 構造体のインスタンス化も式です。
         top_left: Point { x: left_edge, y: top_edge },
         bottom_right: bottom_right,
     };
 
-    // Instantiate a unit struct
+    // ユニット構造体のインスタンス化
     let _unit = Unit;
 
-    // Instantiate a tuple struct
+    // タプル構造体のインスタンス化
     let pair = Pair(1, 0.1);
 
-    // Access the fields of a tuple struct
+    // タプル構造体のフィールドにアクセスする
     println!(&quot;pair contains {:?} and {:?}&quot;, pair.0, pair.1);
 
-    // Destructure a tuple struct
+    // タプル構造体を分割代入
     let Pair(integer, decimal) = pair;
 
     println!(&quot;pair contains {:?} and {:?}&quot;, integer, decimal);
 }
 </code></pre></pre>
-<h3><a class="header" href="#activity" id="activity">Activity</a></h3>
+<h3><a class="header" href="#演習" id="演習">演習</a></h3>
 <ol>
-<li>Add a function <code>rect_area</code> which calculates the area of a rectangle (try
-using nested destructuring).</li>
-<li>Add a function <code>square</code> which takes a <code>Point</code> and a <code>f32</code> as arguments, and returns a <code>Rectangle</code> with its lower left corner on the point, and a width and height corresponding to the <code>f32</code>.</li>
+<li>長方形の面積を計算する<code>rect_area</code>関数を追加してください。(ネスト分割代入を試してみてください。)</li>
+<li><code>Point</code>と<code>f32</code>を引数にとり、<code>Point</code>を左上の点、<code>f32</code>を一辺の長さとして正方形を作成して<code>Rectangle</code>として返す関数<code>square</code>を追加してください。</li>
 </ol>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../attribute.html"><code>attributes</code></a>, <a href="../scope/lifetime.html">lifetime</a> and <a href="../flow_control/match/destructuring.html">destructuring</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<p><a href="../attribute.html"><code>attributes</code></a>、<a href="../scope/lifetime.html">ライフタイム</a>、そして<a href="../flow_control/match/destructuring.html">分割代入</a></p>
 
                     </main>
 
