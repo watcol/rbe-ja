@@ -147,49 +147,52 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#binding" id="binding">Binding</a></h1>
-<p>Indirectly accessing a variable makes it impossible to branch and use that
-variable without re-binding. <code>match</code> provides the <code>@</code> sigil for binding values to
-names:</p>
-<pre><pre class="playpen"><code class="language-rust editable">// A function `age` which returns a `u32`.
+                        <h1><a class="header" href="#束縛" id="束縛">束縛</a></h1>
+<p>変数を直接マッチさせないときは、分割代入なしで自分自身を参照
+できません。<code>match</code>は自分自身を束縛する<code>@</code>記号を提供しています。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// `age`関数は`u32`を返します
 fn age() -&gt; u32 {
     15
 }
 
 fn main() {
-    println!(&quot;Tell me what type of person you are&quot;);
+    println!(&quot;Tell me what type of person you are&quot;);  // あなたがどんな人かおしえて
 
     match age() {
-        0             =&gt; println!(&quot;I'm not born yet I guess&quot;),
-        // Could `match` 1 ..= 12 directly but then what age
-        // would the child be? Instead, bind to `n` for the
-        // sequence of 1 ..= 12. Now the age can be reported.
-        n @ 1  ..= 12 =&gt; println!(&quot;I'm a child of age {:?}&quot;, n),
-        n @ 13 ..= 19 =&gt; println!(&quot;I'm a teen of age {:?}&quot;, n),
-        // Nothing bound. Return the result.
+        0             =&gt; println!(&quot;I'm not born yet I guess&quot;),  // 多分私はまだ生まれていません。
+        // 1 ..= 12にはマッチできますが、この子供の歳がわかりません。
+        // 代わりに、1 ..= 12の数値を束縛する変数nを用意します。
+        // これで歳がわかります。
+        n @ 1  ..= 12 =&gt; println!(&quot;I'm a child of age {:?}&quot;, n),  // 私は{:?}歳の子供です
+        n @ 13 ..= 19 =&gt; println!(&quot;I'm a teen of age {:?}&quot;, n),  // 私は{:?}歳のティーン(訳注: 10代の若者)です。
+        // マッチしなかった場合の処理
         n             =&gt; println!(&quot;I'm an old person of age {:?}&quot;, n),
     }
 }
 </code></pre></pre>
-<p>You can also use binding to &quot;destructure&quot; <code>enum</code> variants, such as <code>Option</code>:</p>
+<p><code>Option</code>のように、「分割代入」した<code>enum</code>の列挙子にも使えます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn some_number() -&gt; Option&lt;u32&gt; {
     Some(42)
 }
 
 fn main() {
     match some_number() {
-        // Got `Some` variant, match if its value, bound to `n`,
-        // is equal to 42.
-        Some(n @ 42) =&gt; println!(&quot;The Answer: {}!&quot;, n),
-        // Match any other number.
-        Some(n)      =&gt; println!(&quot;Not interesting... {}&quot;, n),
-        // Match anything else (`None` variant).
+        // `Some`列挙子で、値が42に等しかったときに、マッチして
+        // `n`に束縛する。
+        Some(n @ 42) =&gt; println!(&quot;The Answer: {}!&quot;, n),  // 答え: {}!
+        // 他の数値にマッチする。
+        Some(n)      =&gt; println!(&quot;Not interesting... {}&quot;, n),  // 面白くない... {}
+        // 他のもの(`None`列挙子)にマッチする。
         _            =&gt; (),
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../../fn.html"><code>functions</code></a>, <a href="../../custom_types/enum.html"><code>enums</code></a> and <a href="../../std/option.html"><code>Option</code></a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="../../fn.html"><code>functions</code></a></li>
+<li><a href="../../custom_types/enum.html"><code>enums</code></a></li>
+<li><a href="../../std/option.html"><code>Option</code></a></li>
+</ul>
 
                     </main>
 

@@ -1,6 +1,6 @@
-# structs
+# 構造体
 
-Similarly, a `struct` can be destructured as shown:
+同様に、`struct`も以下のように分割代入できます。
 
 ```rust,editable
 fn main() {
@@ -9,24 +9,25 @@ fn main() {
         y: u32,
     }
 
-    // Try changing the values in the struct to see what happens
+    // 値を変更して、何が起こるか見てみましょう。
     let foo = Foo { x: (1, 2), y: 3 };
 
     match foo {
-        Foo { x: (1, b), y } => println!("First of x is 1, b = {},  y = {} ", b, y),
+        Foo { x: (1, b), y } => println!("First of x is 1, b = {},  y = {} ", b, y),  // xの最初は1, b = {}, y = {}
 
-        // you can destructure structs and rename the variables,
-        // the order is not important
-        Foo { y: 2, x: i } => println!("y is 2, i = {:?}", i),
+        // 構造体を分割代入して、変数を改名することができます。
+        // 順番は関係ありません
+        Foo { y: 2, x: i } => println!("y is 2, i = {:?}", i),  // yは2, i = {:?}
 
-        // and you can also ignore some variables:
-        Foo { y, .. } => println!("y = {}, we don't care about x", y),
-        // this will give an error: pattern does not mention field `x`
+        // いくつかの変数を無視することができます。
+        Foo { y, .. } => println!("y = {}, we don't care about x", y),  // y = {}, xについてはわかりません
+        // `x`に言及していないため、エラーになります。
         //Foo { y } => println!("y = {}", y),
     }
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[Structs](../../../custom_types/structs.md), [The ref pattern](../../../scope/borrow/ref.md)
+- [構造体](../../../custom_types/structs.md)
+- [refパターン](../../../scope/borrow/ref.md)

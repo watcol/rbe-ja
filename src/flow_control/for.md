@@ -111,6 +111,6 @@ fn main() {
 
 ### こちらも参照:
 
-[イテレータ][iter]
+- [イテレータ][iter]
 
 [iter]: ../trait/iter.md

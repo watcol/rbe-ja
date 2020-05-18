@@ -84,7 +84,7 @@ RGB (0, 0, 0) 0x000000
 
 ### こちらも参照:
 
-[`std::fmt`][fmt]
+- [`std::fmt`][fmt]
 
 [named_parameters]: https://doc.rust-lang.org/std/fmt/#named-parameters
 [deadbeef]: https://en.wikipedia.org/wiki/Deadbeef#Magic_debug_values

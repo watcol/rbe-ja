@@ -147,33 +147,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#structs" id="structs">structs</a></h1>
-<p>Similarly, a <code>struct</code> can be destructured as shown:</p>
+                        <h1><a class="header" href="#構造体" id="構造体">構造体</a></h1>
+<p>同様に、<code>struct</code>も以下のように分割代入できます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     struct Foo {
         x: (u32, u32),
         y: u32,
     }
 
-    // Try changing the values in the struct to see what happens
+    // 値を変更して、何が起こるか見てみましょう。
     let foo = Foo { x: (1, 2), y: 3 };
 
     match foo {
-        Foo { x: (1, b), y } =&gt; println!(&quot;First of x is 1, b = {},  y = {} &quot;, b, y),
+        Foo { x: (1, b), y } =&gt; println!(&quot;First of x is 1, b = {},  y = {} &quot;, b, y),  // xの最初は1, b = {}, y = {}
 
-        // you can destructure structs and rename the variables,
-        // the order is not important
-        Foo { y: 2, x: i } =&gt; println!(&quot;y is 2, i = {:?}&quot;, i),
+        // 構造体を分割代入して、変数を改名することができます。
+        // 順番は関係ありません
+        Foo { y: 2, x: i } =&gt; println!(&quot;y is 2, i = {:?}&quot;, i),  // yは2, i = {:?}
 
-        // and you can also ignore some variables:
-        Foo { y, .. } =&gt; println!(&quot;y = {}, we don't care about x&quot;, y),
-        // this will give an error: pattern does not mention field `x`
+        // いくつかの変数を無視することができます。
+        Foo { y, .. } =&gt; println!(&quot;y = {}, we don't care about x&quot;, y),  // y = {}, xについてはわかりません
+        // `x`に言及していないため、エラーになります。
         //Foo { y } =&gt; println!(&quot;y = {}&quot;, y),
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../../../custom_types/structs.html">Structs</a>, <a href="../../../scope/borrow/ref.html">The ref pattern</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="../../../custom_types/structs.html">構造体</a></li>
+<li><a href="../../../scope/borrow/ref.html">refパターン</a></li>
+</ul>
 
                     </main>
 

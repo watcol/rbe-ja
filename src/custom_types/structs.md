@@ -90,7 +90,9 @@ fn main() {
 
 ### こちらも参照:
 
-[`attributes`][attributes]、[ライフタイム][lifetime]、そして[分割代入][destructuring]
+- [`attributes`][attributes]
+- [ライフタイム][lifetime]
+- [分割代入][destructuring]
 
 [attributes]: ../attribute.md
 [c_struct]: https://en.wikipedia.org/wiki/Struct_(C_programming_language)

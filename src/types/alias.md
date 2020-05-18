@@ -33,4 +33,4 @@ fn main() {
 
 ### こちらも参照
 
-[属性](../attribute.md)
+- [属性](../attribute.md)

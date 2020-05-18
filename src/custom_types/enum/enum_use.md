@@ -44,7 +44,8 @@ fn main() {
 
 ### こちらも参照:
 
-[`match`][match]と[`use`][use] 
+- [`match`][match]
+- [`use`][use] 
 
 [use]: ../../mod/use.md
 [match]: ../../flow_control/match.md

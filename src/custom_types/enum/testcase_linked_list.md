@@ -73,7 +73,8 @@ fn main() {
 
 ### こちらも参照:
 
-[`Box`][box]と[メソッド][methods]
+- [`Box`][box]
+- [メソッド][methods]
 
 [box]: ../../std/box.md
 [methods]: ../../fn/methods.md

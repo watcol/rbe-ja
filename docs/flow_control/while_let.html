@@ -148,42 +148,42 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#while-let" id="while-let">while let</a></h1>
-<p>Similar to <code>if let</code>, <code>while let</code> can make awkward <code>match</code> sequences
-more tolerable. Consider the following sequence that increments <code>i</code>:</p>
+<p><code>if let</code>と同様に、<code>while let</code>も冗長な<code>match</code>文を簡略化するのに使えます。
+<code>i</code>をインクリメントする次の節を見てください。</p>
 <pre><pre class="playpen"><code class="language-rust">
 <span class="boring">#![allow(unused_variables)]
 </span><span class="boring">fn main() {
-</span>// Make `optional` of type `Option&lt;i32&gt;`
+</span>// `Option&lt;i32&gt;`型の`optional`を作ります
 let mut optional = Some(0);
 
-// Repeatedly try this test.
+// この試行を繰り返します。
 loop {
     match optional {
-        // If `optional` destructures, evaluate the block.
+        // `optional`がSome(i)にマッチすれば、このブロックを実行します。
         Some(i) =&gt; {
             if i &gt; 9 {
-                println!(&quot;Greater than 9, quit!&quot;);
+                println!(&quot;Greater than 9, quit!&quot;);  // 0より大きいので、終了します!
                 optional = None;
             } else {
-                println!(&quot;`i` is `{:?}`. Try again.&quot;, i);
+                println!(&quot;`i` is `{:?}`. Try again.&quot;, i);  // `i`は`{:?}`です。もう1度試してください。
                 optional = Some(i + 1);
             }
-            // ^ Requires 3 indentations!
+            // ^ 3インデント必要です!
         },
-        // Quit the loop when the destructure fails:
+        // マッチしなければ、ループを出ます。
         _ =&gt; { break; }
-        // ^ Why should this be required? There must be a better way!
+        // ^ これは必要でしょうか? もっと良い方法があります!
     }
 }
 <span class="boring">}
 </span></code></pre></pre>
-<p>Using <code>while let</code> makes this sequence much nicer:</p>
+<p><code>while let</code>を使えば、この節をより良くなります。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // Make `optional` of type `Option&lt;i32&gt;`
+    // `Option&lt;i32&gt;`型の`optional`を作ります
     let mut optional = Some(0);
 
-    // This reads: &quot;while `let` destructures `optional` into
-    // `Some(i)`, evaluate the block (`{}`). Else `break`.
+    // 「`let`が`optional`を`Some(i)`に分解できる限り、ブロック(`{}`)を実行し、
+    // そうでなければ`break`する」という意味
     while let Some(i) = optional {
         if i &gt; 9 {
             println!(&quot;Greater than 9, quit!&quot;);
@@ -192,15 +192,18 @@ loop {
             println!(&quot;`i` is `{:?}`. Try again.&quot;, i);
             optional = Some(i + 1);
         }
-        // ^ Less rightward drift and doesn't require
-        // explicitly handling the failing case.
+        // ^ インデントも少なく、明示的な失敗の処理も不要です。
     }
-    // ^ `if let` had additional optional `else`/`else if`
-    // clauses. `while let` does not have these.
+    // ^ `if let`は`else`/`else if`節を持っていますが、
+    // `while let`にはありません。
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../custom_types/enum.html"><code>enum</code></a>, <a href="../std/option.html"><code>Option</code></a>, and the <a href="https://github.com/rust-lang/rfcs/pull/214">RFC</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="../custom_types/enum.html"><code>enum</code></a></li>
+<li><a href="../std/option.html"><code>Option</code></a></li>
+<li><a href="https://github.com/rust-lang/rfcs/pull/214">RFC</a></li>
+</ul>
 
                     </main>
 

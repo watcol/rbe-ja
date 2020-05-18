@@ -1,60 +1,56 @@
-# pointers/ref
+# ポインタ/参照
 
-For pointers, a distinction needs to be made between destructuring
-and dereferencing as they are different concepts which are used
-differently from a language like `C`.
+Rustのポインタは、`C`のような言語とは違い、間接参照と分割代入を区別する
+必要があります。
 
- * Dereferencing uses `*`
- * Destructuring uses `&`, `ref`, and `ref mut`
+ * 間接参照には`*`を使う
+ * 分割代入には`&`、`ref`、`ref mut`を使う
 
 ```rust,editable
 fn main() {
-    // Assign a reference of type `i32`. The `&` signifies there
-    // is a reference being assigned.
+    // `i32`の参照を代入する。`&`で参照であることを
+    // 明示している。
     let reference = &4;
 
     match reference {
-        // If `reference` is pattern matched against `&val`, it results
-        // in a comparison like:
+        // `reference`が`&val`にマッチした時、次の2つが
+        // 比較されている。
         // `&i32`
         // `&val`
-        // ^ We see that if the matching `&`s are dropped, then the `i32`
-        // should be assigned to `val`.
-        &val => println!("Got a value via destructuring: {:?}", val),
+        // ^ よって`&`が外れると、`i32`が
+        // `val`に代入される。
+        &val => println!("Got a value via destructuring: {:?}", val),  // 分割代入で値を取得しました: {:?}
     }
 
-    // To avoid the `&`, you dereference before matching.
+    // `&`をなくしたいときは、マッチする前に間接参照する
     match *reference {
-        val => println!("Got a value via dereferencing: {:?}", val),
+        val => println!("Got a value via dereferencing: {:?}", val),  // 間接参照で値を取得しました: {:?}
     }
 
-    // What if you don't start with a reference? `reference` was a `&`
-    // because the right side was already a reference. This is not
-    // a reference because the right side is not one.
+    // 参照を代入しない場合はどうでしょうか? `reference`は右辺値が`&`で
+    // 始まっていたので参照でしたが、これは参照ではありません。
     let _not_a_reference = 3;
 
-    // Rust provides `ref` for exactly this purpose. It modifies the
-    // assignment so that a reference is created for the element; this
-    // reference is assigned.
+    // Rustはちょうどこの場合のために`ref`を提供しています。要素の参照が
+    // 作られ、それが代入されます。
     let ref _is_a_reference = 3;
 
-    // Accordingly, by defining 2 values without references, references
-    // can be retrieved via `ref` and `ref mut`.
+    // 同様に、参照を使わずに値を定義し、`ref`や`ref mut`で参照
+    // を取得することができます。
     let value = 5;
     let mut mut_value = 6;
 
-    // Use `ref` keyword to create a reference.
+    // `ref`キーワードで参照を作りましょう
     match value {
-        ref r => println!("Got a reference to a value: {:?}", r),
+        ref r => println!("Got a reference to a value: {:?}", r),  // 値の参照を取得しました
     }
 
-    // Use `ref mut` similarly.
+    // 同様に`ref mut`を使います。
     match mut_value {
         ref mut m => {
-            // Got a reference. Gotta dereference it before we can
-            // add anything to it.
+            // 参照を取得して、値を変更するには間接参照する必要がある。
             *m += 10;
-            println!("We added 10. `mut_value`: {:?}", m);
+            println!("We added 10. `mut_value`: {:?}", m);  // 10加えました。`mut_value`: {:?}
         },
     }
 }

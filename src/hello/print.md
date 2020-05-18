@@ -80,8 +80,10 @@ fn main() {
 
 ### こちらも参照:
 
-[`std::fmt`][fmt], [`macros`][macros], [`structs`][structs],
-そして[`traits`][traits]
+- [`std::fmt`][fmt]
+- [`macros`][macros]
+- [`structs`][structs]
+- [`traits`][traits]
 
 [fmt]: https://doc.rust-lang.org/std/fmt/
 [macros]: ../macros.md

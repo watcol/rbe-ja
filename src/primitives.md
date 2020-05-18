@@ -55,7 +55,10 @@ fn main() {
 
 ### こちらも参照:
 
-[`std`ライブラリ][std]、[`mut`][mut]、[推論][inference]、そして[シャドーイング][shadowing]
+- [`std`ライブラリ][std]
+- [`mut`][mut]
+- [推論][inference]
+- [シャドーイング][shadowing]
 
 [std]: https://doc.rust-lang.org/std/
 [mut]: variable_bindings/mut.md

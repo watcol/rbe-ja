@@ -147,17 +147,17 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#enums" id="enums">enums</a></h1>
-<p>An <code>enum</code> is destructured similarly:</p>
-<pre><pre class="playpen"><code class="language-rust editable">// `allow` required to silence warnings because only
-// one variant is used.
+                        <h1><a class="header" href="#enum" id="enum">enum</a></h1>
+<p><code>enum</code>も似たように分割代入できます。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// 列挙子を一つしか使わないので、警告を消すために
+// `allow`が必要です。
 #[allow(dead_code)]
 enum Color {
-    // These 3 are specified solely by their name.
+    // この3つは名前だけで扱います。
     Red,
     Blue,
     Green,
-    // These likewise tie `u32` tuples to different names: color models.
+    // これらは、カラーモデルと言って、`u32`タプルを併せて扱います。
     RGB(u32, u32, u32),
     HSV(u32, u32, u32),
     HSL(u32, u32, u32),
@@ -167,10 +167,10 @@ enum Color {
 
 fn main() {
     let color = Color::RGB(122, 17, 40);
-    // TODO ^ Try different variants for `color`
+    // TODO ^ `color`の違う列挙子で試してみてください。
 
     println!(&quot;What color is it?&quot;);
-    // An `enum` can be destructured using a `match`.
+    //  `enum`は`match`を使って分割代入できます。
     match color {
         Color::Red   =&gt; println!(&quot;The color is Red!&quot;),
         Color::Blue  =&gt; println!(&quot;The color is Blue!&quot;),
@@ -178,20 +178,24 @@ fn main() {
         Color::RGB(r, g, b) =&gt;
             println!(&quot;Red: {}, green: {}, and blue: {}!&quot;, r, g, b),
         Color::HSV(h, s, v) =&gt;
-            println!(&quot;Hue: {}, saturation: {}, value: {}!&quot;, h, s, v),
+            println!(&quot;Hue: {}, saturation: {}, value: {}!&quot;, h, s, v),  // 色相: {}, 彩度: {}, 明度: {}
         Color::HSL(h, s, l) =&gt;
-            println!(&quot;Hue: {}, saturation: {}, lightness: {}!&quot;, h, s, l),
+            println!(&quot;Hue: {}, saturation: {}, lightness: {}!&quot;, h, s, l),  // 色相: {}, 彩度: {}, 輝度: {}
         Color::CMY(c, m, y) =&gt;
             println!(&quot;Cyan: {}, magenta: {}, yellow: {}!&quot;, c, m, y),
         Color::CMYK(c, m, y, k) =&gt;
             println!(&quot;Cyan: {}, magenta: {}, yellow: {}, key (black): {}!&quot;,
                 c, m, y, k),
-        // Don't need another arm because all variants have been examined
+        // すべての列挙子を使っったので、もう1つのアームは必要ありません。
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../../../attribute/unused.html"><code>#[allow(...)]</code></a>, <a href="https://en.wikipedia.org/wiki/Color_model">color models</a> and <a href="../../../custom_types/enum.html"><code>enum</code></a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="../../../attribute/unused.html"><code>#[allow(...)]</code></a></li>
+<li><a href="https://en.wikipedia.org/wiki/Color_model">カラーモデル</a></li>
+<li><a href="../../../custom_types/enum.html"><code>enum</code></a></li>
+</ul>
 
                     </main>
 

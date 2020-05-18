@@ -1,17 +1,17 @@
-# enums
+# enum
 
-An `enum` is destructured similarly:
+`enum`も似たように分割代入できます。
 
 ```rust,editable
-// `allow` required to silence warnings because only
-// one variant is used.
+// 列挙子を一つしか使わないので、警告を消すために
+// `allow`が必要です。
 #[allow(dead_code)]
 enum Color {
-    // These 3 are specified solely by their name.
+    // この3つは名前だけで扱います。
     Red,
     Blue,
     Green,
-    // These likewise tie `u32` tuples to different names: color models.
+    // これらは、カラーモデルと言って、`u32`タプルを併せて扱います。
     RGB(u32, u32, u32),
     HSV(u32, u32, u32),
     HSL(u32, u32, u32),
@@ -21,10 +21,10 @@ enum Color {
 
 fn main() {
     let color = Color::RGB(122, 17, 40);
-    // TODO ^ Try different variants for `color`
+    // TODO ^ `color`の違う列挙子で試してみてください。
 
     println!("What color is it?");
-    // An `enum` can be destructured using a `match`.
+    //  `enum`は`match`を使って分割代入できます。
     match color {
         Color::Red   => println!("The color is Red!"),
         Color::Blue  => println!("The color is Blue!"),
@@ -32,22 +32,24 @@ fn main() {
         Color::RGB(r, g, b) =>
             println!("Red: {}, green: {}, and blue: {}!", r, g, b),
         Color::HSV(h, s, v) =>
-            println!("Hue: {}, saturation: {}, value: {}!", h, s, v),
+            println!("Hue: {}, saturation: {}, value: {}!", h, s, v),  // 色相: {}, 彩度: {}, 明度: {}
         Color::HSL(h, s, l) =>
-            println!("Hue: {}, saturation: {}, lightness: {}!", h, s, l),
+            println!("Hue: {}, saturation: {}, lightness: {}!", h, s, l),  // 色相: {}, 彩度: {}, 輝度: {}
         Color::CMY(c, m, y) =>
             println!("Cyan: {}, magenta: {}, yellow: {}!", c, m, y),
         Color::CMYK(c, m, y, k) =>
             println!("Cyan: {}, magenta: {}, yellow: {}, key (black): {}!",
                 c, m, y, k),
-        // Don't need another arm because all variants have been examined
+        // すべての列挙子を使っったので、もう1つのアームは必要ありません。
     }
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`#[allow(...)]`][allow], [color models][color_models] and [`enum`][enum]
+- [`#[allow(...)]`][allow]
+- [カラーモデル][color_models]
+- [`enum`][enum]
 
 [allow]: ../../../attribute/unused.md
 [color_models]: https://en.wikipedia.org/wiki/Color_model

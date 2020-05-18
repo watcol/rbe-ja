@@ -148,65 +148,63 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#if-let" id="if-let">if let</a></h1>
-<p>For some use cases, when matching enums, <code>match</code> is awkward. For example:</p>
+<p>enumをマッチする時、しばしば<code>match</code>は冗長です。例えば</p>
 <pre><pre class="playpen"><code class="language-rust">
 <span class="boring">#![allow(unused_variables)]
 </span><span class="boring">fn main() {
-</span>// Make `optional` of type `Option&lt;i32&gt;`
+</span>// `Option&lt;i32&gt;`型の`optional`を作成する
 let optional = Some(7);
 
 match optional {
     Some(i) =&gt; {
-        println!(&quot;This is a really long string and `{:?}`&quot;, i);
-        // ^ Needed 2 indentations just so we could destructure
-        // `i` from the option.
+        println!(&quot;This is a really long string and `{:?}`&quot;, i);  // これは本当に長い文字列で、`{:?}`です
+        // ^ iをoptionから分割代入しているので、2つインデントが必要です。
     },
     _ =&gt; {},
-    // ^ Required because `match` is exhaustive. Doesn't it seem
-    // like wasted space?
+    // ^ `match`はすべてを網羅しないといけないため、必要です。
+    // 無駄だと思いませんか?
 };
 
 <span class="boring">}
 </span></code></pre></pre>
-<p><code>if let</code> is cleaner for this use case and in addition allows various
-failure options to be specified:</p>
+<p><code>if let</code>はこの場合おいて簡潔な上、失敗時の処理も柔軟にできます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // All have type `Option&lt;i32&gt;`
+    // すべて`Option&lt;i32&gt;`型です
     let number = Some(7);
     let letter: Option&lt;i32&gt; = None;
     let emoticon: Option&lt;i32&gt; = None;
 
-    // The `if let` construct reads: &quot;if `let` destructures `number` into
-    // `Some(i)`, evaluate the block (`{}`).
+    // `if let`は、「もし`let`が`number`を分解した
+    // 結果が`Some(i)`なら、ブロックを実行する。」
+    // という意味です。
     if let Some(i) = number {
-        println!(&quot;Matched {:?}!&quot;, i);
+        println!(&quot;Matched {:?}!&quot;, i);  // {:?}にマッチしました!
     }
 
-    // If you need to specify a failure, use an else:
+    // もし失敗を扱いたければ、elseを使います。
     if let Some(i) = letter {
         println!(&quot;Matched {:?}!&quot;, i);
     } else {
-        // Destructure failed. Change to the failure case.
-        println!(&quot;Didn't match a number. Let's go with a letter!&quot;);
+        // 分解に失敗した時、このブロックを実行します。
+        println!(&quot;Didn't match a number. Let's go with a letter!&quot;);  // 数字にマッチしませんでした。文字で行きましょう!
     }
 
-    // Provide an altered failing condition.
+    // もう一つ失敗したときの処理を作る
     let i_like_letters = false;
 
     if let Some(i) = emoticon {
         println!(&quot;Matched {:?}!&quot;, i);
-    // Destructure failed. Evaluate an `else if` condition to see if the
-    // alternate failure branch should be taken:
+    // 失敗した時、`else if`の条件を見て、分岐します。
     } else if i_like_letters {
         println!(&quot;Didn't match a number. Let's go with a letter!&quot;);
     } else {
-        // The condition evaluated false. This branch is the default:
-        println!(&quot;I don't like letters. Let's go with an emoticon :)!&quot;);
+        // 条件がfalseの時、この枝を実行します。
+        println!(&quot;I don't like letters. Let's go with an emoticon :)!&quot;);  // 文字は嫌いです。絵文字で行きましょう :)
     }
 }
 </code></pre></pre>
-<p>In the same way, <code>if let</code> can be used to match any enum value:</p>
-<pre><pre class="playpen"><code class="language-rust editable">// Our example enum
+<p>同じように、<code>if let</code>はすべてのenumで使えます。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// 例で使うenum
 enum Foo {
     Bar,
     Baz,
@@ -214,52 +212,57 @@ enum Foo {
 }
 
 fn main() {
-    // Create example variables
+    // 例で使う変数
     let a = Foo::Bar;
     let b = Foo::Baz;
     let c = Foo::Qux(100);
     
-    // Variable a matches Foo::Bar
+    // 変数aはFoo::Barにマッチする
     if let Foo::Bar = a {
         println!(&quot;a is foobar&quot;);
     }
     
-    // Variable b does not match Foo::Bar
-    // So this will print nothing
+    // 変数bはFoo::Barにマッチしないので、
+    // 何も出力しない。
     if let Foo::Bar = b {
         println!(&quot;b is foobar&quot;);
     }
     
-    // Variable c matches Foo::Qux which has a value
-    // Similar to Some() in the previous example
+    // 変数cは値を持つFoo::Quxにマッチし、
+    // 前の例のSome()と同じような挙動をする。
     if let Foo::Qux(value) = c {
         println!(&quot;c is {}&quot;, value);
     }
 
-    // Binding also works with `if let`
+    // `if let`でも束縛は使えます。
     if let Foo::Qux(value @ 100) = c {
         println!(&quot;c is one hundred&quot;);
     }
 }
 </code></pre></pre>
-<p>Another benefit is that <code>if let</code> allows us to match non-parameterized enum variants. This is true even in cases where the enum doesn't implement or derive <code>PartialEq</code>. In such cases <code>if Foo::Bar == a</code> would fail to compile, because instances of the enum cannot be equated, however <code>if let</code> will continue to work.</p>
-<p>Would you like a challenge? Fix the following example to use <code>if let</code>:</p>
-<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// This enum purposely neither implements nor derives PartialEq.
-// That is why comparing Foo::Bar == a fails below.
+<p>もう一つの<code>if let</code>の恩恵は、enumのパラメータなしの列挙子にマッチできることです。enumは<code>PartialEq</code>を実装も継承もしないため、enumのインスタンスは比較できず、
+<code>if Foo::Bar == a</code> はコンパイルに失敗しますが、 <code>if let</code>で同じことができます。</p>
+<p>挑戦しますか? 次の例を<code>if let</code>を使うように修正してください。</p>
+<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// このenumはPartialEqを実装も継承もしません。
+// よって、下のFoo::Bar == aは失敗します。
 enum Foo {Bar}
 
 fn main() {
     let a = Foo::Bar;
 
-    // Variable a matches Foo::Bar
+    // 変数aはFoo::Barにマッチします
     if Foo::Bar == a {
-    // ^-- this causes a compile-time error. Use `if let` instead.
+    // ^-- この節はコンパイルエラーを起こします。代わりに`if let`を使ってください。
         println!(&quot;a is foobar&quot;);
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../custom_types/enum.html"><code>enum</code></a>, <a href="../std/option.html"><code>Option</code></a>, and the <a href="https://github.com/rust-lang/rfcs/pull/160">RFC</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="../custom_types/enum.html"><code>enum</code></a></li>
+<li><a href="../std/option.html"><code>Option</code></a></li>
+<li><a href="https://github.com/rust-lang/rfcs/pull/160">RFC</a></li>
+</ul>
 
                     </main>
 

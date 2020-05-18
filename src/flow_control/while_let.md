@@ -1,42 +1,42 @@
 # while let
 
-Similar to `if let`, `while let` can make awkward `match` sequences
-more tolerable. Consider the following sequence that increments `i`:
+`if let`と同様に、`while let`も冗長な`match`文を簡略化するのに使えます。
+`i`をインクリメントする次の節を見てください。
 
 ```rust
-// Make `optional` of type `Option<i32>`
+// `Option<i32>`型の`optional`を作ります
 let mut optional = Some(0);
 
-// Repeatedly try this test.
+// この試行を繰り返します。
 loop {
     match optional {
-        // If `optional` destructures, evaluate the block.
+        // `optional`がSome(i)にマッチすれば、このブロックを実行します。
         Some(i) => {
             if i > 9 {
-                println!("Greater than 9, quit!");
+                println!("Greater than 9, quit!");  // 0より大きいので、終了します!
                 optional = None;
             } else {
-                println!("`i` is `{:?}`. Try again.", i);
+                println!("`i` is `{:?}`. Try again.", i);  // `i`は`{:?}`です。もう1度試してください。
                 optional = Some(i + 1);
             }
-            // ^ Requires 3 indentations!
+            // ^ 3インデント必要です!
         },
-        // Quit the loop when the destructure fails:
+        // マッチしなければ、ループを出ます。
         _ => { break; }
-        // ^ Why should this be required? There must be a better way!
+        // ^ これは必要でしょうか? もっと良い方法があります!
     }
 }
 ```
 
-Using `while let` makes this sequence much nicer:
+`while let`を使えば、この節をより良くなります。
 
 ```rust,editable
 fn main() {
-    // Make `optional` of type `Option<i32>`
+    // `Option<i32>`型の`optional`を作ります
     let mut optional = Some(0);
 
-    // This reads: "while `let` destructures `optional` into
-    // `Some(i)`, evaluate the block (`{}`). Else `break`.
+    // 「`let`が`optional`を`Some(i)`に分解できる限り、ブロック(`{}`)を実行し、
+    // そうでなければ`break`する」という意味
     while let Some(i) = optional {
         if i > 9 {
             println!("Greater than 9, quit!");
@@ -45,17 +45,18 @@ fn main() {
             println!("`i` is `{:?}`. Try again.", i);
             optional = Some(i + 1);
         }
-        // ^ Less rightward drift and doesn't require
-        // explicitly handling the failing case.
+        // ^ インデントも少なく、明示的な失敗の処理も不要です。
     }
-    // ^ `if let` had additional optional `else`/`else if`
-    // clauses. `while let` does not have these.
+    // ^ `if let`は`else`/`else if`節を持っていますが、
+    // `while let`にはありません。
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`enum`][enum], [`Option`][option], and the [RFC][while_let_rfc]
+- [`enum`][enum]
+- [`Option`][option]
+- [RFC][while_let_rfc]
 
 [enum]: ../custom_types/enum.md
 [option]: ../std/option.md

@@ -32,6 +32,6 @@ fn main() {
 
 ### こちらも参照:
 
-[キャスト][cast]
+- [キャスト][cast]
 
 [cast]: ../../types/cast.md

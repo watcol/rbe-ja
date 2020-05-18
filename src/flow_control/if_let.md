@@ -1,68 +1,66 @@
 # if let
 
-For some use cases, when matching enums, `match` is awkward. For example:
+enumをマッチする時、しばしば`match`は冗長です。例えば
 
 ```rust
-// Make `optional` of type `Option<i32>`
+// `Option<i32>`型の`optional`を作成する
 let optional = Some(7);
 
 match optional {
     Some(i) => {
-        println!("This is a really long string and `{:?}`", i);
-        // ^ Needed 2 indentations just so we could destructure
-        // `i` from the option.
+        println!("This is a really long string and `{:?}`", i);  // これは本当に長い文字列で、`{:?}`です
+        // ^ iをoptionから分割代入しているので、2つインデントが必要です。
     },
     _ => {},
-    // ^ Required because `match` is exhaustive. Doesn't it seem
-    // like wasted space?
+    // ^ `match`はすべてを網羅しないといけないため、必要です。
+    // 無駄だと思いませんか?
 };
 
 ```
 
-`if let` is cleaner for this use case and in addition allows various
-failure options to be specified:
+`if let`はこの場合おいて簡潔な上、失敗時の処理も柔軟にできます。
 
 ```rust,editable
 fn main() {
-    // All have type `Option<i32>`
+    // すべて`Option<i32>`型です
     let number = Some(7);
     let letter: Option<i32> = None;
     let emoticon: Option<i32> = None;
 
-    // The `if let` construct reads: "if `let` destructures `number` into
-    // `Some(i)`, evaluate the block (`{}`).
+    // `if let`は、「もし`let`が`number`を分解した
+    // 結果が`Some(i)`なら、ブロックを実行する。」
+    // という意味です。
     if let Some(i) = number {
-        println!("Matched {:?}!", i);
+        println!("Matched {:?}!", i);  // {:?}にマッチしました!
     }
 
-    // If you need to specify a failure, use an else:
+    // もし失敗を扱いたければ、elseを使います。
     if let Some(i) = letter {
         println!("Matched {:?}!", i);
     } else {
-        // Destructure failed. Change to the failure case.
-        println!("Didn't match a number. Let's go with a letter!");
+        // 分解に失敗した時、このブロックを実行します。
+        println!("Didn't match a number. Let's go with a letter!");  // 数字にマッチしませんでした。文字で行きましょう!
     }
 
-    // Provide an altered failing condition.
+    // もう一つ失敗したときの処理を作る
     let i_like_letters = false;
 
     if let Some(i) = emoticon {
         println!("Matched {:?}!", i);
-    // Destructure failed. Evaluate an `else if` condition to see if the
-    // alternate failure branch should be taken:
+    // 失敗した時、`else if`の条件を見て、分岐します。
     } else if i_like_letters {
         println!("Didn't match a number. Let's go with a letter!");
     } else {
-        // The condition evaluated false. This branch is the default:
-        println!("I don't like letters. Let's go with an emoticon :)!");
+        // 条件がfalseの時、この枝を実行します。
+        println!("I don't like letters. Let's go with an emoticon :)!");  // 文字は嫌いです。絵文字で行きましょう :)
     }
 }
 ```
 
-In the same way, `if let` can be used to match any enum value:
+同じように、`if let`はすべてのenumで使えます。
 
 ```rust,editable
-// Our example enum
+// 例で使うenum
 enum Foo {
     Bar,
     Baz,
@@ -70,58 +68,61 @@ enum Foo {
 }
 
 fn main() {
-    // Create example variables
+    // 例で使う変数
     let a = Foo::Bar;
     let b = Foo::Baz;
     let c = Foo::Qux(100);
     
-    // Variable a matches Foo::Bar
+    // 変数aはFoo::Barにマッチする
     if let Foo::Bar = a {
         println!("a is foobar");
     }
     
-    // Variable b does not match Foo::Bar
-    // So this will print nothing
+    // 変数bはFoo::Barにマッチしないので、
+    // 何も出力しない。
     if let Foo::Bar = b {
         println!("b is foobar");
     }
     
-    // Variable c matches Foo::Qux which has a value
-    // Similar to Some() in the previous example
+    // 変数cは値を持つFoo::Quxにマッチし、
+    // 前の例のSome()と同じような挙動をする。
     if let Foo::Qux(value) = c {
         println!("c is {}", value);
     }
 
-    // Binding also works with `if let`
+    // `if let`でも束縛は使えます。
     if let Foo::Qux(value @ 100) = c {
         println!("c is one hundred");
     }
 }
 ```
 
-Another benefit is that `if let` allows us to match non-parameterized enum variants. This is true even in cases where the enum doesn't implement or derive `PartialEq`. In such cases `if Foo::Bar == a` would fail to compile, because instances of the enum cannot be equated, however `if let` will continue to work.
+もう一つの`if let`の恩恵は、enumのパラメータなしの列挙子にマッチできることです。enumは`PartialEq`を実装も継承もしないため、enumのインスタンスは比較できず、
+`if Foo::Bar == a` はコンパイルに失敗しますが、 `if let`で同じことができます。
 
-Would you like a challenge? Fix the following example to use `if let`:
+挑戦しますか? 次の例を`if let`を使うように修正してください。
 
 ```rust,editable,ignore,mdbook-runnable
-// This enum purposely neither implements nor derives PartialEq.
-// That is why comparing Foo::Bar == a fails below.
+// このenumはPartialEqを実装も継承もしません。
+// よって、下のFoo::Bar == aは失敗します。
 enum Foo {Bar}
 
 fn main() {
     let a = Foo::Bar;
 
-    // Variable a matches Foo::Bar
+    // 変数aはFoo::Barにマッチします
     if Foo::Bar == a {
-    // ^-- this causes a compile-time error. Use `if let` instead.
+    // ^-- この節はコンパイルエラーを起こします。代わりに`if let`を使ってください。
         println!("a is foobar");
     }
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`enum`][enum], [`Option`][option], and the [RFC][if_let_rfc]
+- [`enum`][enum]
+- [`Option`][option]
+- [RFC][if_let_rfc]
 
 [enum]: ../custom_types/enum.md
 [if_let_rfc]: https://github.com/rust-lang/rfcs/pull/160

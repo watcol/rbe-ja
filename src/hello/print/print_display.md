@@ -115,8 +115,12 @@ Debug: Complex { real: 3.3, imag: 7.2 }
 
 ### こちらも参照:
 
-[`derive`][derive], [`std::fmt`][fmt], [マクロ][macros], [`structs`][structs],
-[`traits`][traits], そして[use][use]
+- [`derive`][derive]
+- [`std::fmt`][fmt]
+- [マクロ][macros]
+- [`structs`][structs]
+- [`traits`][traits]
+- [use][use]
 
 [derive]: ../../trait/derive.md
 [fmt]: https://doc.rust-lang.org/std/fmt/

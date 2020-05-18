@@ -21,4 +21,4 @@ fn main() {
 
 ### こちらも参照:
 
-[タプル](../../../primitives/tuples.md)
+- [タプル](../../../primitives/tuples.md)

@@ -34,9 +34,8 @@ fn main() {
 
 ### こちらも参照:
 
-[The `const`/`static` RFC](
-https://github.com/rust-lang/rfcs/blob/master/text/0246-const-vs-static.md),
-[`'static`ライフタイム][static]
+- [The `const`/`static` RFC](https://github.com/rust-lang/rfcs/blob/master/text/0246-const-vs-static.md)
+- [`'static`ライフタイム][static]
 
 [static]: ../scope/lifetime/static_lifetime.md
 [unsafe]: ../unsafe.md

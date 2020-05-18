@@ -96,7 +96,10 @@ enumと型エイリアスについてもっと知りたければ、この機能�
 
 ### こちらも参照:
 
-[`match`][match]、[`fn`][fn]、そして[`String`][str]、["Type alias enum variants" RFC][type_alias_rfc]
+- [`match`][match]
+- [`fn`][fn]
+- [`String`][str]
+- ["Type alias enum variants" RFC][type_alias_rfc]
 
 [c_struct]: https://en.wikipedia.org/wiki/Struct_(C_programming_language)
 [match]: ../flow_control/match.md
