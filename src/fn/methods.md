@@ -1,8 +1,8 @@
-# Methods
+# メソッド
 
-Methods are functions attached to objects. These methods have access to the
-data of the object and its other methods via the `self` keyword. Methods are
-defined under an `impl` block.
+メソッドはオブジェクトに関連付けられた関数です。メソッドは`self`キーワードで
+オブジェクトのデータや、他のメソッドにアクセスできます。メソッドは`impl`
+ブロック内で定義します。
 
 ```rust,editable
 struct Point {
@@ -10,16 +10,16 @@ struct Point {
     y: f64,
 }
 
-// Implementation block, all `Point` methods go in here
+// 実装ブロックです。`Point`のすべてのメソッドはここで定義されます。
 impl Point {
-    // This is a static method
-    // Static methods don't need to be called by an instance
-    // These methods are generally used as constructors
+    // これは静的メソッドです。
+    // 静的メソッドは、インスタンスから呼び出す必要はなく、
+    // 一般的にコンストラクタとして使われます。
     fn origin() -> Point {
         Point { x: 0.0, y: 0.0 }
     }
 
-    // Another static method, taking two arguments:
+    // 2つの引数をとるもう一つの静的メソッドです。
     fn new(x: f64, y: f64) -> Point {
         Point { x: x, y: y }
     }
@@ -31,16 +31,15 @@ struct Rectangle {
 }
 
 impl Rectangle {
-    // This is an instance method
-    // `&self` is sugar for `self: &Self`, where `Self` is the type of the
-    // caller object. In this case `Self` = `Rectangle`
+    // これはインスタンスメソッドです。
+    // `&self`は`self: &Self`の糖衣構文であり、`Self`は呼び出し元の
+    // オブジェクトの型です。ここでは`Self`は`Rectangle`と等価です。
     fn area(&self) -> f64 {
-        // `self` gives access to the struct fields via the dot operator
+        // ドット演算子で`self`のフィールドにアクセスできます。
         let Point { x: x1, y: y1 } = self.p1;
         let Point { x: x2, y: y2 } = self.p2;
 
-        // `abs` is a `f64` method that returns the absolute value of the
-        // caller
+        // `abs`は`f64`のメソッドで、呼び出し元の絶対値を返します。
         ((x1 - x2) * (y1 - y2)).abs()
     }
 
@@ -51,8 +50,8 @@ impl Rectangle {
         2.0 * ((x1 - x2).abs() + (y1 - y2).abs())
     }
 
-    // This method requires the caller object to be mutable
-    // `&mut self` desugars to `self: &mut Self`
+    // このメソッドは呼び出し元を可変にする必要があります。
+    // `&mut self`は`self: &mut Self`の糖衣構文です。
     fn translate(&mut self, x: f64, y: f64) {
         self.p1.x += x;
         self.p2.x += x;
@@ -62,32 +61,32 @@ impl Rectangle {
     }
 }
 
-// `Pair` owns resources: two heap allocated integers
+// `Pair`は2つのヒープ上に割り当てられた整数を持ちます。
 struct Pair(Box<i32>, Box<i32>);
 
 impl Pair {
-    // This method "consumes" the resources of the caller object
-    // `self` desugars to `self: Self`
+    // このメソッドは呼び出し元オブジェクトのリソースを「消費」します。
+    // `self`は`self: Self`の糖衣構文です。
     fn destroy(self) {
-        // Destructure `self`
+        // `self`を分割代入する。
         let Pair(first, second) = self;
 
-        println!("Destroying Pair({}, {})", first, second);
+        println!("Destroying Pair({}, {})", first, second);  // Pair({}, {})を破壊しました。
 
-        // `first` and `second` go out of scope and get freed
+        // `first`と`second`はスコープを出て、開放されます。
     }
 }
 
 fn main() {
     let rectangle = Rectangle {
-        // Static methods are called using double colons
+        // 静的メソッドはコロン2つで呼び出します。
         p1: Point::origin(),
         p2: Point::new(3.0, 4.0),
     };
 
-    // Instance methods are called using the dot operator
-    // Note that the first argument `&self` is implicitly passed, i.e.
-    // `rectangle.perimeter()` === `Rectangle::perimeter(&rectangle)`
+    // インスタンスメソッドはドット演算子で呼び出します。つまり、
+    // 第一引数`&self`は暗示的に渡されます。`rectangle.perimeter()`は
+    // `Rectangle::perimeter(&rectangle)`と同等です。
     println!("Rectangle perimeter: {}", rectangle.perimeter());
     println!("Rectangle area: {}", rectangle.area());
 
@@ -96,20 +95,20 @@ fn main() {
         p2: Point::new(1.0, 1.0),
     };
 
-    // Error! `rectangle` is immutable, but this method requires a mutable
-    // object
+    // エラー! `rectangle`は不変ですが、メソッドはオブジェクトが可変である
+    // ことを要求しています。
     //rectangle.translate(1.0, 0.0);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください。
 
-    // Okay! Mutable objects can call mutable methods
+    // OK! 可変な変数は可変なメソッドを呼び出せます。
     square.translate(1.0, 1.0);
 
     let pair = Pair(Box::new(1), Box::new(2));
 
     pair.destroy();
 
-    // Error! Previous `destroy` call "consumed" `pair`
+    // エラー! 前の`destroy`で`pair`を「消費」しました。
     //pair.destroy();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてください。
 }
 ```

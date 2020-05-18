@@ -1,45 +1,39 @@
-# As input parameters
+# 引数として
 
-While Rust chooses how to capture variables on the fly mostly without type
-annotation, this ambiguity is not allowed when writing functions. When
-taking a closure as an input parameter, the closure's complete type must be
-annotated using one of a few `traits`. In order of decreasing restriction,
-they are:
+Rustでその場で変数をキャプチャするときは型注釈を省略しましたが、関数を書くときは
+この曖昧さは許されません。クロージャを引数として受け取るときは、いくつかの
+`トレイト`を使います。制限の少ない順に、以下の通りです。
 
-* `Fn`: the closure captures by reference (`&T`)
-* `FnMut`: the closure captures by mutable reference (`&mut T`)
-* `FnOnce`: the closure captures by value (`T`)
+* `Fn`: 参照(`&T`)をキャプチャするクロージャ
+* `FnMut`: 可変参照(`&mut T`)をキャプチャするクロージャ
+* `FnOnce`: 値(`T`)をキャプチャするクロージャ
 
-On a variable-by-variable basis, the compiler will capture variables in the
-least restrictive manner possible.
+コンパイラはできる限り制限が最小になるように変数をキャプチャします。
 
-For instance, consider a parameter annotated as `FnOnce`. This specifies
-that the closure *may* capture by `&T`, `&mut T`, or `T`, but the compiler
-will ultimately choose based on how the captured variables are used in the
-closure.
+例えば、引数は`FnOnce`を注釈していたとしたら、クロージャは`&T`、`&mut T`、`T`
+をキャプチャする可能性がありますが、コンパイラはクロージャがどのように
+使われているかに応じてこれを決定します。
 
-This is because if a move is possible, then any type of borrow should also
-be possible. Note that the reverse is not true. If the parameter is
-annotated as `Fn`, then capturing variables by `&mut T` or `T` are not
-allowed.
+なぜなら、値の移動ができる時、どのタイプの借用もできるからです。
+その逆はできないことに注意してください。引数が`Fn`を注釈していた場合、
+`&mut T`や`T`のキャプチャはできません。
 
-In the following example, try swapping the usage of `Fn`, `FnMut`, and
-`FnOnce` to see what happens:
+次の例で、`Fn`、`FnMut`、`FnOnce`を入れ替えて何が起こるか試してください。
 
 ```rust,editable
-// A function which takes a closure as an argument and calls it.
-// <F> denotes that F is a "Generic type parameter"
+// クロージャを引数として取り、呼び出す関数
+// <F>はFが「ジェネリック型の引数」であることを表します。
 fn apply<F>(f: F) where
-    // The closure takes no input and returns nothing.
+    // このクロージャは引数を取らず、何も返しません
     F: FnOnce() {
-    // ^ TODO: Try changing this to `Fn` or `FnMut`.
+    // ^ TODO: `Fn`や`FnMat`に変えてみてください。
 
     f();
 }
 
-// A function which takes a closure and returns an `i32`.
+// クロージャをとり、`i32`をとる関数
 fn apply_to_3<F>(f: F) -> i32 where
-    // The closure takes an `i32` and returns an `i32`.
+    // `i32`をとり`i32`を取るクロージャ
     F: Fn(i32) -> i32 {
 
     f(3)
@@ -49,40 +43,45 @@ fn main() {
     use std::mem;
 
     let greeting = "hello";
-    // A non-copy type.
-    // `to_owned` creates owned data from borrowed one
+    // コピーできない型
+    // `to_owned`は借用したデータから自分のデータを作成するのに使います。
     let mut farewell = "goodbye".to_owned();
 
-    // Capture 2 variables: `greeting` by reference and
-    // `farewell` by value.
+    // `greeting`という参照と`farewell`という値の2つを
+    // キャプチャする
     let diary = || {
-        // `greeting` is by reference: requires `Fn`.
-        println!("I said {}.", greeting);
+        // `greeting`は参照なので`Fn`が必要です。
+        println!("I said {}.", greeting);  // {}と言った。
 
-        // Mutation forces `farewell` to be captured by
-        // mutable reference. Now requires `FnMut`.
+        // `farewell`は変更が必要なので可変参照として
+        // キャプチャする。ここで`FnMut`が必要になる。
         farewell.push_str("!!!");
-        println!("Then I screamed {}.", farewell);
-        println!("Now I can sleep. zzzzz");
+        println!("Then I screamed {}.", farewell);  // そして{}と叫んだ。
+        println!("Now I can sleep. zzzzz");  // いま寝る。zzzzz
 
-        // Manually calling drop forces `farewell` to
-        // be captured by value. Now requires `FnOnce`.
+        // `farewell`を手動でDropするため、値としてキャプチャする。
+        // ここで`FnOnce`が必要となる。
         mem::drop(farewell);
     };
 
-    // Call the function which applies the closure.
+    // クロージャを実行する関数を呼び出す
     apply(diary);
 
-    // `double` satisfies `apply_to_3`'s trait bound
+    // `double`は`apply_to_3`のトレイトの要件を満たす
     let double = |x| 2 * x;
 
     println!("3 doubled: {}", apply_to_3(double));
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`std::mem::drop`][drop], [`Fn`][fn], [`FnMut`][fnmut], [Generics][generics], [where][where] and [`FnOnce`][fnonce]
+- [`std::mem::drop`][drop]
+- [`Fn`][fn]
+- [`FnMut`][fnmut]
+- [ジェネリック][generics]
+- [where][where]
+- [`FnOnce`][fnonce]
 
 [drop]: https://doc.rust-lang.org/std/mem/fn.drop.html
 [fn]: https://doc.rust-lang.org/std/ops/trait.Fn.html

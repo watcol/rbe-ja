@@ -1,33 +1,28 @@
-# Type anonymity
+# 型匿名性
 
-Closures succinctly capture variables from enclosing scopes. Does this have
-any consequences? It surely does. Observe how using a closure as a function
-parameter requires [generics], which is necessary because of how they are
-defined:
+クロージャで簡潔にスコープから変数をキャプチャできます。なにか注意する点は
+あるのでしょうか? もちろんです。クロージャを引数として取る時、[ジェネリック
+][generics]を使わなくてはいけません。
 
 ```rust
-// `F` must be generic.
+// `F`はジェネリックである必要がある。
 fn apply<F>(f: F) where
     F: FnOnce() {
     f();
 }
 ```
 
-When a closure is defined, the compiler implicitly creates a new
-anonymous structure to store the captured variables inside, meanwhile
-implementing the functionality via one of the `traits`: `Fn`, `FnMut`, or
-`FnOnce` for this unknown type. This type is assigned to the variable which
-is stored until calling.
+クロージャが作られた時、コンパイラはキャプチャした変数を保存する匿名の
+、`Fn`、`FnMut`、`FnOnce`の3つのトレイトの内一つをその型に対して実装した
+構造体を作成し、呼び出されるまで待ちます。
 
-Since this new type is of unknown type, any usage in a function will require
-generics. However, an unbounded type parameter `<T>` would still be ambiguous
-and not be allowed. Thus, bounding by one of the `traits`: `Fn`, `FnMut`, or
-`FnOnce` (which it implements) is sufficient to specify its type.
+この構造体は型が未指定なため、関数での使用にはジェネリックが必要です。
+しかし、型パラメータ`<T>`を指定するだけではまだ曖昧です。そのため、`Fn`、
+`FnMut`、`FnOnce`のどれを実装しているか明示する必要があります。
 
 ```rust,editable
-// `F` must implement `Fn` for a closure which takes no
-// inputs and returns nothing - exactly what is required
-// for `print`.
+// `F`は`Fn`を実装している必要があり、クロージャは何もとらず何も返さない。
+// `print`にはこれが正しい。
 fn apply<F>(f: F) where
     F: Fn() {
     f();
@@ -36,18 +31,20 @@ fn apply<F>(f: F) where
 fn main() {
     let x = 7;
 
-    // Capture `x` into an anonymous type and implement
-    // `Fn` for it. Store it in `print`.
+    // `x`を匿名の型としてキャプチャし、それに
+    // `Fn`を実装する。これを`print`に格納する。
     let print = || println!("{}", x);
 
     apply(print);
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[A thorough analysis][thorough_analysis], [`Fn`][fn], [`FnMut`][fn_mut],
-and [`FnOnce`][fn_once]
+- [解析][thorough_analysis]
+- [`Fn`][fn]
+- [`FnMut`][fn_mut]
+- [`FnOnce`][fn_once]
 
 [generics]: ../../generics.md
 [fn]: https://doc.rust-lang.org/std/ops/trait.Fn.html

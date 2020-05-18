@@ -1,34 +1,32 @@
-# Functions
+# 関数
 
-Functions are declared using the `fn` keyword. Its arguments are type
-annotated, just like variables, and, if the function returns a value, the
-return type must be specified after an arrow `->`.
+関数は`fn`キーワードで宣言できます。引数の型は変数のように注釈し、
+関数が値を返すときは、その型を矢印`->`の後に指定する必要があります。
 
-The final expression in the function will be used as return value.
-Alternatively, the `return` statement can be used to return a value earlier
-from within the function, even from inside loops or `if`s.
+関数内の最後の式が返されます。また、`return`文でループや`if`の中など、
+関数の途中で値を返すことができます。
 
-Let's rewrite FizzBuzz using functions!
+FizzBuzzを関数を使って書き直してみましょう!
 
 ```rust,editable
-// Unlike C/C++, there's no restriction on the order of function definitions
+// C/C++と違い、関数定義の順番に決まりはないです。
 fn main() {
-    // We can use this function here, and define it somewhere later
+    // ここで関数を使い、あとで宣言することができます。
     fizzbuzz_to(100);
 }
 
-// Function that returns a boolean value
+// 真偽値を返す関数。
 fn is_divisible_by(lhs: u32, rhs: u32) -> bool {
-    // Corner case, early return
+    // コーナーケースでは、関数が終わる前に値を返します。
     if rhs == 0 {
         return false;
     }
 
-    // This is an expression, the `return` keyword is not necessary here
+    // これは式であり、ここには`return`キーワードが必要ありません。
     lhs % rhs == 0
 }
 
-// Functions that "don't" return a value, actually return the unit type `()`
+// 値を返さない関数です。実際にはユニット型`()`を返しています。
 fn fizzbuzz(n: u32) -> () {
     if is_divisible_by(n, 15) {
         println!("fizzbuzz");
@@ -41,8 +39,7 @@ fn fizzbuzz(n: u32) -> () {
     }
 }
 
-// When a function returns `()`, the return type can be omitted from the
-// signature
+// 関数が`()`を返す時、返り値の型は省略できます。
 fn fizzbuzz_to(n: u32) {
     for n in 1..n + 1 {
         fizzbuzz(n);

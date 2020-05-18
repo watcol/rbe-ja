@@ -1,42 +1,40 @@
-# Closures
+# クロージャ
 
-Closures in Rust, also called lambda expressions or lambdas, are functions that can capture 
-the enclosing environment. For example, a closure that captures the x 
-variable:
+Rustのクロージャ(ラムダ式やラムダとも呼ばれる)は環境をキャプチャできる関数です。
+例えば、このクロージャはxをキャプチャします。
 ```Rust
 |val| val + x
 ```
 
-The syntax and capabilities of closures make them very convenient for 
-on the fly usage. Calling a closure is exactly like calling a function.
-However, both input and return types *can* be inferred and input 
-variable names *must* be specified.
+クロージャの構文と機能はその場での使用に便利です。関数を呼ぶようにクロージャ
+を呼び出すことができます。しかし、入力値と返り値の型は推論できますが、入力の変数名は
+指定する必要があります。
 
-Other characteristics of closures include:
-* using `||` instead of `()` around input variables.
-* optional body delimination (`{}`) for a single expression (mandatory otherwise).
-* the ability to capture the outer environment variables.
+クロージャの他の特徴としては
+* 入力変数名を`()`ではなく`||`で囲む。
+* 式が一つのときは`{}`で囲む必要はありません(他は必須です)。
+* 外部の変数をキャプチャできます。.
 
 ```rust,editable
 fn main() {
-    // Increment via closures and functions.
+    // 関数とクロージャでのインクリメント
     fn  function            (i: i32) -> i32 { i + 1 }
 
-    // Closures are anonymous, here we are binding them to references
-    // Annotation is identical to function annotation but is optional
-    // as are the `{}` wrapping the body. These nameless functions
-    // are assigned to appropriately named variables.
+    // クロージャは名無しなので、参照に束縛します。
+    // 注釈は関数の注釈と同じですが、本体を`{}`で囲む必要は
+    // ありません。名無しのクロージャはは呼び出すために
+    // 変数に代入する必要があります。
     let closure_annotated = |i: i32| -> i32 { i + 1 };
     let closure_inferred  = |i     |          i + 1  ;
 
     let i = 1;
-    // Call the function and closures.
+    // 関数とクロージャを呼び出す。
     println!("function: {}", function(i));
     println!("closure_annotated: {}", closure_annotated(i));
     println!("closure_inferred: {}", closure_inferred(i));
 
-    // A closure taking no arguments which returns an `i32`.
-    // The return type is inferred.
+    // 引数をとらず、`i32`を返すクロージャ。
+    // 返り値は推論されます。
     let one = || 1;
     println!("closure returning one: {}", one());
 
