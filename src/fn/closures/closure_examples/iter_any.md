@@ -1,20 +1,19 @@
 # Iterator::any
 
-`Iterator::any` is a function which when passed an iterator, will return
-`true` if any element satisfies the predicate. Otherwise `false`. Its
-signature:
+`Iterator::any`はイテレータ内に一つでも条件を満たす要素があれば`true`を、
+なければ`false`を返すメソッドです。
 
 ```rust,ignore
 pub trait Iterator {
-    // The type being iterated over.
+    // イテレータ内の要素の型。
     type Item;
 
-    // `any` takes `&mut self` meaning the caller may be borrowed
-    // and modified, but not consumed.
+    // `any`は`&mut self`をとるため、呼び出し元を借用し、変更するかも
+    // しれませんが、消費はしません。
     fn any<F>(&mut self, f: F) -> bool where
-        // `FnMut` meaning any captured variable may at most be
-        // modified, not consumed. `Self::Item` states it takes
-        // arguments to the closure by value.
+        // `FnMut`はクロージャがキャプチャした値を変更するかもしれないが、
+        // 消費はしないことを表します。`Self::Item`はクロージャに
+        // 値を引数として渡すことを意味します。
         F: FnMut(Self::Item) -> bool {}
 }
 ```
@@ -24,22 +23,22 @@ fn main() {
     let vec1 = vec![1, 2, 3];
     let vec2 = vec![4, 5, 6];
 
-    // `iter()` for vecs yields `&i32`. Destructure to `i32`.
+    // ベクターの`iter()`は`&i32`を産出するので、`i32`に分割代入する必要があります。
     println!("2 in vec1: {}", vec1.iter()     .any(|&x| x == 2));
-    // `into_iter()` for vecs yields `i32`. No destructuring required.
+    // ベクターの`into_iter()`は`i32`を産出するので、分割代入は必要ありません。
     println!("2 in vec2: {}", vec2.into_iter().any(| x| x == 2));
 
     let array1 = [1, 2, 3];
     let array2 = [4, 5, 6];
 
-    // `iter()` for arrays yields `&i32`.
+    // 配列の`iter()`は`&i32`を産出します。
     println!("2 in array1: {}", array1.iter()     .any(|&x| x == 2));
-    // `into_iter()` for arrays unusually yields `&i32`.
+    // 配列の`into_iter()`もなんと`&i32`を産出します。
     println!("2 in array2: {}", array2.into_iter().any(|&x| x == 2));
 }
 ```
 
-### See also:
+### こちらも参照:
 
 [`std::iter::Iterator::any`][any]
 

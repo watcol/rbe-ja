@@ -1,20 +1,19 @@
-# As output parameters
+# 返り値として
 
-Closures as input parameters are possible, so returning closures as
-output parameters should also be possible. However, anonymous
-closure types are, by definition, unknown, so we have to use
-`impl Trait` to return them.
+クロージャを引数として取ることができるのなら、クロージャを返す
+こともできるはずです。しかし、匿名なクロージャの型は、定義時点では
+不明です。そのため、クロージャを返すには`impl Trait`を使う必要が
+あります。
 
-The valid traits for returning a closure are:
+クロージャを返すのに使われるトレイトは以下の通りです。
 
 * `Fn`
 * `FnMut`
 * `FnOnce`
 
-Beyond this, the `move` keyword must be used, which signals that all captures
-occur by value. This is required because any captures by reference would be
-dropped as soon as the function exited, leaving invalid references in the
-closure.
+キャプチャしている値をすべて渡すため、`move`キーワードが必要です。これがないと
+変数は関数終了と同時にdropされ、クロージャ内のキャプチャしている参照が無効に
+なります。
 
 ```rust,editable
 fn create_fn() -> impl Fn() {
@@ -46,9 +45,12 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`Fn`][fn], [`FnMut`][fnmut], [Generics][generics] and [impl Trait][impltrait].
+- [`Fn`][fn]
+- [`FnMut`][fnmut]
+- [ジェネリック][generics]
+- [impl Trait][impltrait]
 
 [fn]: https://doc.rust-lang.org/std/ops/trait.Fn.html
 [fnmut]: https://doc.rust-lang.org/std/ops/trait.FnMut.html

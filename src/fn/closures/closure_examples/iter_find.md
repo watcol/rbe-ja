@@ -1,20 +1,20 @@
-# Searching through iterators
+# イテレータを検索する
 
-`Iterator::find` is a function which iterates over an iterator and searches for the 
-first value which satisfies some condition. If none of the values satisfy the 
-condition, it returns `None`. Its signature:
+`Iterator::find`はイテレータ内で条件を満たす関数を検索する関数です。もし
+一つも条件を満たさなかったときは、`None`を返します。型シグネチャは以下の
+通りです。
 
 ```rust,ignore
 pub trait Iterator {
-    // The type being iterated over.
+    // 要素の型
     type Item;
 
-    // `find` takes `&mut self` meaning the caller may be borrowed
-    // and modified, but not consumed.
+    // `find`は`&mut self`をとります。よって呼び出し元は借用され、変更される
+    // かもしれませんが、消費はされません。
     fn find<P>(&mut self, predicate: P) -> Option<Self::Item> where
-        // `FnMut` meaning any captured variable may at most be
-        // modified, not consumed. `&Self::Item` states it takes
-        // arguments to the closure by reference.
+        // `FnMut`はキャプチャする値が変更される可能性はあるが、
+        // 消費はされないことを表します。`&Self::Item`はクロージャに
+        // 参照を渡すことを意味します。
         P: FnMut(&Self::Item) -> bool {}
 }
 ```
@@ -24,30 +24,30 @@ fn main() {
     let vec1 = vec![1, 2, 3];
     let vec2 = vec![4, 5, 6];
 
-    // `iter()` for vecs yields `&i32`.
+    // ベクターの`iter()`は`&i32`を産出します。
     let mut iter = vec1.iter();
-    // `into_iter()` for vecs yields `i32`.
+    // ベクターの`into_iter()`は`i32`を産出します。
     let mut into_iter = vec2.into_iter();
 
-    // `iter()` for vecs yields `&i32`, and we want to reference one of its
-    // items, so we have to destructure `&&i32` to `i32`
+    // ベクターの`iter()`は`&i32`を産出します。要素の参照をとる必要があるので、
+    // `&&i32`を`i32`に分割代入する必要があります。
     println!("Find 2 in vec1: {:?}", iter     .find(|&&x| x == 2));
-    // `into_iter()` for vecs yields `i32`, and we want to reference one of
-    // its items, so we have to destructure `&i32` to `i32`
+    // `into_iter()`は`i32`を産出します。なので同様に、`&i32`を`i32`
+    // に分割代入する必要があります。
     println!("Find 2 in vec2: {:?}", into_iter.find(| &x| x == 2));
 
     let array1 = [1, 2, 3];
     let array2 = [4, 5, 6];
 
-    // `iter()` for arrays yields `&i32`
+    // 配列の`iter()`は`&i32`を産出します。
     println!("Find 2 in array1: {:?}", array1.iter()     .find(|&&x| x == 2));
-    // `into_iter()` for arrays unusually yields `&i32`
+    // 配列の`into_iter()`も`&i32`を産出します。
     println!("Find 2 in array2: {:?}", array2.into_iter().find(|&&x| x == 2));
 }
 ```
 
-`Iterator::find` gives you a reference to the item. But if you want the _index_ of the
-item, use `Iterator::position`.
+`Iterator::find`は要素の参照を渡します。要素の_インデックス_がほしいときは
+`Iterator::position`を使ってください。
 
 ```rust,editable
 fn main() {
@@ -62,15 +62,12 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`std::iter::Iterator::find`][find]
-
-[`std::iter::Iterator::find_map`][find_map]
-
-[`std::iter::Iterator::position`][position]
-
-[`std::iter::Iterator::rposition`][rposition]
+- [`std::iter::Iterator::find`][find]
+- [`std::iter::Iterator::find_map`][find_map]
+- [`std::iter::Iterator::position`][position]
+- [`std::iter::Iterator::rposition`][rposition]
 
 [find]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find
 [find_map]: https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find_map

@@ -1,24 +1,23 @@
-# Input functions
+# 入力関数
 
-Since closures may be used as arguments, you might wonder if the same can be said
-about functions. And indeed they can! If you declare a function that takes a
-closure as parameter, then any function that satisfies the trait bound of that
-closure can be passed as a parameter.
+クロージャが引数として使えることから、関数も同じようにできないのかと思った人も
+いるかもしれません。その通り、できます! クロージャを引数に取る関数を定義したら、
+そのクロージャのトレイト境界を満たすすべての関数を引数として渡すことができます。
 
 ```rust,editable
-// Define a function which takes a generic `F` argument
-// bounded by `Fn`, and calls it
+// `Fn`を境界としたジェネリック型`F`を引数に取る
+// 関数を定義し、渡されたクロージャを即座に呼び出す。
 fn call_me<F: Fn()>(f: F) {
     f();
 }
 
-// Define a wrapper function satisfying the `Fn` bound
+// `Fn`境界を満たす関数を定義する。
 fn function() {
     println!("I'm a function!");
 }
 
 fn main() {
-    // Define a closure satisfying the `Fn` bound
+    // `Fn`境界を満たすクロージャを定義する。
     let closure = || println!("I'm a closure!");
 
     call_me(closure);
@@ -26,12 +25,14 @@ fn main() {
 }
 ```
 
-As an additional note, the `Fn`, `FnMut`, and `FnOnce` `traits` dictate how
-a closure captures variables from the enclosing scope.
+クロージャの捕捉について詳しく見たいときは、`Fn`、`FnMut`、`FnOnce`
+トレイトのドキュメントを参照してください。
 
-### See also:
+### こちらも参照:
 
-[`Fn`][fn], [`FnMut`][fn_mut], and [`FnOnce`][fn_once]
+- [`Fn`][fn]
+- [`FnMut`][fn_mut]
+- [`FnOnce`][fn_once]
 
 [fn]: https://doc.rust-lang.org/std/ops/trait.Fn.html
 [fn_mut]: https://doc.rust-lang.org/std/ops/trait.FnMut.html

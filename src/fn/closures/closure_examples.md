@@ -1,3 +1,3 @@
-# Examples in `std`
+# `std`での例
 
-This section contains a few examples of using closures from the `std` library.
+この節では`std`ライブラリ内でのクロージャの使用例をいくつか紹介します。
