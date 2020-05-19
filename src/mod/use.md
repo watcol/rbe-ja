@@ -1,10 +1,10 @@
-# The `use` declaration
+# `use`宣言
 
-The `use` declaration can be used to bind a full path to a new name, for easier
-access. It is often used like this:
+`use`宣言は、アクセスを簡単にするため、パスに新しい名前を束縛します。
+このように使います。
 
 ```rust,editable,ignore
-// extern crate deeply; // normally, this would exist and not be commented out!
+// extern crate deeply; // 普通、この行はコメントアウトされていません!
 
 use crate::deeply::nested::{
     my_first_function,
@@ -17,10 +17,10 @@ fn main() {
 }
 ```
 
-You can use the `as` keyword to bind imports to a different name:
+違う名前に束縛してインポートするのに`as`キーワードを使います。
 
 ```rust,editable
-// Bind the `deeply::nested::function` path to `other_function`.
+// `deeply::nested::function`を`other_function`に束縛する。
 use deeply::nested::function as other_function;
 
 fn function() {
@@ -36,18 +36,18 @@ mod deeply {
 }
 
 fn main() {
-    // Easier access to `deeply::nested::function`
+    // 簡単に`deeply::nested::function`にアクセスできる。
     other_function();
 
     println!("Entering block");
     {
-        // This is equivalent to `use deeply::nested::function as function`.
-        // This `function()` will shadow the outer one.
+        // これは`use deeply::nested::function as function`と等価で、
+        // `function()`はもともとのものを覆い隠します。
         use crate::deeply::nested::function;
         function();
 
-        // `use` bindings have a local scope. In this case, the
-        // shadowing of `function()` is only in this block.
+        // `use`束縛はローカルスコープを持っています。ここでは、
+        // `function()`のシャドーイングはこのブロック内だけで有効です。
         println!("Leaving block");
     }
 

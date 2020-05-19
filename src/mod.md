@@ -1,8 +1,7 @@
-# Modules
+# モジュール
 
-Rust provides a powerful module system that can be used to hierarchically split
-code in logical units (modules), and manage visibility (public/private) between
-them.
+Rustは階層的に論理ユニット(モジュール)によってコードを分割する強力なモジュールシステムを
+備えており、その間で可視性(public/private)を操作できます。
 
-A module is a collection of items: functions, structs, traits, `impl` blocks,
-and even other modules.
+モジュールは関数、構造体、トレイト、`impl`ブロック、そして他のモジュール
+などの集合体です。

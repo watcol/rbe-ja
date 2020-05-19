@@ -1,30 +1,30 @@
-# Visibility
+# 可視性
 
-By default, the items in a module have private visibility, but this can be
-overridden with the `pub` modifier. Only the public items of a module can be
-accessed from outside the module scope.
+デフォルトで、モジュールの要素はプライベートです。しかし、`pub`修飾子でこれを
+上書きすることができます。パブリックな要素のみがモジュールスコープの外からアクセス
+できます。
 
 ```rust,editable
-// A module named `my_mod`
+// `my_mod`というモジュールを定義する
 mod my_mod {
-    // Items in modules default to private visibility.
+    // モジュールの要素はデフォルトでプライベートです。
     fn private_function() {
         println!("called `my_mod::private_function()`");
     }
 
-    // Use the `pub` modifier to override default visibility.
+    // `pub`修飾子を使って上書きできます。
     pub fn function() {
         println!("called `my_mod::function()`");
     }
 
-    // Items can access other items in the same module,
-    // even when private.
+    // モジュール内では、プライベートな要素を含むすべての
+    // 他の要素にアクセスできます。
     pub fn indirect_access() {
         print!("called `my_mod::indirect_access()`, that\n> ");
         private_function();
     }
 
-    // Modules can also be nested
+    // モジュールはネストできます
     pub mod nested {
         pub fn function() {
             println!("called `my_mod::nested::function()`");
@@ -35,21 +35,21 @@ mod my_mod {
             println!("called `my_mod::nested::private_function()`");
         }
 
-        // Functions declared using `pub(in path)` syntax are only visible
-        // within the given path. `path` must be a parent or ancestor module
+        // 関数を`pub(in パス)`構文を使って宣言すると、指定したパスからのみ
+        // アクセスできます。`path`は自分の親か、先祖のモジュールでなければいけません。
         pub(in crate::my_mod) fn public_function_in_my_mod() {
             print!("called `my_mod::nested::public_function_in_my_mod()`, that\n> ");
             public_function_in_nested();
         }
 
-        // Functions declared using `pub(self)` syntax are only visible within
-        // the current module, which is the same as leaving them private
+        // 関数を`pub(self)`構文を使って宣言すると、現在のモジュールでのみ
+        // アクセスでき、プライベートと同じになります。
         pub(self) fn public_function_in_nested() {
             println!("called `my_mod::nested::public_function_in_nested()`");
         }
 
-        // Functions declared using `pub(super)` syntax are only visible within
-        // the parent module
+        // 関数を`pub(super)`を構文を使って宣言すると、親のモジュールからのみ
+        // アクセスできます。
         pub(super) fn public_function_in_super_mod() {
             println!("called `my_mod::nested::public_function_in_super_mod()`");
         }
@@ -62,20 +62,20 @@ mod my_mod {
         nested::public_function_in_super_mod();
     }
 
-    // pub(crate) makes functions visible only within the current crate
+    // pub(crate)で関数が現在のクレート内でアクセスできるようになります。
     pub(crate) fn public_function_in_crate() {
         println!("called `my_mod::public_function_in_crate()`");
     }
 
-    // Nested modules follow the same rules for visibility
+    // ネストされたモジュールも同じ規則に従います。
     mod private_nested {
         #[allow(dead_code)]
         pub fn function() {
             println!("called `my_mod::private_nested::function()`");
         }
 
-        // Private parent items will still restrict the visibility of a child item,
-        // even if it is declared as visible within a bigger scope.
+        // 親モジュールのプライベートな要素にもアクセスできます。
+        // 先祖のモジュールでも同じです。
         #[allow(dead_code)]
         pub(crate) fn restricted_function() {
             println!("called `my_mod::private_nested::restricted_function()`");
@@ -88,41 +88,41 @@ fn function() {
 }
 
 fn main() {
-    // Modules allow disambiguation between items that have the same name.
+    // モジュールで同じ名前をもつ要素の明確化ができます。
     function();
     my_mod::function();
 
-    // Public items, including those inside nested modules, can be
-    // accessed from outside the parent module.
+    // ネストされたモジュールも含めて、パブリックな要素には
+    // 親モジュールの外からでもアクセスできます。
     my_mod::indirect_access();
     my_mod::nested::function();
     my_mod::call_public_function_in_my_mod();
 
-    // pub(crate) items can be called from anywhere in the same crate
+    // pub(crate)の要素は同じクレート内のどこからでもアクセスできます。
     my_mod::public_function_in_crate();
 
-    // pub(in path) items can only be called from within the module specified
-    // Error! function `public_function_in_my_mod` is private
+    // pub(in パス)の要素は指定したモジュールからのみアクセスできます。
+    // エラー! `public_function_in_my_mod`関数はプライベートです
     //my_mod::nested::public_function_in_my_mod();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Private items of a module cannot be directly accessed, even if
-    // nested in a public module:
+    // プライベートな要素は、パブリックなモジュールにネスト
+    // されていたとしても、直接アクセスできません。
 
-    // Error! `private_function` is private
+    // エラー! `private_function`はプライベートです。
     //my_mod::private_function();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Error! `private_function` is private
+    // エラー! `private_function`はプライベートです
     //my_mod::nested::private_function();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Error! `private_nested` is a private module
+    // エラー! `private_nested`はプライベートモジュールです
     //my_mod::private_nested::function();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Error! `private_nested` is a private module
+    // エラー! `private_nested`はプライベートモジュールです
     //my_mod::private_nested::restricted_function();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 }
 ```

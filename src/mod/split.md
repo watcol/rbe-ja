@@ -1,7 +1,7 @@
-# File hierarchy
+# ファイル階層
 
-Modules can be mapped to a file/directory hierarchy. Let's break down the
-[visibility example][visibility] in files:
+モジュールはファイル/ディレクトリ階層で表すことができます。
+[可視性の例][visibility]をファイルで再現してみましょう。
 
 ```shell
 $ tree .
@@ -13,11 +13,11 @@ $ tree .
 `-- split.rs
 ```
 
-In `split.rs`:
+`split.rs`の中身:
 
 ```rust,ignore
-// This declaration will look for a file named `my.rs` or `my/mod.rs` and will
-// insert its contents inside a module named `my` under this scope
+// この宣言は`my.rs`または`my/mod.rs`を探索し、そこにあった要素を
+// `my`モジュールとしてスコープに導入します。
 mod my;
 
 fn function() {
@@ -36,12 +36,11 @@ fn main() {
 
 ```
 
-In `my/mod.rs`:
+`my/mod.rs`の中身:
 
 ```rust,ignore
-// Similarly `mod inaccessible` and `mod nested` will locate the `nested.rs`
-// and `inaccessible.rs` files and insert them here under their respective
-// modules
+// 同様に`mod inaccessible`と`mod nested`は`nested.rs`や`inaccessible.rs`ファイルを
+// 探索し、そのモジュールを導入します。
 mod inaccessible;
 pub mod nested;
 
@@ -60,7 +59,7 @@ pub fn indirect_access() {
 }
 ```
 
-In `my/nested.rs`:
+`my/nested.rs`の中身:
 
 ```rust,ignore
 pub fn function() {
@@ -73,7 +72,7 @@ fn private_function() {
 }
 ```
 
-In `my/inaccessible.rs`:
+`my/inaccessible.rs`の中身:
 
 ```rust,ignore
 #[allow(dead_code)]
@@ -82,7 +81,7 @@ pub fn public_function() {
 }
 ```
 
-Let's check that things still work as before:
+同じように動くか確かめましょう。
 
 ```shell
 $ rustc split.rs && ./split
