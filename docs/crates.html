@@ -147,16 +147,15 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#crates" id="crates">Crates</a></h1>
-<p>A crate is a compilation unit in Rust. Whenever <code>rustc some_file.rs</code> is called,
-<code>some_file.rs</code> is treated as the <em>crate file</em>. If <code>some_file.rs</code> has <code>mod</code>
-declarations in it, then the contents of the module files would be inserted in
-places where <code>mod</code> declarations in the crate file are found, <em>before</em> running
-the compiler over it. In other words, modules do <em>not</em> get compiled
-individually, only crates get compiled.</p>
-<p>A crate can be compiled into a binary or into a library. By default, <code>rustc</code>
-will produce a binary from a crate. This behavior can be overridden by passing
-the <code>--crate-type</code> flag to <code>lib</code>.</p>
+                        <h1><a class="header" href="#クレート" id="クレート">クレート</a></h1>
+<p>クレートはRustにおける編集ユニットです。<code>rustc some_file.rs</code>が呼び出された時、
+<code>some_file.rs</code> は<em>クレートファイル</em>として扱われます。もし<code>some_file.rs</code>内に<code>mod</code>
+宣言があれば、モジュールファイルの要素がコンパイラを実行する<em>前</em>に挿入されます。
+言い換えれば、モジュールは独立してコンパイルされず、クレートのみがコンパイルされる
+ということです。</p>
+<p>クレートはバイナリまたはライブラリとしてコンパイルできます。デフォルトで、<code>rustc</code>
+はクレートからバイナリを作ります。このふるまいは<code>--crate-type</code>フラグに<code>lib</code>を立てる
+ことによって上書きできます。</p>
 
                     </main>
 

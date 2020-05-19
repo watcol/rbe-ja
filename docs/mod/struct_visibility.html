@@ -147,25 +147,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#struct-visibility" id="struct-visibility">Struct visibility</a></h1>
-<p>Structs have an extra level of visibility with their fields. The visibility 
-defaults to private, and can be overridden with the <code>pub</code> modifier. This 
-visibility only matters when a struct is accessed from outside the module 
-where it is defined, and has the goal of hiding information (encapsulation).</p>
+                        <h1><a class="header" href="#構造体の可視性" id="構造体の可視性">構造体の可視性</a></h1>
+<p>構造体はフィールド内での可視性も持っています。デフォルトではプライベートで、
+<code>pub</code>修飾子で上書きできます。この可視性は、定義されたモジュールの外からアクセスする
+ときのみ有効で、情報を隠す(カプセル化する)ことを目的としています。</p>
 <pre><pre class="playpen"><code class="language-rust editable">mod my {
-    // A public struct with a public field of generic type `T`
+    // ジェネリック型`T`のパブリックフィールドを持ったパブリックな構造体
     pub struct OpenBox&lt;T&gt; {
         pub contents: T,
     }
 
-    // A public struct with a private field of generic type `T`
+    // ジェネリック型`T`のプライベートフィールドを持ったパブリックな構造体
     #[allow(dead_code)]
     pub struct ClosedBox&lt;T&gt; {
         contents: T,
     }
 
     impl&lt;T&gt; ClosedBox&lt;T&gt; {
-        // A public constructor method
+        // パブリックなコンストラクタメソッド
         pub fn new(contents: T) -&gt; ClosedBox&lt;T&gt; {
             ClosedBox {
                 contents: contents,
@@ -175,29 +174,31 @@ where it is defined, and has the goal of hiding information (encapsulation).</p>
 }
 
 fn main() {
-    // Public structs with public fields can be constructed as usual
+    // パブリックフィールドを持ったパブリックな構造体はいつものように宣言できます。
     let open_box = my::OpenBox { contents: &quot;public information&quot; };
 
-    // and their fields can be normally accessed.
+    // そしてフィールドにも普通にアクセスできます。
     println!(&quot;The open box contains: {}&quot;, open_box.contents);
 
-    // Public structs with private fields cannot be constructed using field names.
-    // Error! `ClosedBox` has private fields
+    // プライベートフィールドを持ったパブリックな構造体はフィールド名で宣言できません。
+    // エラー! `ClosedBox`にはプライベートフィールドがあります。
     //let closed_box = my::ClosedBox { contents: &quot;classified information&quot; };
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // However, structs with private fields can be created using
-    // public constructors
+    // しかし、パブリックなコンストラクタを使って初期化できます。
     let _closed_box = my::ClosedBox::new(&quot;classified information&quot;);
 
-    // and the private fields of a public struct cannot be accessed.
-    // Error! The `contents` field is private
+    // そしてプライベートなフィールドにはアクセスできません
+    // エラー! `contents`フィールドはプライベートです
     //println!(&quot;The closed box contains: {}&quot;, _closed_box.contents);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../generics.html">generics</a> and <a href="../fn/methods.html">methods</a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="../generics.html">ジェネリック</a></li>
+<li><a href="../fn/methods.html">メソッド</a></li>
+</ul>
 
                     </main>
 

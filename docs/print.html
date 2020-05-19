@@ -3147,36 +3147,35 @@ fn main() {
 </code></pre></pre>
 <p>ネットワークサーバのように、永遠にループ(例えば<code>loop {}</code>)する処理や、
 プロセスを終了する関数(例えば<code>exit()</code>)などに使われます。</p>
-<h1><a class="header" href="#modules" id="modules">Modules</a></h1>
-<p>Rust provides a powerful module system that can be used to hierarchically split
-code in logical units (modules), and manage visibility (public/private) between
-them.</p>
-<p>A module is a collection of items: functions, structs, traits, <code>impl</code> blocks,
-and even other modules.</p>
-<h1><a class="header" href="#visibility" id="visibility">Visibility</a></h1>
-<p>By default, the items in a module have private visibility, but this can be
-overridden with the <code>pub</code> modifier. Only the public items of a module can be
-accessed from outside the module scope.</p>
-<pre><pre class="playpen"><code class="language-rust editable">// A module named `my_mod`
+<h1><a class="header" href="#モジュール" id="モジュール">モジュール</a></h1>
+<p>Rustは階層的に論理ユニット(モジュール)によってコードを分割する強力なモジュールシステムを
+備えており、その間で可視性(public/private)を操作できます。</p>
+<p>モジュールは関数、構造体、トレイト、<code>impl</code>ブロック、そして他のモジュール
+などの集合体です。</p>
+<h1><a class="header" href="#可視性" id="可視性">可視性</a></h1>
+<p>デフォルトで、モジュールの要素はプライベートです。しかし、<code>pub</code>修飾子でこれを
+上書きすることができます。パブリックな要素のみがモジュールスコープの外からアクセス
+できます。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// `my_mod`というモジュールを定義する
 mod my_mod {
-    // Items in modules default to private visibility.
+    // モジュールの要素はデフォルトでプライベートです。
     fn private_function() {
         println!(&quot;called `my_mod::private_function()`&quot;);
     }
 
-    // Use the `pub` modifier to override default visibility.
+    // `pub`修飾子を使って上書きできます。
     pub fn function() {
         println!(&quot;called `my_mod::function()`&quot;);
     }
 
-    // Items can access other items in the same module,
-    // even when private.
+    // モジュール内では、プライベートな要素を含むすべての
+    // 他の要素にアクセスできます。
     pub fn indirect_access() {
         print!(&quot;called `my_mod::indirect_access()`, that\n&gt; &quot;);
         private_function();
     }
 
-    // Modules can also be nested
+    // モジュールはネストできます
     pub mod nested {
         pub fn function() {
             println!(&quot;called `my_mod::nested::function()`&quot;);
@@ -3187,21 +3186,21 @@ mod my_mod {
             println!(&quot;called `my_mod::nested::private_function()`&quot;);
         }
 
-        // Functions declared using `pub(in path)` syntax are only visible
-        // within the given path. `path` must be a parent or ancestor module
+        // 関数を`pub(in パス)`構文を使って宣言すると、指定したパスからのみ
+        // アクセスできます。`path`は自分の親か、先祖のモジュールでなければいけません。
         pub(in crate::my_mod) fn public_function_in_my_mod() {
             print!(&quot;called `my_mod::nested::public_function_in_my_mod()`, that\n&gt; &quot;);
             public_function_in_nested();
         }
 
-        // Functions declared using `pub(self)` syntax are only visible within
-        // the current module, which is the same as leaving them private
+        // 関数を`pub(self)`構文を使って宣言すると、現在のモジュールでのみ
+        // アクセスでき、プライベートと同じになります。
         pub(self) fn public_function_in_nested() {
             println!(&quot;called `my_mod::nested::public_function_in_nested()`&quot;);
         }
 
-        // Functions declared using `pub(super)` syntax are only visible within
-        // the parent module
+        // 関数を`pub(super)`を構文を使って宣言すると、親のモジュールからのみ
+        // アクセスできます。
         pub(super) fn public_function_in_super_mod() {
             println!(&quot;called `my_mod::nested::public_function_in_super_mod()`&quot;);
         }
@@ -3214,20 +3213,20 @@ mod my_mod {
         nested::public_function_in_super_mod();
     }
 
-    // pub(crate) makes functions visible only within the current crate
+    // pub(crate)で関数が現在のクレート内でアクセスできるようになります。
     pub(crate) fn public_function_in_crate() {
         println!(&quot;called `my_mod::public_function_in_crate()`&quot;);
     }
 
-    // Nested modules follow the same rules for visibility
+    // ネストされたモジュールも同じ規則に従います。
     mod private_nested {
         #[allow(dead_code)]
         pub fn function() {
             println!(&quot;called `my_mod::private_nested::function()`&quot;);
         }
 
-        // Private parent items will still restrict the visibility of a child item,
-        // even if it is declared as visible within a bigger scope.
+        // 親モジュールのプライベートな要素にもアクセスできます。
+        // 先祖のモジュールでも同じです。
         #[allow(dead_code)]
         pub(crate) fn restricted_function() {
             println!(&quot;called `my_mod::private_nested::restricted_function()`&quot;);
@@ -3240,63 +3239,62 @@ fn function() {
 }
 
 fn main() {
-    // Modules allow disambiguation between items that have the same name.
+    // モジュールで同じ名前をもつ要素の明確化ができます。
     function();
     my_mod::function();
 
-    // Public items, including those inside nested modules, can be
-    // accessed from outside the parent module.
+    // ネストされたモジュールも含めて、パブリックな要素には
+    // 親モジュールの外からでもアクセスできます。
     my_mod::indirect_access();
     my_mod::nested::function();
     my_mod::call_public_function_in_my_mod();
 
-    // pub(crate) items can be called from anywhere in the same crate
+    // pub(crate)の要素は同じクレート内のどこからでもアクセスできます。
     my_mod::public_function_in_crate();
 
-    // pub(in path) items can only be called from within the module specified
-    // Error! function `public_function_in_my_mod` is private
+    // pub(in パス)の要素は指定したモジュールからのみアクセスできます。
+    // エラー! `public_function_in_my_mod`関数はプライベートです
     //my_mod::nested::public_function_in_my_mod();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Private items of a module cannot be directly accessed, even if
-    // nested in a public module:
+    // プライベートな要素は、パブリックなモジュールにネスト
+    // されていたとしても、直接アクセスできません。
 
-    // Error! `private_function` is private
+    // エラー! `private_function`はプライベートです。
     //my_mod::private_function();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Error! `private_function` is private
+    // エラー! `private_function`はプライベートです
     //my_mod::nested::private_function();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Error! `private_nested` is a private module
+    // エラー! `private_nested`はプライベートモジュールです
     //my_mod::private_nested::function();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Error! `private_nested` is a private module
+    // エラー! `private_nested`はプライベートモジュールです
     //my_mod::private_nested::restricted_function();
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 }
 </code></pre></pre>
-<h1><a class="header" href="#struct-visibility" id="struct-visibility">Struct visibility</a></h1>
-<p>Structs have an extra level of visibility with their fields. The visibility 
-defaults to private, and can be overridden with the <code>pub</code> modifier. This 
-visibility only matters when a struct is accessed from outside the module 
-where it is defined, and has the goal of hiding information (encapsulation).</p>
+<h1><a class="header" href="#構造体の可視性" id="構造体の可視性">構造体の可視性</a></h1>
+<p>構造体はフィールド内での可視性も持っています。デフォルトではプライベートで、
+<code>pub</code>修飾子で上書きできます。この可視性は、定義されたモジュールの外からアクセスする
+ときのみ有効で、情報を隠す(カプセル化する)ことを目的としています。</p>
 <pre><pre class="playpen"><code class="language-rust editable">mod my {
-    // A public struct with a public field of generic type `T`
+    // ジェネリック型`T`のパブリックフィールドを持ったパブリックな構造体
     pub struct OpenBox&lt;T&gt; {
         pub contents: T,
     }
 
-    // A public struct with a private field of generic type `T`
+    // ジェネリック型`T`のプライベートフィールドを持ったパブリックな構造体
     #[allow(dead_code)]
     pub struct ClosedBox&lt;T&gt; {
         contents: T,
     }
 
     impl&lt;T&gt; ClosedBox&lt;T&gt; {
-        // A public constructor method
+        // パブリックなコンストラクタメソッド
         pub fn new(contents: T) -&gt; ClosedBox&lt;T&gt; {
             ClosedBox {
                 contents: contents,
@@ -3306,33 +3304,35 @@ where it is defined, and has the goal of hiding information (encapsulation).</p>
 }
 
 fn main() {
-    // Public structs with public fields can be constructed as usual
+    // パブリックフィールドを持ったパブリックな構造体はいつものように宣言できます。
     let open_box = my::OpenBox { contents: &quot;public information&quot; };
 
-    // and their fields can be normally accessed.
+    // そしてフィールドにも普通にアクセスできます。
     println!(&quot;The open box contains: {}&quot;, open_box.contents);
 
-    // Public structs with private fields cannot be constructed using field names.
-    // Error! `ClosedBox` has private fields
+    // プライベートフィールドを持ったパブリックな構造体はフィールド名で宣言できません。
+    // エラー! `ClosedBox`にはプライベートフィールドがあります。
     //let closed_box = my::ClosedBox { contents: &quot;classified information&quot; };
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // However, structs with private fields can be created using
-    // public constructors
+    // しかし、パブリックなコンストラクタを使って初期化できます。
     let _closed_box = my::ClosedBox::new(&quot;classified information&quot;);
 
-    // and the private fields of a public struct cannot be accessed.
-    // Error! The `contents` field is private
+    // そしてプライベートなフィールドにはアクセスできません
+    // エラー! `contents`フィールドはプライベートです
     //println!(&quot;The closed box contains: {}&quot;, _closed_box.contents);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="mod/../generics.html">generics</a> and <a href="mod/../fn/methods.html">methods</a></p>
-<h1><a class="header" href="#the-use-declaration" id="the-use-declaration">The <code>use</code> declaration</a></h1>
-<p>The <code>use</code> declaration can be used to bind a full path to a new name, for easier
-access. It is often used like this:</p>
-<pre><code class="language-rust editable ignore">// extern crate deeply; // normally, this would exist and not be commented out!
+<h3><a class="header" href="#こちらも参照-29" id="こちらも参照-29">こちらも参照:</a></h3>
+<ul>
+<li><a href="mod/../generics.html">ジェネリック</a></li>
+<li><a href="mod/../fn/methods.html">メソッド</a></li>
+</ul>
+<h1><a class="header" href="#use宣言" id="use宣言"><code>use</code>宣言</a></h1>
+<p><code>use</code>宣言は、アクセスを簡単にするため、パスに新しい名前を束縛します。
+このように使います。</p>
+<pre><code class="language-rust editable ignore">// extern crate deeply; // 普通、この行はコメントアウトされていません!
 
 use crate::deeply::nested::{
     my_first_function,
@@ -3344,8 +3344,8 @@ fn main() {
     my_first_function();
 }
 </code></pre>
-<p>You can use the <code>as</code> keyword to bind imports to a different name:</p>
-<pre><pre class="playpen"><code class="language-rust editable">// Bind the `deeply::nested::function` path to `other_function`.
+<p>違う名前に束縛してインポートするのに<code>as</code>キーワードを使います。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// `deeply::nested::function`を`other_function`に束縛する。
 use deeply::nested::function as other_function;
 
 fn function() {
@@ -3361,27 +3361,27 @@ mod deeply {
 }
 
 fn main() {
-    // Easier access to `deeply::nested::function`
+    // 簡単に`deeply::nested::function`にアクセスできる。
     other_function();
 
     println!(&quot;Entering block&quot;);
     {
-        // This is equivalent to `use deeply::nested::function as function`.
-        // This `function()` will shadow the outer one.
+        // これは`use deeply::nested::function as function`と等価で、
+        // `function()`はもともとのものを覆い隠します。
         use crate::deeply::nested::function;
         function();
 
-        // `use` bindings have a local scope. In this case, the
-        // shadowing of `function()` is only in this block.
+        // `use`束縛はローカルスコープを持っています。ここでは、
+        // `function()`のシャドーイングはこのブロック内だけで有効です。
         println!(&quot;Leaving block&quot;);
     }
 
     function();
 }
 </code></pre></pre>
-<h1><a class="header" href="#super-and-self" id="super-and-self"><code>super</code> and <code>self</code></a></h1>
-<p>The <code>super</code> and <code>self</code> keywords can be used in the path to remove ambiguity
-when accessing items and to prevent unnecessary hardcoding of paths.</p>
+<h1><a class="header" href="#superとself" id="superとself"><code>super</code>と<code>self</code></a></h1>
+<p><code>super</code>、<code>self</code>キーワードはパス内での要素へのアクセスで曖昧さをなくし、
+パスの不要なハードコードを防ぐのに使われます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn function() {
     println!(&quot;called `function()`&quot;);
 }
@@ -3404,23 +3404,22 @@ mod my {
     }
     
     pub fn indirect_call() {
-        // Let's access all the functions named `function` from this scope!
+        // このスコープから`function`という名前のすべての関数にアクセスしましょう!
         print!(&quot;called `my::indirect_call()`, that\n&gt; &quot;);
         
-        // The `self` keyword refers to the current module scope - in this case `my`.
-        // Calling `self::function()` and calling `function()` directly both give
-        // the same result, because they refer to the same function.
+        // `self`キーワードは現在のモジュール(ここでは`my`)を参照します。
+        // `self::function()`と`function()`は等価で、同じ結果を返します。 
         self::function();
         function();
         
-        // We can also use `self` to access another module inside `my`:
+        // `self`で`my`内の他のモジュールにもアクセスできます。
         self::cool::function();
         
-        // The `super` keyword refers to the parent scope (outside the `my` module).
+        // `super`キーワードで親スコープ(ここでは`my`モジュールの外側)にアクセスできます。
         super::function();
         
-        // This will bind to the `cool::function` in the *crate* scope.
-        // In this case the crate scope is the outermost scope.
+        // ここで*crate*スコープの`cool::function`を束縛します。
+        // ここでcrateスコープとは一番外側のスコープのことです。
         {
             use crate::cool::function as root_function;
             root_function();
@@ -3432,9 +3431,9 @@ fn main() {
     my::indirect_call();
 }
 </code></pre></pre>
-<h1><a class="header" href="#file-hierarchy" id="file-hierarchy">File hierarchy</a></h1>
-<p>Modules can be mapped to a file/directory hierarchy. Let's break down the
-<a href="mod/visibility.html">visibility example</a> in files:</p>
+<h1><a class="header" href="#ファイル階層" id="ファイル階層">ファイル階層</a></h1>
+<p>モジュールはファイル/ディレクトリ階層で表すことができます。
+<a href="mod/visibility.html">可視性の例</a>をファイルで再現してみましょう。</p>
 <pre><code class="language-shell">$ tree .
 .
 |-- my
@@ -3443,9 +3442,9 @@ fn main() {
 |   `-- nested.rs
 `-- split.rs
 </code></pre>
-<p>In <code>split.rs</code>:</p>
-<pre><code class="language-rust ignore">// This declaration will look for a file named `my.rs` or `my/mod.rs` and will
-// insert its contents inside a module named `my` under this scope
+<p><code>split.rs</code>の中身:</p>
+<pre><code class="language-rust ignore">// この宣言は`my.rs`または`my/mod.rs`を探索し、そこにあった要素を
+// `my`モジュールとしてスコープに導入します。
 mod my;
 
 fn function() {
@@ -3463,10 +3462,9 @@ fn main() {
 }
 
 </code></pre>
-<p>In <code>my/mod.rs</code>:</p>
-<pre><code class="language-rust ignore">// Similarly `mod inaccessible` and `mod nested` will locate the `nested.rs`
-// and `inaccessible.rs` files and insert them here under their respective
-// modules
+<p><code>my/mod.rs</code>の中身:</p>
+<pre><code class="language-rust ignore">// 同様に`mod inaccessible`と`mod nested`は`nested.rs`や`inaccessible.rs`ファイルを
+// 探索し、そのモジュールを導入します。
 mod inaccessible;
 pub mod nested;
 
@@ -3484,7 +3482,7 @@ pub fn indirect_access() {
     private_function();
 }
 </code></pre>
-<p>In <code>my/nested.rs</code>:</p>
+<p><code>my/nested.rs</code>の中身:</p>
 <pre><code class="language-rust ignore">pub fn function() {
     println!(&quot;called `my::nested::function()`&quot;);
 }
@@ -3494,13 +3492,13 @@ fn private_function() {
     println!(&quot;called `my::nested::private_function()`&quot;);
 }
 </code></pre>
-<p>In <code>my/inaccessible.rs</code>:</p>
+<p><code>my/inaccessible.rs</code>の中身:</p>
 <pre><code class="language-rust ignore">#[allow(dead_code)]
 pub fn public_function() {
     println!(&quot;called `my::inaccessible::public_function()`&quot;);
 }
 </code></pre>
-<p>Let's check that things still work as before:</p>
+<p>同じように動くか確かめましょう。</p>
 <pre><code class="language-shell">$ rustc split.rs &amp;&amp; ./split
 called `my::function()`
 called `function()`
@@ -3508,18 +3506,17 @@ called `my::indirect_access()`, that
 &gt; called `my::private_function()`
 called `my::nested::function()`
 </code></pre>
-<h1><a class="header" href="#crates" id="crates">Crates</a></h1>
-<p>A crate is a compilation unit in Rust. Whenever <code>rustc some_file.rs</code> is called,
-<code>some_file.rs</code> is treated as the <em>crate file</em>. If <code>some_file.rs</code> has <code>mod</code>
-declarations in it, then the contents of the module files would be inserted in
-places where <code>mod</code> declarations in the crate file are found, <em>before</em> running
-the compiler over it. In other words, modules do <em>not</em> get compiled
-individually, only crates get compiled.</p>
-<p>A crate can be compiled into a binary or into a library. By default, <code>rustc</code>
-will produce a binary from a crate. This behavior can be overridden by passing
-the <code>--crate-type</code> flag to <code>lib</code>.</p>
-<h1><a class="header" href="#library" id="library">Library</a></h1>
-<p>Let's create a library, and then see how to link it to another crate.</p>
+<h1><a class="header" href="#クレート" id="クレート">クレート</a></h1>
+<p>クレートはRustにおける編集ユニットです。<code>rustc some_file.rs</code>が呼び出された時、
+<code>some_file.rs</code> は<em>クレートファイル</em>として扱われます。もし<code>some_file.rs</code>内に<code>mod</code>
+宣言があれば、モジュールファイルの要素がコンパイラを実行する<em>前</em>に挿入されます。
+言い換えれば、モジュールは独立してコンパイルされず、クレートのみがコンパイルされる
+ということです。</p>
+<p>クレートはバイナリまたはライブラリとしてコンパイルできます。デフォルトで、<code>rustc</code>
+はクレートからバイナリを作ります。このふるまいは<code>--crate-type</code>フラグに<code>lib</code>を立てる
+ことによって上書きできます。</p>
+<h1><a class="header" href="#ライブラリ" id="ライブラリ">ライブラリ</a></h1>
+<p>ライブラリを作り、他のクレートにリンクしてみましょう。</p>
 <pre><code class="language-rust ignore">pub fn public_function() {
     println!(&quot;called rary's `public_function()`&quot;);
 }
@@ -3538,29 +3535,28 @@ pub fn indirect_access() {
 $ ls lib*
 library.rlib
 </code></pre>
-<p>Libraries get prefixed with &quot;lib&quot;, and by default they get named after their
-crate file, but this default name can be overridden by passing
-the <code>--crate-name</code> option to <code>rustc</code> or by using the <a href="crates/../attribute/crate.html"><code>crate_name</code>
-attribute</a>.</p>
+<p>ライブラリは&quot;lib&quot;で始まる必要があります。デフォルトでクレートファイル
+の名前にちなんで名付けられます。しかし、これは<code>ructc</code>の<code>--crate-name</code>
+オプションや、<a href="crates/../attribute/crate.html"><code>crate_name</code>属性</a>で上書きできます。</p>
 <h1><a class="header" href="#extern-crate" id="extern-crate"><code>extern crate</code></a></h1>
-<p>To link a crate to this new library, the <code>extern crate</code> declaration must be
-used. This will not only link the library, but also import all its items under
-a module named the same as the library. The visibility rules that apply to
-modules also apply to libraries.</p>
-<pre><code class="language-rust ignore">// Link to `library`, import items under the `rary` module
+<p>クレートにライブラリをリンクするには、<code>extern crate</code>宣言が必要です。
+これはライブラリをリンクするだけでなく、ライブラリのモジュールを
+ライブラリ名と同じ名前でインポートします。可視性のルールはモジュール
+だけでなくライブラリにも適用されます。</p>
+<pre><code class="language-rust ignore">// `library`とリンクし、`rary`モジュールの要素をインポートします。
 extern crate rary;
 
 fn main() {
     rary::public_function();
 
-    // Error! `private_function` is private
+    // エラー! `private_function`はプライベートです
     //rary::private_function();
 
     rary::indirect_access();
 }
 </code></pre>
-<pre><code class="language-txt"># Where library.rlib is the path to the compiled library, assumed that it's
-# in the same directory here:
+<pre><code class="language-txt"># library.rlibのようなコンパイルされたライブラリのパスは、
+# 同じディレクトリにあることが想定されています。
 $ rustc executable.rs --extern rary=library.rlib &amp;&amp; ./executable
 called rary's `public_function()`
 called rary's `indirect_access()`, that
@@ -3792,7 +3788,7 @@ fn main() {
 <p>Note that in real programs, you should eliminate dead code. In these examples
 we'll allow dead code in some places because of the interactive nature of the
 examples.</p>
-<h1><a class="header" href="#crates-1" id="crates-1">Crates</a></h1>
+<h1><a class="header" href="#crates" id="crates">Crates</a></h1>
 <p>The <code>crate_type</code> attribute can be used to tell the compiler whether a crate is
 a binary or a library (and even which type of library), and the <code>crate_name</code>
 attribute can be used to set the name of the crate.</p>
@@ -3857,7 +3853,7 @@ fn main() {
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-1" id="see-also-1">See also:</a></h3>
+<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/reference/attributes.html#conditional-compilation">the reference</a>, <a href="https://doc.rust-lang.org/std/macro.cfg!.html"><code>cfg!</code></a>, and <a href="attribute/../macros.html">macros</a>.</p>
 <h1><a class="header" href="#custom" id="custom">Custom</a></h1>
 <p>Some conditionals like <code>target_os</code> are implicitly provided by <code>rustc</code>, but
@@ -3924,7 +3920,7 @@ fn main() {
     let _char = SingleGen('a'); // Uses `char`.
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-2" id="see-also-2">See also:</a></h3>
+<h3><a class="header" href="#see-also-1" id="see-also-1">See also:</a></h3>
 <p><a href="custom_types/structs.html"><code>structs</code></a></p>
 <h1><a class="header" href="#functions" id="functions">Functions</a></h1>
 <p>The same set of rules can be applied to functions: a type <code>T</code> becomes
@@ -3973,7 +3969,7 @@ fn main() {
     generic(SGen('c'));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-3" id="see-also-3">See also:</a></h3>
+<h3><a class="header" href="#see-also-2" id="see-also-2">See also:</a></h3>
 <p><a href="generics/../fn.html">functions</a> and <a href="generics/../custom_types/structs.html"><code>struct</code>s</a></p>
 <h1><a class="header" href="#implementation" id="implementation">Implementation</a></h1>
 <p>Similar to functions, implementations require care to remain generic.</p>
@@ -4020,7 +4016,7 @@ fn main() {
     println!(&quot;{}, {}&quot;, x.value(), y.value());
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-4" id="see-also-4">See also:</a></h3>
+<h3><a class="header" href="#see-also-3" id="see-also-3">See also:</a></h3>
 <p><a href="generics/../scope/lifetime/fn.html">functions returning references</a>, <a href="generics/../fn/methods.html"><code>impl</code></a>, and <a href="generics/../custom_types/structs.html"><code>struct</code></a></p>
 <h1><a class="header" href="#traits" id="traits">Traits</a></h1>
 <p>Of course <code>trait</code>s can also be generic. Here we define one which reimplements
@@ -4056,7 +4052,7 @@ fn main() {
     // ^ TODO: Try uncommenting these lines.
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-5" id="see-also-5">See also:</a></h3>
+<h3><a class="header" href="#see-also-4" id="see-also-4">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a>, <a href="generics/../custom_types/structs.html"><code>struct</code></a>, and <a href="generics/../trait.html"><code>trait</code></a></p>
 <h1><a class="header" href="#bounds" id="bounds">Bounds</a></h1>
 <p>When working with generics, the type parameters often must use traits as <em>bounds</em> to
@@ -4119,7 +4115,7 @@ fn main() {
 </code></pre></pre>
 <p>As an additional note, <a href="generics/../generics/where.html"><code>where</code></a> clauses can also be used to apply bounds in
 some cases to be more expressive.</p>
-<h3><a class="header" href="#see-also-6" id="see-also-6">See also:</a></h3>
+<h3><a class="header" href="#see-also-5" id="see-also-5">See also:</a></h3>
 <p><a href="generics/../hello/print.html"><code>std::fmt</code></a>, <a href="generics/../custom_types/structs.html"><code>struct</code>s</a>, and <a href="generics/../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#testcase-empty-bounds" id="testcase-empty-bounds">Testcase: empty bounds</a></h1>
 <p>A consequence of how bounds work is that even if a <code>trait</code> doesn't
@@ -4153,7 +4149,7 @@ fn main() {
     // ^ TODO: Try uncommenting this line.
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-7" id="see-also-7">See also:</a></h3>
+<h3><a class="header" href="#see-also-6" id="see-also-6">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/cmp/trait.Eq.html"><code>std::cmp::Eq</code></a>, <a href="https://doc.rust-lang.org/std/marker/trait.Copy.html"><code>std::marker::Copy</code></a>, and <a href="generics/bounds/../../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#multiple-bounds" id="multiple-bounds">Multiple bounds</a></h1>
 <p>Multiple bounds can be applied with a <code>+</code>. Like normal, different types are
@@ -4182,7 +4178,7 @@ fn main() {
     compare_types(&amp;array, &amp;vec);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-8" id="see-also-8">See also:</a></h3>
+<h3><a class="header" href="#see-also-7" id="see-also-7">See also:</a></h3>
 <p><a href="generics/../hello/print.html"><code>std::fmt</code></a> and <a href="generics/../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#where-clauses" id="where-clauses">Where clauses</a></h1>
 <p>A bound can also be expressed using a <code>where</code> clause immediately
@@ -4227,7 +4223,7 @@ fn main() {
     vec.print_in_option();
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-9" id="see-also-9">See also:</a></h3>
+<h3><a class="header" href="#see-also-8" id="see-also-8">See also:</a></h3>
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/0135-where.md">RFC</a>, <a href="generics/../custom_types/structs.html"><code>struct</code></a>, and <a href="generics/../trait.html"><code>trait</code></a></p>
 <h1><a class="header" href="#new-type-idiom" id="new-type-idiom">New Type Idiom</a></h1>
 <p>The <code>newtype</code> idiom gives compile time guarantees that the right type of value is supplied
@@ -4273,7 +4269,7 @@ fn main() {
     let years_as_primitive: i64 = years.0;
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-10" id="see-also-10">See also:</a></h3>
+<h3><a class="header" href="#see-also-9" id="see-also-9">See also:</a></h3>
 <p><a href="generics/../custom_types/structs.html"><code>structs</code></a></p>
 <h1><a class="header" href="#associated-items" id="associated-items">Associated items</a></h1>
 <p>&quot;Associated Items&quot; refers to a set of rules pertaining to <a href="https://doc.rust-lang.org/reference/items.html"><code>item</code></a>s
@@ -4281,7 +4277,7 @@ of various types. It is an extension to <code>trait</code> generics, and allows
 <code>trait</code>s to internally define new items.</p>
 <p>One such item is called an <em>associated type</em>, providing simpler usage 
 patterns when the <code>trait</code> is generic over its container type.</p>
-<h3><a class="header" href="#see-also-11" id="see-also-11">See also:</a></h3>
+<h3><a class="header" href="#see-also-10" id="see-also-10">See also:</a></h3>
 <p><a href="https://github.com/rust-lang/rfcs/blob/master/text/0195-associated-items.md">RFC</a></p>
 <h1><a class="header" href="#the-problem" id="the-problem">The Problem</a></h1>
 <p>A <code>trait</code> that is generic over its container type has type specification
@@ -4338,7 +4334,7 @@ fn main() {
     println!(&quot;The difference is: {}&quot;, difference(&amp;container));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-12" id="see-also-12">See also:</a></h3>
+<h3><a class="header" href="#see-also-11" id="see-also-11">See also:</a></h3>
 <p><a href="generics/assoc_items/../../custom_types/structs.html"><code>struct</code>s</a>, and <a href="generics/assoc_items/../../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#associated-types" id="associated-types">Associated types</a></h1>
 <p>The use of &quot;Associated types&quot; improves the overall readability of code 
@@ -4469,7 +4465,7 @@ fn main() {
     //          _struct1 == _struct2);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-13" id="see-also-13">See also:</a></h3>
+<h3><a class="header" href="#see-also-12" id="see-also-12">See also:</a></h3>
 <p><a href="generics/../trait/derive.html">Derive</a>, <a href="generics/../custom_types/structs.html">struct</a>, and <a href="generics/../custom_types/structs.html">TupleStructs</a></p>
 <h1><a class="header" href="#testcase-unit-clarification" id="testcase-unit-clarification">Testcase: unit clarification</a></h1>
 <p>A useful method of unit conversions can be examined by implementing <code>Add</code>
@@ -4538,7 +4534,7 @@ fn main() {
     //let one_feter = one_foot + one_meter;
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-14" id="see-also-14">See also:</a></h3>
+<h3><a class="header" href="#see-also-13" id="see-also-13">See also:</a></h3>
 <p><a href="generics/phantom/../../scope/borrow.html">Borrowing (<code>&amp;</code>)</a>, <a href="generics/phantom/../../generics/bounds.html">Bounds (<code>X: Y</code>)</a>, <a href="generics/phantom/../../custom_types/enum.html">enum</a>, <a href="generics/phantom/../../fn/methods.html">impl &amp; self</a>,
 <a href="generics/phantom/../../trait/ops.html">Overloading</a>, <a href="generics/phantom/../../scope/borrow/ref.html">ref</a>, <a href="generics/phantom/../../trait.html">Traits (<code>X for Y</code>)</a>, and <a href="generics/phantom/../../custom_types/structs.html">TupleStructs</a>.</p>
 <h1><a class="header" href="#scoping-rules" id="scoping-rules">Scoping rules</a></h1>
@@ -4619,7 +4615,7 @@ fn main() {
     println!(&quot;Made a ToDrop!&quot;);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-15" id="see-also-15">See also:</a></h3>
+<h3><a class="header" href="#see-also-14" id="see-also-14">See also:</a></h3>
 <p><a href="scope/../std/box.html">Box</a></p>
 <h1><a class="header" href="#ownership-and-moves" id="ownership-and-moves">Ownership and moves</a></h1>
 <p>Because variables are in charge of freeing their own resources, 
@@ -4791,7 +4787,7 @@ fn main() {
     // FIXME ^ Comment out this line
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-16" id="see-also-16">See also:</a></h3>
+<h3><a class="header" href="#see-also-15" id="see-also-15">See also:</a></h3>
 <p><a href="scope/borrow/../lifetime/static_lifetime.html"><code>static</code></a></p>
 <h1><a class="header" href="#aliasing" id="aliasing">Aliasing</a></h1>
 <p>Data can be immutably borrowed any number of times, but while immutably
@@ -4994,7 +4990,7 @@ fn main() {
 <div class="footnote-definition" id="1"><sup class="footnote-definition-label">1</sup>
 <p><a href="scope/lifetime/elision.html">elision</a> implicitly annotates lifetimes and so is different.</p>
 </div>
-<h3><a class="header" href="#see-also-17" id="see-also-17">See also:</a></h3>
+<h3><a class="header" href="#see-also-16" id="see-also-16">See also:</a></h3>
 <p><a href="scope/lifetime/../../generics.html">generics</a> and <a href="scope/lifetime/../../fn/closures.html">closures</a></p>
 <h1><a class="header" href="#functions-1" id="functions-1">Functions</a></h1>
 <p>Ignoring <a href="scope/lifetime/elision.html">elision</a>, function signatures with lifetimes have a few constraints: </p>
@@ -5049,7 +5045,7 @@ fn main() {
     print_one(&amp;t);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-18" id="see-also-18">See also:</a></h3>
+<h3><a class="header" href="#see-also-17" id="see-also-17">See also:</a></h3>
 <p><a href="scope/lifetime/fn.html">functions</a></p>
 <h1><a class="header" href="#methods" id="methods">Methods</a></h1>
 <p>Methods are annotated similarly to functions:</p>
@@ -5070,7 +5066,7 @@ fn main() {
     owner.print();
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-19" id="see-also-19">See also:</a></h3>
+<h3><a class="header" href="#see-also-18" id="see-also-18">See also:</a></h3>
 <p><a href="scope/lifetime/../../fn/methods.html">methods</a></p>
 <h1><a class="header" href="#structs" id="structs">Structs</a></h1>
 <p>Annotation of lifetimes in structures are also similar to functions:</p>
@@ -5108,7 +5104,7 @@ fn main() {
     println!(&quot;y is *not* borrowed in {:?}&quot;, number);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-20" id="see-also-20">See also:</a></h3>
+<h3><a class="header" href="#see-also-19" id="see-also-19">See also:</a></h3>
 <p><a href="scope/lifetime/../../custom_types/structs.html"><code>struct</code>s</a></p>
 <h1><a class="header" href="#traits-1" id="traits-1">Traits</a></h1>
 <p>Annotation of lifetimes in trait methods basically are similar to functions.
@@ -5133,7 +5129,7 @@ fn main() {
     println!(&quot;b is {:?}&quot;, b);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-21" id="see-also-21">See also:</a></h3>
+<h3><a class="header" href="#see-also-20" id="see-also-20">See also:</a></h3>
 <p><a href="scope/lifetime/../../trait.html"><code>trait</code>s</a></p>
 <h1><a class="header" href="#bounds-1" id="bounds-1">Bounds</a></h1>
 <p>Just like generic types can be bounded, lifetimes (themselves generic)
@@ -5176,7 +5172,7 @@ fn main() {
     print(ref_x);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-22" id="see-also-22">See also:</a></h3>
+<h3><a class="header" href="#see-also-21" id="see-also-21">See also:</a></h3>
 <p><a href="scope/lifetime/../../generics.html">generics</a>, <a href="scope/lifetime/../../generics/bounds.html">bounds in generics</a>, and 
 <a href="scope/lifetime/../../generics/multi_bounds.html">multiple bounds in generics</a></p>
 <h1><a class="header" href="#coercion" id="coercion">Coercion</a></h1>
@@ -5298,7 +5294,7 @@ fn use_it()
 16 | }
    | - `i` dropped here while still borrowed
 </code></pre>
-<h3><a class="header" href="#see-also-23" id="see-also-23">See also:</a></h3>
+<h3><a class="header" href="#see-also-22" id="see-also-22">See also:</a></h3>
 <p><a href="scope/lifetime/../../custom_types/constants.html"><code>'static</code> constants</a></p>
 <h1><a class="header" href="#elision" id="elision">Elision</a></h1>
 <p>Some lifetime patterns are overwhelmingly common and so the borrow checker
@@ -5333,7 +5329,7 @@ fn main() {
     println!(&quot;`annotated_pass`: {}&quot;, annotated_pass(&amp;x));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-24" id="see-also-24">See also:</a></h3>
+<h3><a class="header" href="#see-also-23" id="see-also-23">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#lifetime-elision">elision</a></p>
 <h1><a class="header" href="#traits-2" id="traits-2">Traits</a></h1>
 <p>A <code>trait</code> is a collection of methods defined for an unknown type:
@@ -5471,7 +5467,7 @@ fn main() {
     println!(&quot;One foot is {} than one meter.&quot;, cmp);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-25" id="see-also-25">See also:</a></h3>
+<h3><a class="header" href="#see-also-24" id="see-also-24">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/reference/attributes.html#derive"><code>derive</code></a></p>
 <h1><a class="header" href="#returning-traits-with-dyn" id="returning-traits-with-dyn">Returning Traits with <code>dyn</code></a></h1>
 <p>The Rust compiler needs to know how much space every function's return type requires. This means all your functions have to return a concrete type. Unlike other languages, if you have a trait like <code>Animal</code>, you can't write a function that returns <code>Animal</code>, because its different implementations will need different amounts of memory. </p>
@@ -5564,7 +5560,7 @@ fn main() {
     println!(&quot;Bar + Foo = {:?}&quot;, Bar + Foo);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-26" id="see-also-26">See Also</a></h3>
+<h3><a class="header" href="#see-also-25" id="see-also-25">See Also</a></h3>
 <p><a href="https://doc.rust-lang.org/core/ops/trait.Add.html">Add</a>, <a href="https://doc.rust-lang.org/book/appendix-02-operators.html">Syntax Index</a></p>
 <h1><a class="header" href="#drop" id="drop">Drop</a></h1>
 <p>The <a href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a> trait only has one method: <code>drop</code>, which is called automatically 
@@ -5837,7 +5833,7 @@ fn comp_sci_student_greeting(student: &amp;dyn CompSciStudent) -&gt; String {
 
 fn main() {}
 </code></pre></pre>
-<h3><a class="header" href="#see-also-27" id="see-also-27">See also:</a></h3>
+<h3><a class="header" href="#see-also-26" id="see-also-26">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/book/ch19-03-advanced-traits.html#using-supertraits-to-require-one-traits-functionality-within-another-trait">The Rust Programming Language chapter on supertraits</a></p>
 <h1><a class="header" href="#disambiguating-overlapping-traits" id="disambiguating-overlapping-traits">Disambiguating overlapping traits</a></h1>
 <p>A type can implement many different traits. What if two traits both require the same name? For example, many traits might have a method named <code>get()</code>. They might even have different return types! </p>
@@ -5890,7 +5886,7 @@ fn main() {
     assert_eq!(28, age);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-28" id="see-also-28">See also:</a></h3>
+<h3><a class="header" href="#see-also-27" id="see-also-27">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/book/ch19-03-advanced-traits.html#fully-qualified-syntax-for-disambiguation-calling-methods-with-the-same-name">The Rust Programming Language chapter on Fully Qualified syntax</a></p>
 <h1><a class="header" href="#macro_rules" id="macro_rules">macro_rules!</a></h1>
 <p>Rust provides a powerful macro system that allows metaprogramming. As you've
@@ -6412,7 +6408,7 @@ fn main() {
     eat(cooked_potato);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-29" id="see-also-29">See also:</a></h3>
+<h3><a class="header" href="#see-also-28" id="see-also-28">See also:</a></h3>
 <p><a href="error/option_unwrap/../../fn/closures.html">closures</a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map"><code>Option::map()</code></a></p>
 <h1><a class="header" href="#combinators-and_then" id="combinators-and_then">Combinators: <code>and_then</code></a></h1>
 <p><code>map()</code> was described as a chainable way to simplify <code>match</code> statements. 
@@ -6477,7 +6473,7 @@ fn main() {
     eat(sushi, Day::Wednesday);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-30" id="see-also-30">See also:</a></h3>
+<h3><a class="header" href="#see-also-29" id="see-also-29">See also:</a></h3>
 <p><a href="error/option_unwrap/../../fn/closures.html">closures</a>, <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>, and <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then"><code>Option::and_then()</code></a></p>
 <h1><a class="header" href="#result" id="result"><code>Result</code></a></h1>
 <p><a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a> is a richer version of the <a href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a> type that
@@ -6647,7 +6643,7 @@ fn main() {
     print(multiply(&quot;t&quot;, &quot;2&quot;));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-31" id="see-also-31">See also:</a></h3>
+<h3><a class="header" href="#see-also-30" id="see-also-30">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/io/type.Result.html"><code>io::Result</code></a></p>
 <h1><a class="header" href="#early-returns" id="early-returns">Early returns</a></h1>
 <p>In the previous example, we explicitly handled the errors using combinators.
@@ -6954,7 +6950,7 @@ fn main() {
     print(double_first(strings));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-32" id="see-also-32">See also:</a></h3>
+<h3><a class="header" href="#see-also-31" id="see-also-31">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/book/ch17-02-trait-objects.html#trait-objects-perform-dynamic-dispatch">Dynamic dispatch</a> and <a href="https://doc.rust-lang.org/std/error/trait.Error.html"><code>Error</code> trait</a></p>
 <h1><a class="header" href="#other-uses-of-" id="other-uses-of-">Other uses of <code>?</code></a></h1>
 <p>Notice in the previous example that our immediate reaction to calling
@@ -7019,7 +7015,7 @@ fn main() {
 is very similar to replacing the <code>unwrap</code> calls with <code>?</code> except that the
 return types are <code>Result</code>. As a result, they must be destructured at the
 top level.</p>
-<h3><a class="header" href="#see-also-33" id="see-also-33">See also:</a></h3>
+<h3><a class="header" href="#see-also-32" id="see-also-32">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/convert/trait.From.html"><code>From::from</code></a> and <a href="https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator"><code>?</code></a></p>
 <h1><a class="header" href="#wrapping-errors" id="wrapping-errors">Wrapping errors</a></h1>
 <p>An alternative to boxing errors is to wrap them in your own error type.</p>
@@ -7096,7 +7092,7 @@ fn main() {
 <p>This adds a bit more boilerplate for handling errors and might not be needed in
 all applications. There are some libraries that can take care of the boilerplate
 for you.</p>
-<h3><a class="header" href="#see-also-34" id="see-also-34">See also:</a></h3>
+<h3><a class="header" href="#see-also-33" id="see-also-33">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/convert/trait.From.html"><code>From::from</code></a> and <a href="error/multiple_error_types/../../custom_types/enum.html"><code>Enums</code></a></p>
 <h1><a class="header" href="#iterating-over-results" id="iterating-over-results">Iterating over <code>Result</code>s</a></h1>
 <p>An <code>Iter::map</code> operation might fail, for example:</p>
@@ -7171,7 +7167,7 @@ the <code>primitives</code>. Some of these include:</p>
 <li>error handling types: <code>Result&lt;i32, i32&gt;</code></li>
 <li>heap allocated pointers: <code>Box&lt;i32&gt;</code></li>
 </ul>
-<h3><a class="header" href="#see-also-35" id="see-also-35">See also:</a></h3>
+<h3><a class="header" href="#see-also-34" id="see-also-34">See also:</a></h3>
 <p><a href="primitives.html">primitives</a> and <a href="https://doc.rust-lang.org/std/">the std library</a></p>
 <h1><a class="header" href="#box-stack-and-heap" id="box-stack-and-heap">Box, stack and heap</a></h1>
 <p>All values in Rust are stack allocated by default. Values can be <em>boxed</em>
@@ -7935,7 +7931,7 @@ fn main() {
     // TODO ^ Try uncommenting this line
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-36" id="see-also-36">See also:</a></h3>
+<h3><a class="header" href="#see-also-35" id="see-also-35">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/rc/index.html">std::rc</a> and <a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a>.</p>
 <h1><a class="header" href="#std-misc" id="std-misc">Std misc</a></h1>
 <p>Many other types are provided by the std library to support
@@ -7946,7 +7942,7 @@ things such as:</p>
 <li>File I/O</li>
 </ul>
 <p>These expand beyond what the <a href="primitives.html">primitives</a> provide.</p>
-<h3><a class="header" href="#see-also-37" id="see-also-37">See also:</a></h3>
+<h3><a class="header" href="#see-also-36" id="see-also-36">See also:</a></h3>
 <p><a href="primitives.html">primitives</a> and <a href="https://doc.rust-lang.org/std/">the std library</a></p>
 <h1><a class="header" href="#threads" id="threads">Threads</a></h1>
 <p>Rust provides a mechanism for spawning native OS threads via the <code>spawn</code>
@@ -8098,7 +8094,7 @@ fn main() {
 What if the user decides to insert a lot of spaces? Do we <em>really</em> want to spawn 2,000 threads?
 Modify the program so that the data is always chunked into a limited number of chunks,
 defined by a static constant at the beginning of the program.</p>
-<h3><a class="header" href="#see-also-38" id="see-also-38">See also:</a></h3>
+<h3><a class="header" href="#see-also-37" id="see-also-37">See also:</a></h3>
 <ul>
 <li><a href="std_misc/threads/../threads.html">Threads</a></li>
 <li><a href="std_misc/threads/../../std/vec.html">vectors</a> and <a href="std_misc/threads/../../trait/iter.html">iterators</a></li>
@@ -8193,7 +8189,7 @@ fn main() {
 </code></pre></pre>
 <p>Be sure to check at other <code>Path</code> methods (<code>posix::Path</code> or <code>windows::Path</code>) and
 the <code>Metadata</code> struct.</p>
-<h3><a class="header" href="#see-also-39" id="see-also-39">See also:</a></h3>
+<h3><a class="header" href="#see-also-38" id="see-also-38">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/ffi/struct.OsStr.html">OsStr</a> and <a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">Metadata</a>.</p>
 <h1><a class="header" href="#file-io" id="file-io">File I/O</a></h1>
 <p>The <code>File</code> struct represents a file that has been opened (it wraps a file
@@ -8538,7 +8534,7 @@ a
     Ok(s)
 }
 </code></pre>
-<h3><a class="header" href="#see-also-40" id="see-also-40">See also:</a></h3>
+<h3><a class="header" href="#see-also-39" id="see-also-39">See also:</a></h3>
 <p><a href="std_misc/../attribute/cfg.html"><code>cfg!</code></a></p>
 <h1><a class="header" href="#program-arguments" id="program-arguments">Program arguments</a></h1>
 <h2><a class="header" href="#standard-library" id="standard-library">Standard Library</a></h2>
@@ -8562,7 +8558,7 @@ fn main() {
 My path is ./args.
 I got 3 arguments: [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;].
 </code></pre>
-<h2><a class="header" href="#crates-2" id="crates-2">Crates</a></h2>
+<h2><a class="header" href="#crates-1" id="crates-1">Crates</a></h2>
 <p>Alternatively, there are numerous crates that can provide extra functionality
 when creating command-line applications. The <a href="https://rust-lang-nursery.github.io/rust-cookbook/cli/arguments.html">Rust Cookbook</a> exhibits best
 practices on how to use one of the more popular command line argument crates,
@@ -8722,7 +8718,7 @@ includes support for writing software tests within the language itself.</p>
 <ul>
 <li><a href="testing/dev_dependencies.html">Dev-dependencies</a></li>
 </ul>
-<h2><a class="header" href="#see-also-41" id="see-also-41">See Also</a></h2>
+<h2><a class="header" href="#see-also-40" id="see-also-40">See Also</a></h2>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch11-00-testing.html">The Book</a> chapter on testing</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a> on doc-testing</li>
@@ -9046,7 +9042,7 @@ pub fn try_div(a: i32, b: i32) -&gt; Result&lt;i32, String&gt; {
     }
 }
 </code></pre>
-<h2><a class="header" href="#see-also-42" id="see-also-42">See Also</a></h2>
+<h2><a class="header" href="#see-also-41" id="see-also-41">See Also</a></h2>
 <ul>
 <li><a href="https://github.com/rust-lang/rfcs/blob/master/text/0505-api-comment-conventions.md">RFC505</a> on documentation style</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a> on documentation guidelines</li>
@@ -9147,7 +9143,7 @@ mod tests {
     }
 }
 </code></pre>
-<h2><a class="header" href="#see-also-43" id="see-also-43">See Also</a></h2>
+<h2><a class="header" href="#see-also-42" id="see-also-42">See Also</a></h2>
 <p><a href="http://doc.crates.io/specifying-dependencies.html">Cargo</a> docs on specifying dependencies.</p>
 <h1><a class="header" href="#unsafe-operations" id="unsafe-operations">Unsafe Operations</a></h1>
 <p>As an introduction to this section, to borrow from <a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">the official docs</a>,
@@ -9329,7 +9325,7 @@ pub use crate::mem::drop;
 pub use self::async_await::*;
 </code></pre>
 <p>For documentation, <code>rustdoc</code> is widely used by the community. It's what is used to generate the <a href="https://doc.rust-lang.org/std/">std library docs</a>.</p>
-<h3><a class="header" href="#see-also-44" id="see-also-44">See also:</a></h3>
+<h3><a class="header" href="#see-also-43" id="see-also-43">See also:</a></h3>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#making-useful-documentation-comments">The Rust Book: Making Useful Documentation Comments</a></li>
 <li><a href="https://doc.rust-lang.org/rustdoc/index.html">The rustdoc Book</a></li>
@@ -9358,7 +9354,7 @@ pub use self::async_await::*;
 </code></pre>
 <h2><a class="header" href="#using-it-with-docs" id="using-it-with-docs">Using it with docs</a></h2>
 <p>You may have noticed in some of the <a href="https://doc.rust-lang.org/core/">official Rust docs</a> a button that says &quot;Run&quot;, which opens the code sample up in a new tab in Rust Playground. This feature is enabled if you use the #[doc] attribute called <a href="https://doc.rust-lang.org/rustdoc/the-doc-attribute.html#html_playground_url"><code>html_playground_url</code></a>.</p>
-<h3><a class="header" href="#see-also-45" id="see-also-45">See also:</a></h3>
+<h3><a class="header" href="#see-also-44" id="see-also-44">See also:</a></h3>
 <ul>
 <li><a href="https://play.rust-lang.org/">The Rust Playground</a></li>
 <li><a href="https://github.com/integer32llc/rust-playground/">The next-gen playpen</a></li>

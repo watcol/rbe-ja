@@ -147,10 +147,10 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#the-use-declaration" id="the-use-declaration">The <code>use</code> declaration</a></h1>
-<p>The <code>use</code> declaration can be used to bind a full path to a new name, for easier
-access. It is often used like this:</p>
-<pre><code class="language-rust editable ignore">// extern crate deeply; // normally, this would exist and not be commented out!
+                        <h1><a class="header" href="#use宣言" id="use宣言"><code>use</code>宣言</a></h1>
+<p><code>use</code>宣言は、アクセスを簡単にするため、パスに新しい名前を束縛します。
+このように使います。</p>
+<pre><code class="language-rust editable ignore">// extern crate deeply; // 普通、この行はコメントアウトされていません!
 
 use crate::deeply::nested::{
     my_first_function,
@@ -162,8 +162,8 @@ fn main() {
     my_first_function();
 }
 </code></pre>
-<p>You can use the <code>as</code> keyword to bind imports to a different name:</p>
-<pre><pre class="playpen"><code class="language-rust editable">// Bind the `deeply::nested::function` path to `other_function`.
+<p>違う名前に束縛してインポートするのに<code>as</code>キーワードを使います。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// `deeply::nested::function`を`other_function`に束縛する。
 use deeply::nested::function as other_function;
 
 fn function() {
@@ -179,18 +179,18 @@ mod deeply {
 }
 
 fn main() {
-    // Easier access to `deeply::nested::function`
+    // 簡単に`deeply::nested::function`にアクセスできる。
     other_function();
 
     println!(&quot;Entering block&quot;);
     {
-        // This is equivalent to `use deeply::nested::function as function`.
-        // This `function()` will shadow the outer one.
+        // これは`use deeply::nested::function as function`と等価で、
+        // `function()`はもともとのものを覆い隠します。
         use crate::deeply::nested::function;
         function();
 
-        // `use` bindings have a local scope. In this case, the
-        // shadowing of `function()` is only in this block.
+        // `use`束縛はローカルスコープを持っています。ここでは、
+        // `function()`のシャドーイングはこのブロック内だけで有効です。
         println!(&quot;Leaving block&quot;);
     }
 
