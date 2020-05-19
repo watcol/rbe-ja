@@ -1,6 +1,6 @@
-# Library
+# ライブラリ
 
-Let's create a library, and then see how to link it to another crate.
+ライブラリを作り、他のクレートにリンクしてみましょう。
 
 ```rust,ignore
 pub fn public_function() {
@@ -24,9 +24,8 @@ $ ls lib*
 library.rlib
 ```
 
-Libraries get prefixed with "lib", and by default they get named after their
-crate file, but this default name can be overridden by passing
-the `--crate-name` option to `rustc` or by using the [`crate_name`
-attribute][crate-name].
+ライブラリは"lib"で始まる必要があります。デフォルトでクレートファイル
+の名前にちなんで名付けられます。しかし、これは`ructc`の`--crate-name`
+オプションや、[`crate_name`属性][crate-name]で上書きできます。
 
 [crate-name]: ../attribute/crate.md
