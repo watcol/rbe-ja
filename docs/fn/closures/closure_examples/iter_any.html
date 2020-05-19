@@ -148,19 +148,18 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#iteratorany" id="iteratorany">Iterator::any</a></h1>
-<p><code>Iterator::any</code> is a function which when passed an iterator, will return
-<code>true</code> if any element satisfies the predicate. Otherwise <code>false</code>. Its
-signature:</p>
+<p><code>Iterator::any</code>はイテレータ内に一つでも条件を満たす要素があれば<code>true</code>を、
+なければ<code>false</code>を返すメソッドです。</p>
 <pre><code class="language-rust ignore">pub trait Iterator {
-    // The type being iterated over.
+    // イテレータ内の要素の型。
     type Item;
 
-    // `any` takes `&amp;mut self` meaning the caller may be borrowed
-    // and modified, but not consumed.
+    // `any`は`&amp;mut self`をとるため、呼び出し元を借用し、変更するかも
+    // しれませんが、消費はしません。
     fn any&lt;F&gt;(&amp;mut self, f: F) -&gt; bool where
-        // `FnMut` meaning any captured variable may at most be
-        // modified, not consumed. `Self::Item` states it takes
-        // arguments to the closure by value.
+        // `FnMut`はクロージャがキャプチャした値を変更するかもしれないが、
+        // 消費はしないことを表します。`Self::Item`はクロージャに
+        // 値を引数として渡すことを意味します。
         F: FnMut(Self::Item) -&gt; bool {}
 }
 </code></pre>
@@ -168,21 +167,21 @@ signature:</p>
     let vec1 = vec![1, 2, 3];
     let vec2 = vec![4, 5, 6];
 
-    // `iter()` for vecs yields `&amp;i32`. Destructure to `i32`.
+    // ベクターの`iter()`は`&amp;i32`を産出するので、`i32`に分割代入する必要があります。
     println!(&quot;2 in vec1: {}&quot;, vec1.iter()     .any(|&amp;x| x == 2));
-    // `into_iter()` for vecs yields `i32`. No destructuring required.
+    // ベクターの`into_iter()`は`i32`を産出するので、分割代入は必要ありません。
     println!(&quot;2 in vec2: {}&quot;, vec2.into_iter().any(| x| x == 2));
 
     let array1 = [1, 2, 3];
     let array2 = [4, 5, 6];
 
-    // `iter()` for arrays yields `&amp;i32`.
+    // 配列の`iter()`は`&amp;i32`を産出します。
     println!(&quot;2 in array1: {}&quot;, array1.iter()     .any(|&amp;x| x == 2));
-    // `into_iter()` for arrays unusually yields `&amp;i32`.
+    // 配列の`into_iter()`もなんと`&amp;i32`を産出します。
     println!(&quot;2 in array2: {}&quot;, array2.into_iter().any(|&amp;x| x == 2));
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.any"><code>std::iter::Iterator::any</code></a></p>
 
                     </main>

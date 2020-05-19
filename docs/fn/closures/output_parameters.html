@@ -147,21 +147,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#as-output-parameters" id="as-output-parameters">As output parameters</a></h1>
-<p>Closures as input parameters are possible, so returning closures as
-output parameters should also be possible. However, anonymous
-closure types are, by definition, unknown, so we have to use
-<code>impl Trait</code> to return them.</p>
-<p>The valid traits for returning a closure are:</p>
+                        <h1><a class="header" href="#返り値として" id="返り値として">返り値として</a></h1>
+<p>クロージャを引数として取ることができるのなら、クロージャを返す
+こともできるはずです。しかし、匿名なクロージャの型は、定義時点では
+不明です。そのため、クロージャを返すには<code>impl Trait</code>を使う必要が
+あります。</p>
+<p>クロージャを返すのに使われるトレイトは以下の通りです。</p>
 <ul>
 <li><code>Fn</code></li>
 <li><code>FnMut</code></li>
 <li><code>FnOnce</code></li>
 </ul>
-<p>Beyond this, the <code>move</code> keyword must be used, which signals that all captures
-occur by value. This is required because any captures by reference would be
-dropped as soon as the function exited, leaving invalid references in the
-closure.</p>
+<p>キャプチャしている値をすべて渡すため、<code>move</code>キーワードが必要です。これがないと
+変数は関数終了と同時にdropされ、クロージャ内のキャプチャしている参照が無効に
+なります。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn create_fn() -&gt; impl Fn() {
     let text = &quot;Fn&quot;.to_owned();
 
@@ -190,8 +189,13 @@ fn main() {
     fn_once();
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/ops/trait.Fn.html"><code>Fn</code></a>, <a href="https://doc.rust-lang.org/std/ops/trait.FnMut.html"><code>FnMut</code></a>, <a href="../../generics.html">Generics</a> and <a href="../../trait/impl_trait.html">impl Trait</a>.</p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/ops/trait.Fn.html"><code>Fn</code></a></li>
+<li><a href="https://doc.rust-lang.org/std/ops/trait.FnMut.html"><code>FnMut</code></a></li>
+<li><a href="../../generics.html">ジェネリック</a></li>
+<li><a href="../../trait/impl_trait.html">impl Trait</a></li>
+</ul>
 
                     </main>
 

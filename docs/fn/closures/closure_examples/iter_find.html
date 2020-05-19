@@ -147,20 +147,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#searching-through-iterators" id="searching-through-iterators">Searching through iterators</a></h1>
-<p><code>Iterator::find</code> is a function which iterates over an iterator and searches for the 
-first value which satisfies some condition. If none of the values satisfy the 
-condition, it returns <code>None</code>. Its signature:</p>
+                        <h1><a class="header" href="#イテレータを検索する" id="イテレータを検索する">イテレータを検索する</a></h1>
+<p><code>Iterator::find</code>はイテレータ内で条件を満たす関数を検索する関数です。もし
+一つも条件を満たさなかったときは、<code>None</code>を返します。型シグネチャは以下の
+通りです。</p>
 <pre><code class="language-rust ignore">pub trait Iterator {
-    // The type being iterated over.
+    // 要素の型
     type Item;
 
-    // `find` takes `&amp;mut self` meaning the caller may be borrowed
-    // and modified, but not consumed.
+    // `find`は`&amp;mut self`をとります。よって呼び出し元は借用され、変更される
+    // かもしれませんが、消費はされません。
     fn find&lt;P&gt;(&amp;mut self, predicate: P) -&gt; Option&lt;Self::Item&gt; where
-        // `FnMut` meaning any captured variable may at most be
-        // modified, not consumed. `&amp;Self::Item` states it takes
-        // arguments to the closure by reference.
+        // `FnMut`はキャプチャする値が変更される可能性はあるが、
+        // 消費はされないことを表します。`&amp;Self::Item`はクロージャに
+        // 参照を渡すことを意味します。
         P: FnMut(&amp;Self::Item) -&gt; bool {}
 }
 </code></pre>
@@ -168,29 +168,29 @@ condition, it returns <code>None</code>. Its signature:</p>
     let vec1 = vec![1, 2, 3];
     let vec2 = vec![4, 5, 6];
 
-    // `iter()` for vecs yields `&amp;i32`.
+    // ベクターの`iter()`は`&amp;i32`を産出します。
     let mut iter = vec1.iter();
-    // `into_iter()` for vecs yields `i32`.
+    // ベクターの`into_iter()`は`i32`を産出します。
     let mut into_iter = vec2.into_iter();
 
-    // `iter()` for vecs yields `&amp;i32`, and we want to reference one of its
-    // items, so we have to destructure `&amp;&amp;i32` to `i32`
+    // ベクターの`iter()`は`&amp;i32`を産出します。要素の参照をとる必要があるので、
+    // `&amp;&amp;i32`を`i32`に分割代入する必要があります。
     println!(&quot;Find 2 in vec1: {:?}&quot;, iter     .find(|&amp;&amp;x| x == 2));
-    // `into_iter()` for vecs yields `i32`, and we want to reference one of
-    // its items, so we have to destructure `&amp;i32` to `i32`
+    // `into_iter()`は`i32`を産出します。なので同様に、`&amp;i32`を`i32`
+    // に分割代入する必要があります。
     println!(&quot;Find 2 in vec2: {:?}&quot;, into_iter.find(| &amp;x| x == 2));
 
     let array1 = [1, 2, 3];
     let array2 = [4, 5, 6];
 
-    // `iter()` for arrays yields `&amp;i32`
+    // 配列の`iter()`は`&amp;i32`を産出します。
     println!(&quot;Find 2 in array1: {:?}&quot;, array1.iter()     .find(|&amp;&amp;x| x == 2));
-    // `into_iter()` for arrays unusually yields `&amp;i32`
+    // 配列の`into_iter()`も`&amp;i32`を産出します。
     println!(&quot;Find 2 in array2: {:?}&quot;, array2.into_iter().find(|&amp;&amp;x| x == 2));
 }
 </code></pre></pre>
-<p><code>Iterator::find</code> gives you a reference to the item. But if you want the <em>index</em> of the
-item, use <code>Iterator::position</code>.</p>
+<p><code>Iterator::find</code>は要素の参照を渡します。要素の_インデックス_がほしいときは
+<code>Iterator::position</code>を使ってください。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let vec = vec![1, 9, 3, 3, 13, 2];
 
@@ -202,11 +202,13 @@ item, use <code>Iterator::position</code>.</p>
     assert_eq!(index_of_first_negative_number, None);
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find"><code>std::iter::Iterator::find</code></a></p>
-<p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find_map"><code>std::iter::Iterator::find_map</code></a></p>
-<p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.position"><code>std::iter::Iterator::position</code></a></p>
-<p><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.rposition"><code>std::iter::Iterator::rposition</code></a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find"><code>std::iter::Iterator::find</code></a></li>
+<li><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.find_map"><code>std::iter::Iterator::find_map</code></a></li>
+<li><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.position"><code>std::iter::Iterator::position</code></a></li>
+<li><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.rposition"><code>std::iter::Iterator::rposition</code></a></li>
+</ul>
 
                     </main>
 
