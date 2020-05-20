@@ -3563,39 +3563,38 @@ called rary's `indirect_access()`, that
 &gt; called rary's `private_function()`
 </code></pre>
 <h1><a class="header" href="#cargo" id="cargo">Cargo</a></h1>
-<p><code>cargo</code> is the official Rust package management tool. It has lots of really
-useful features to improve code quality and developer velocity! These include</p>
+<p><code>cargo</code>はRustの公式パッケージマネージャです。これはコードの質や開発速度を上げる
+のに非常に役立ちます。Cargoには次のような機能があります。</p>
 <ul>
-<li>Dependency management and integration with <a href="https://crates.io">crates.io</a> (the
-official Rust package registry)</li>
-<li>Awareness of unit tests</li>
-<li>Awareness of benchmarks</li>
+<li>依存管理と<a href="https://crates.io">crates.io</a>(Rustの公式パッケージレジストリ)
+との連携</li>
+<li>ユニットテストの自動化</li>
+<li>ベンチマークの自動化</li>
 </ul>
-<p>This chapter will go through some quick basics, but you can find the
-comprehensive docs in <a href="https://doc.rust-lang.org/cargo/">The Cargo Book</a>.</p>
-<h1><a class="header" href="#dependencies" id="dependencies">Dependencies</a></h1>
-<p>Most programs have dependencies on some libraries. If you have ever managed
-dependencies by hand, you know how much of a pain this can be. Luckily, the Rust
-ecosystem comes standard with <code>cargo</code>! <code>cargo</code> can manage dependencies for a
-project.</p>
-<p>To create a new Rust project,</p>
-<pre><code class="language-sh"># A binary
+<p>この章では基本的な使い方を説明します。包括的な情報は<a href="https://doc.rust-lang.org/cargo/">The Cargo Book</a>
+を参照してください。</p>
+<h1><a class="header" href="#依存" id="依存">依存</a></h1>
+<p>ほとんどのプログラムはライブラリへの依存を持ちます。もし手動で依存を管理したことがないなら、
+その苦痛はわからないでしょう。幸運なことに、Rustのエコシステムは<code>cargo</code>で標準化されています!
+<code>cargo</code>でプロジェクトの依存を管理できます。</p>
+<p>新しいRustプロジェクトを作る:</p>
+<pre><code class="language-sh"># バイナリ
 cargo new foo
 
-# OR A library
+# ライブラリ
 cargo new --lib foo
 </code></pre>
-<p>For the rest of this chapter, let's assume we are making a binary, rather than
-a library, but all of the concepts are the same.</p>
-<p>After the above commands, you should see a file hierarchy like this:</p>
+<p>この章では、バイナリを作ることを想定しています。しかし、コンセプト
+はすべて同じです。</p>
+<p>上のコマンドを入力すると、次のようなファイル階層になるでしょう:</p>
 <pre><code class="language-txt">foo
 ├── Cargo.toml
 └── src
     └── main.rs
 </code></pre>
-<p>The <code>main.rs</code> is the root source file for your new project -- nothing new there.
-The <code>Cargo.toml</code> is the config file for <code>cargo</code> for this project (<code>foo</code>). If you
-look inside it, you should see something like this:</p>
+<p><code>main.rs</code>はソースファイルの根幹です。何も新しいことはありません。
+<code>Cargo.toml</code>はこのプロジェクト(<code>foo</code>)用の<code>cargo</code>設定ファイルです。
+中身はこのようになっているでしょう:</p>
 <pre><code class="language-toml">[package]
 name = &quot;foo&quot;
 version = &quot;0.1.0&quot;
@@ -3603,53 +3602,50 @@ authors = [&quot;mark&quot;]
 
 [dependencies]
 </code></pre>
-<p>The <code>name</code> field under <code>[package]</code> determines the name of the project. This is
-used by <code>crates.io</code> if you publish the crate (more later). It is also the name
-of the output binary when you compile.</p>
-<p>The <code>version</code> field is a crate version number using <a href="http://semver.org/">Semantic
-Versioning</a>.</p>
-<p>The <code>authors</code> field is a list of authors used when publishing the crate.</p>
-<p>The <code>[dependencies]</code> section lets you add dependencies for your project.</p>
-<p>For example, suppose that we want our program to have a great CLI. You can find
-lots of great packages on <a href="https://crates.io">crates.io</a> (the official Rust
-package registry). One popular choice is <a href="https://crates.io/crates/clap">clap</a>.
-As of this writing, the most recent published version of <code>clap</code> is <code>2.27.1</code>. To
-add a dependency to our program, we can simply add the following to our
-<code>Cargo.toml</code> under <code>[dependencies]</code>: <code>clap = &quot;2.27.1&quot;</code>.  And of course, <code>extern crate clap</code> in <code>main.rs</code>, just like normal. And that's it! You can start using
-<code>clap</code> in your program.</p>
-<p><code>cargo</code> also supports <a href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html">other types of dependencies</a>. Here is just
-a small sampling:</p>
+<p><code>[package]</code>下の<code>name</code>フィールドはプロジェクト名です。これはクレートを
+<code>crates.io</code>に公開するときに使われます。(詳しくは後で) これはコンパイルされた
+バイナリの名前にもなります。</p>
+<p><code>version</code>フィールドは<a href="http://semver.org/">セマンティックバージョニング</a>
+をベースとしたバージョン番号です。</p>
+<p><code>authors</code>フィールドはクレートを公開するときの開発者のリストです。</p>
+<p><code>[dependencies]</code>節にプロジェクトの依存を記述します。</p>
+<p>例えば、素晴らしいCLIツールを作りたいときは、<a href="https://crates.io">crates.io</a> (Rust
+の公式パッケージレジストリ)にたくさんの素晴らしいクレートがあります。ポピュラーなものでは
+<a href="https://crates.io/crates/clap">clap</a>などが良いでしょう。
+これを書いている時点で、<code>clap</code>の最新版は<code>2.27.1</code>です。 プログラムに依存を追加するには、
+<code>Cargo.toml</code>の<code>[dependencies]</code>節に、<code>clap = &quot;2.27.1&quot;</code>という行を加え、もちろん<code>main.rs</code>に
+<code>extern crate clap</code>を加える必要がありますが、それだけで良いです! <code>clap</code>をプログラム内で
+使えるようになります。</p>
+<p><code>cargo</code>は<a href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html">他のタイプの依存</a>もサポートしています。
+こちらが小さなサンプルです。</p>
 <pre><code class="language-toml">[package]
 name = &quot;foo&quot;
 version = &quot;0.1.0&quot;
 authors = [&quot;mark&quot;]
 
 [dependencies]
-clap = &quot;2.27.1&quot; # from crates.io
-rand = { git = &quot;https://github.com/rust-lang-nursery/rand&quot; } # from online repo
-bar = { path = &quot;../bar&quot; } # from a path in the local filesystem
+clap = &quot;2.27.1&quot; # crates.ioから
+rand = { git = &quot;https://github.com/rust-lang-nursery/rand&quot; } # オンラインリポジトリから
+bar = { path = &quot;../bar&quot; } # ローカルファイルシステムから
 </code></pre>
-<p><code>cargo</code> is more than a dependency manager. All of the available
-configuration options are listed in the <a href="https://doc.rust-lang.org/cargo/reference/manifest.html">format specification</a> of
-<code>Cargo.toml</code>.</p>
-<p>To build our project we can execute <code>cargo build</code> anywhere in the project
-directory (including subdirectories!). We can also do <code>cargo run</code> to build and
-run. Notice that these commands will resolve all dependencies, download crates
-if needed, and build everything, including your crate. (Note that it only
-rebuilds what it has not already built, similar to <code>make</code>).</p>
-<p>Voila! That's all there is to it!</p>
-<h1><a class="header" href="#conventions" id="conventions">Conventions</a></h1>
-<p>In the previous chapter, we saw the following directory hierarchy:</p>
+<p><code>cargo</code>は依存マネージャ以外の機能も備えています。<code>Cargo.toml</code>のすべての
+設定オプションの一覧はは<a href="https://doc.rust-lang.org/cargo/reference/manifest.html">format specification</a>にあります。</p>
+<p>プロジェクトを実行ファイルにビルドするには<code>cargo build</code>をプロジェクトディレクトリ内の
+いずれかのディレクトリ(サブディレクトリでもOKです!)から実行してください。また、
+<code>cargo run</code>でビルド後に実行できます。これらのコマンドは、依存関係を解決し、
+必要に応じてクレートをダウンロードし、すべてをビルドします。(<code>make</code>のように、まだビルド
+されていないもののみビルドします。)</p>
+<p>たったこれだけです!</p>
+<h1><a class="header" href="#慣習" id="慣習">慣習</a></h1>
+<p>前の節で、このようなディレクトリ階層を見ました。</p>
 <pre><code class="language-txt">foo
 ├── Cargo.toml
 └── src
     └── main.rs
 </code></pre>
-<p>Suppose that we wanted to have two binaries in the same project, though. What
-then?</p>
-<p>It turns out that <code>cargo</code> supports this. The default binary name is <code>main</code>, as
-we saw before, but you can add additional binaries by placing them in a <code>bin/</code>
-directory:</p>
+<p>同じプロジェクト内でバイナリを2つ以上作るときはどうするのでしょうか?</p>
+<p><code>cargo</code>はこれについてもサポートしています。前に見たように<code>main</code>がデフォルトのバイナリですが、
+<code>bin/</code>ディレクトリ内で他のバイナリを作ることができます。</p>
 <pre><code class="language-txt">foo
 ├── Cargo.toml
 └── src
@@ -3657,20 +3653,17 @@ directory:</p>
     └── bin
         └── my_other_bin.rs
 </code></pre>
-<p>To tell <code>cargo</code> to compile or run this binary as opposed to the default or other
-binaries, we just pass <code>cargo</code> the <code>--bin my_other_bin</code> flag, where <code>my_other_bin</code>
-is the name of the binary we want to work with.</p>
-<p>In addition to extra binaries, <code>cargo</code> supports <a href="https://doc.rust-lang.org/cargo/guide/project-layout.html">more features</a> such as
-benchmarks, tests, and examples.</p>
-<p>In the next chapter, we will look more closely at tests.</p>
-<h1><a class="header" href="#testing" id="testing">Testing</a></h1>
-<p>As we know testing is integral to any piece of software! Rust has first-class
-support for unit and integration testing (<a href="https://doc.rust-lang.org/book/ch11-00-testing.html">see this
-chapter</a> in
-TRPL).</p>
-<p>From the testing chapters linked above, we see how to write unit tests and
-integration tests. Organizationally, we can place unit tests in the modules they
-test and integration tests in their own <code>tests/</code> directory:</p>
+<p>そのバイナリをコンパイル&amp;実行したいときは、<code>cargo</code>にバイナリ名を<code>my_other_bin</code>として
+<code>--bin my_other_bin</code>フラグを渡せばよいだけです。</p>
+<p>複数のバイナリに加えて、<code>cargo</code>は、ベンチマーク、テスト、サンプルなど<a href="https://doc.rust-lang.org/cargo/guide/project-layout.html">多くの機能</a>
+を備えています。</p>
+<p>次の節で、テストについて見ていきます。</p>
+<h1><a class="header" href="#テスト" id="テスト">テスト</a></h1>
+<p>あらゆるソフトにとって、テストは重要です! Rustはテストについての
+サポートを提供しています。<em>The Rust Programming Language</em>の(<a href="https://doc.rust-lang.org/book/ch11-00-testing.html">この章
+</a>を参照してください。</p>
+<p>上のドキュメントでユニットテストと整合性テストの書き方について述べています。
+ユニットテストや整合性テストは<code>tests/</code>ディレクトリに入れることになっています。</p>
 <pre><code class="language-txt">foo
 ├── Cargo.toml
 ├── src
@@ -3679,11 +3672,11 @@ test and integration tests in their own <code>tests/</code> directory:</p>
     ├── my_test.rs
     └── my_other_test.rs
 </code></pre>
-<p>Each file in <code>tests</code> is a separate integration test.</p>
-<p><code>cargo</code> naturally provides an easy way to run all of your tests!</p>
+<p><code>tests</code>内のそれぞれのファイルが別のテストです。</p>
+<p><code>cargo</code>はすべてのテストを自動的に実行する機能を提供しています!</p>
 <pre><code class="language-shell">$ cargo test
 </code></pre>
-<p>You should see output like this:</p>
+<p>このような出力が得られるはずです:</p>
 <pre><code class="language-shell">$ cargo test
    Compiling blah v0.1.0 (file:///nobackup/blah)
     Finished dev [unoptimized + debuginfo] target(s) in 0.89 secs
@@ -3697,7 +3690,7 @@ test test_foo ... ok
 
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 </code></pre>
-<p>You can also run tests whose name matches a pattern:</p>
+<p>パターンにマッチするテストのみを実行することもできます:</p>
 <pre><code class="language-shell">$ cargo test test_foo
 </code></pre>
 <pre><code class="language-shell">$ cargo test test_foo
@@ -3711,34 +3704,28 @@ test test_foo_bar ... ok
 
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out
 </code></pre>
-<p>One word of caution: Cargo may run multiple tests concurrently, so make sure
-that they don't race with each other. For example, if they all output to a
-file, you should make them write to different files.</p>
-<h1><a class="header" href="#build-scripts" id="build-scripts">Build Scripts</a></h1>
-<p>Sometimes a normal build from <code>cargo</code> is not enough. Perhaps your crate needs
-some pre-requisites before <code>cargo</code> will successfully compile, things like code
-generation, or some native code that needs to be compiled. To solve this problem
-we have build scripts that Cargo can run.</p>
-<p>To add a build script to your package it can either be specified in the
-<code>Cargo.toml</code> as follows:</p>
+<p>注意として、Cargoは複数のテストを並列的に実行することがあります。そのため、
+すべてのテストがお互いに競合しないようにする必要があります。例えば、それぞれの
+テストがファイルに出力する時、違うファイル名に出力する必要があります。</p>
+<h1><a class="header" href="#ビルドスクリプト" id="ビルドスクリプト">ビルドスクリプト</a></h1>
+<p>時々、デフォルトの<code>cargo</code>のビルドでは不十分な場合があります。おそらくそれは<code>cargo</code>が
+コンパイルを成功するのにコード生成、他のファイルのコンパイルなどを事前にしなければ
+いけないときでしょう。この問題を解決するために、Cargoではビルドスクリプトが実行できます。</p>
+<p><code>Cargo.toml</code>に以下のような行を加えると、ビルドスクリプトが追加できます。</p>
 <pre><code class="language-toml">[package]
 ...
 build = &quot;build.rs&quot;
 </code></pre>
-<p>Otherwise Cargo will look for a <code>build.rs</code> file in the project directory by
-default.</p>
-<h2><a class="header" href="#how-to-use-a-build-script" id="how-to-use-a-build-script">How to use a build script</a></h2>
-<p>The build script is simply another Rust file that will be compiled and invoked
-prior to compiling anything else in the package. Hence it can be used to fulfill
-pre-requisites of your crate.</p>
-<p>Cargo provides the script with inputs via environment variables <a href="https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts">specified
-here</a> that can be used.</p>
-<p>The script provides output via stdout. All lines printed are written to
-<code>target/debug/build/&lt;pkg&gt;/output</code>. Further, lines prefixed with <code>cargo:</code> will be
-interpreted by Cargo directly and hence can be used to define parameters for the
-package's compilation.</p>
-<p>For further specification and examples have a read of the
-<a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">Cargo specification</a>.</p>
+<p>デフォルトでCargoはプロジェクトディレクトリの<code>build.rs</code>ファイルがあれば、
+実行します。</p>
+<h2><a class="header" href="#ビルドスクリプトの使い方" id="ビルドスクリプトの使い方">ビルドスクリプトの使い方</a></h2>
+<p>ビルドスクリプトは単純にはじめにコンパイルされ、パッケージ内の他のものをコンパイルする
+Rustファイルです。これによってクレートの事前要件を満たすことができます。</p>
+<p>Cargoは<a href="https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts">ここで指定された</a>環境変数を入力として実行されるスクリプトをいくつか提供しています。</p>
+<p>また、スクリプトは標準出力を介して出力し、<code>target/debug/build/&lt;pkg&gt;/output</code>にすべての
+出力が書き込まれます。さらに、<code>cargo:</code>で始まる行はCargoに解析され、パッケージをコンパイル
+するときのひきすうとして使われます。</p>
+<p>さらなる仕様やサンプルについては<a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">Cargoのドキュメント</a>を参照してください。</p>
 <h1><a class="header" href="#attributes" id="attributes">Attributes</a></h1>
 <p>An attribute is metadata applied to some module, crate or item. This metadata
 can be used to/for:</p>
@@ -8705,7 +8692,7 @@ impl fmt::Debug for Complex {
     }
 }
 </code></pre>
-<h1><a class="header" href="#testing-1" id="testing-1">Testing</a></h1>
+<h1><a class="header" href="#testing" id="testing">Testing</a></h1>
 <p>Rust is a programming language that cares a lot about correctness and it
 includes support for writing software tests within the language itself.</p>
 <p>Testing comes in three styles:</p>

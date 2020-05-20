@@ -147,31 +147,25 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#build-scripts" id="build-scripts">Build Scripts</a></h1>
-<p>Sometimes a normal build from <code>cargo</code> is not enough. Perhaps your crate needs
-some pre-requisites before <code>cargo</code> will successfully compile, things like code
-generation, or some native code that needs to be compiled. To solve this problem
-we have build scripts that Cargo can run.</p>
-<p>To add a build script to your package it can either be specified in the
-<code>Cargo.toml</code> as follows:</p>
+                        <h1><a class="header" href="#ビルドスクリプト" id="ビルドスクリプト">ビルドスクリプト</a></h1>
+<p>時々、デフォルトの<code>cargo</code>のビルドでは不十分な場合があります。おそらくそれは<code>cargo</code>が
+コンパイルを成功するのにコード生成、他のファイルのコンパイルなどを事前にしなければ
+いけないときでしょう。この問題を解決するために、Cargoではビルドスクリプトが実行できます。</p>
+<p><code>Cargo.toml</code>に以下のような行を加えると、ビルドスクリプトが追加できます。</p>
 <pre><code class="language-toml">[package]
 ...
 build = &quot;build.rs&quot;
 </code></pre>
-<p>Otherwise Cargo will look for a <code>build.rs</code> file in the project directory by
-default.</p>
-<h2><a class="header" href="#how-to-use-a-build-script" id="how-to-use-a-build-script">How to use a build script</a></h2>
-<p>The build script is simply another Rust file that will be compiled and invoked
-prior to compiling anything else in the package. Hence it can be used to fulfill
-pre-requisites of your crate.</p>
-<p>Cargo provides the script with inputs via environment variables <a href="https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts">specified
-here</a> that can be used.</p>
-<p>The script provides output via stdout. All lines printed are written to
-<code>target/debug/build/&lt;pkg&gt;/output</code>. Further, lines prefixed with <code>cargo:</code> will be
-interpreted by Cargo directly and hence can be used to define parameters for the
-package's compilation.</p>
-<p>For further specification and examples have a read of the
-<a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">Cargo specification</a>.</p>
+<p>デフォルトでCargoはプロジェクトディレクトリの<code>build.rs</code>ファイルがあれば、
+実行します。</p>
+<h2><a class="header" href="#ビルドスクリプトの使い方" id="ビルドスクリプトの使い方">ビルドスクリプトの使い方</a></h2>
+<p>ビルドスクリプトは単純にはじめにコンパイルされ、パッケージ内の他のものをコンパイルする
+Rustファイルです。これによってクレートの事前要件を満たすことができます。</p>
+<p>Cargoは<a href="https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts">ここで指定された</a>環境変数を入力として実行されるスクリプトをいくつか提供しています。</p>
+<p>また、スクリプトは標準出力を介して出力し、<code>target/debug/build/&lt;pkg&gt;/output</code>にすべての
+出力が書き込まれます。さらに、<code>cargo:</code>で始まる行はCargoに解析され、パッケージをコンパイル
+するときのひきすうとして使われます。</p>
+<p>さらなる仕様やサンプルについては<a href="https://doc.rust-lang.org/cargo/reference/build-scripts.html">Cargoのドキュメント</a>を参照してください。</p>
 
                     </main>
 

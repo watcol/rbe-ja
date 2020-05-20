@@ -1,12 +1,10 @@
-# Build Scripts
+# ビルドスクリプト
 
-Sometimes a normal build from `cargo` is not enough. Perhaps your crate needs
-some pre-requisites before `cargo` will successfully compile, things like code
-generation, or some native code that needs to be compiled. To solve this problem
-we have build scripts that Cargo can run.
+時々、デフォルトの`cargo`のビルドでは不十分な場合があります。おそらくそれは`cargo`が
+コンパイルを成功するのにコード生成、他のファイルのコンパイルなどを事前にしなければ
+いけないときでしょう。この問題を解決するために、Cargoではビルドスクリプトが実行できます。
 
-To add a build script to your package it can either be specified in the
-`Cargo.toml` as follows:
+`Cargo.toml`に以下のような行を加えると、ビルドスクリプトが追加できます。
 
 ```toml
 [package]
@@ -14,25 +12,21 @@ To add a build script to your package it can either be specified in the
 build = "build.rs"
 ```
 
-Otherwise Cargo will look for a `build.rs` file in the project directory by
-default.
+デフォルトでCargoはプロジェクトディレクトリの`build.rs`ファイルがあれば、
+実行します。
 
-## How to use a build script
+## ビルドスクリプトの使い方
 
-The build script is simply another Rust file that will be compiled and invoked
-prior to compiling anything else in the package. Hence it can be used to fulfill
-pre-requisites of your crate.
+ビルドスクリプトは単純にはじめにコンパイルされ、パッケージ内の他のものをコンパイルする
+Rustファイルです。これによってクレートの事前要件を満たすことができます。
 
-Cargo provides the script with inputs via environment variables [specified
-here] that can be used.
+Cargoは[ここで指定された][specified here]環境変数を入力として実行されるスクリプトをいくつか提供しています。
 
-The script provides output via stdout. All lines printed are written to
-`target/debug/build/<pkg>/output`. Further, lines prefixed with `cargo:` will be
-interpreted by Cargo directly and hence can be used to define parameters for the
-package's compilation.
+また、スクリプトは標準出力を介して出力し、`target/debug/build/<pkg>/output`にすべての
+出力が書き込まれます。さらに、`cargo:`で始まる行はCargoに解析され、パッケージをコンパイル
+するときのひきすうとして使われます。
 
-For further specification and examples have a read of the
-[Cargo specification][cargo_specification].
+さらなる仕様やサンプルについては[Cargoのドキュメント][cargo_specification]を参照してください。
 
 [specified here]: https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-build-scripts
 

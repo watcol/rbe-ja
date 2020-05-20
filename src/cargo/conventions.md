@@ -1,6 +1,6 @@
-# Conventions
+# 慣習
 
-In the previous chapter, we saw the following directory hierarchy:
+前の節で、このようなディレクトリ階層を見ました。
 
 ```txt
 foo
@@ -9,12 +9,10 @@ foo
     └── main.rs
 ```
 
-Suppose that we wanted to have two binaries in the same project, though. What
-then?
+同じプロジェクト内でバイナリを2つ以上作るときはどうするのでしょうか?
 
-It turns out that `cargo` supports this. The default binary name is `main`, as
-we saw before, but you can add additional binaries by placing them in a `bin/`
-directory:
+`cargo`はこれについてもサポートしています。前に見たように`main`がデフォルトのバイナリですが、
+`bin/`ディレクトリ内で他のバイナリを作ることができます。
 
 ```txt
 foo
@@ -25,13 +23,12 @@ foo
         └── my_other_bin.rs
 ```
 
-To tell `cargo` to compile or run this binary as opposed to the default or other
-binaries, we just pass `cargo` the `--bin my_other_bin` flag, where `my_other_bin`
-is the name of the binary we want to work with.
+そのバイナリをコンパイル&実行したいときは、`cargo`にバイナリ名を`my_other_bin`として
+`--bin my_other_bin`フラグを渡せばよいだけです。
 
-In addition to extra binaries, `cargo` supports [more features] such as
-benchmarks, tests, and examples.
+複数のバイナリに加えて、`cargo`は、ベンチマーク、テスト、サンプルなど[多くの機能][more features]
+を備えています。
 
-In the next chapter, we will look more closely at tests.
+次の節で、テストについて見ていきます。
 
 [more features]: https://doc.rust-lang.org/cargo/guide/project-layout.html

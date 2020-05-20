@@ -147,18 +147,16 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#conventions" id="conventions">Conventions</a></h1>
-<p>In the previous chapter, we saw the following directory hierarchy:</p>
+                        <h1><a class="header" href="#慣習" id="慣習">慣習</a></h1>
+<p>前の節で、このようなディレクトリ階層を見ました。</p>
 <pre><code class="language-txt">foo
 ├── Cargo.toml
 └── src
     └── main.rs
 </code></pre>
-<p>Suppose that we wanted to have two binaries in the same project, though. What
-then?</p>
-<p>It turns out that <code>cargo</code> supports this. The default binary name is <code>main</code>, as
-we saw before, but you can add additional binaries by placing them in a <code>bin/</code>
-directory:</p>
+<p>同じプロジェクト内でバイナリを2つ以上作るときはどうするのでしょうか?</p>
+<p><code>cargo</code>はこれについてもサポートしています。前に見たように<code>main</code>がデフォルトのバイナリですが、
+<code>bin/</code>ディレクトリ内で他のバイナリを作ることができます。</p>
 <pre><code class="language-txt">foo
 ├── Cargo.toml
 └── src
@@ -166,12 +164,11 @@ directory:</p>
     └── bin
         └── my_other_bin.rs
 </code></pre>
-<p>To tell <code>cargo</code> to compile or run this binary as opposed to the default or other
-binaries, we just pass <code>cargo</code> the <code>--bin my_other_bin</code> flag, where <code>my_other_bin</code>
-is the name of the binary we want to work with.</p>
-<p>In addition to extra binaries, <code>cargo</code> supports <a href="https://doc.rust-lang.org/cargo/guide/project-layout.html">more features</a> such as
-benchmarks, tests, and examples.</p>
-<p>In the next chapter, we will look more closely at tests.</p>
+<p>そのバイナリをコンパイル&amp;実行したいときは、<code>cargo</code>にバイナリ名を<code>my_other_bin</code>として
+<code>--bin my_other_bin</code>フラグを渡せばよいだけです。</p>
+<p>複数のバイナリに加えて、<code>cargo</code>は、ベンチマーク、テスト、サンプルなど<a href="https://doc.rust-lang.org/cargo/guide/project-layout.html">多くの機能</a>
+を備えています。</p>
+<p>次の節で、テストについて見ていきます。</p>
 
                     </main>
 

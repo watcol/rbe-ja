@@ -147,29 +147,28 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#dependencies" id="dependencies">Dependencies</a></h1>
-<p>Most programs have dependencies on some libraries. If you have ever managed
-dependencies by hand, you know how much of a pain this can be. Luckily, the Rust
-ecosystem comes standard with <code>cargo</code>! <code>cargo</code> can manage dependencies for a
-project.</p>
-<p>To create a new Rust project,</p>
-<pre><code class="language-sh"># A binary
+                        <h1><a class="header" href="#依存" id="依存">依存</a></h1>
+<p>ほとんどのプログラムはライブラリへの依存を持ちます。もし手動で依存を管理したことがないなら、
+その苦痛はわからないでしょう。幸運なことに、Rustのエコシステムは<code>cargo</code>で標準化されています!
+<code>cargo</code>でプロジェクトの依存を管理できます。</p>
+<p>新しいRustプロジェクトを作る:</p>
+<pre><code class="language-sh"># バイナリ
 cargo new foo
 
-# OR A library
+# ライブラリ
 cargo new --lib foo
 </code></pre>
-<p>For the rest of this chapter, let's assume we are making a binary, rather than
-a library, but all of the concepts are the same.</p>
-<p>After the above commands, you should see a file hierarchy like this:</p>
+<p>この章では、バイナリを作ることを想定しています。しかし、コンセプト
+はすべて同じです。</p>
+<p>上のコマンドを入力すると、次のようなファイル階層になるでしょう:</p>
 <pre><code class="language-txt">foo
 ├── Cargo.toml
 └── src
     └── main.rs
 </code></pre>
-<p>The <code>main.rs</code> is the root source file for your new project -- nothing new there.
-The <code>Cargo.toml</code> is the config file for <code>cargo</code> for this project (<code>foo</code>). If you
-look inside it, you should see something like this:</p>
+<p><code>main.rs</code>はソースファイルの根幹です。何も新しいことはありません。
+<code>Cargo.toml</code>はこのプロジェクト(<code>foo</code>)用の<code>cargo</code>設定ファイルです。
+中身はこのようになっているでしょう:</p>
 <pre><code class="language-toml">[package]
 name = &quot;foo&quot;
 version = &quot;0.1.0&quot;
@@ -177,41 +176,40 @@ authors = [&quot;mark&quot;]
 
 [dependencies]
 </code></pre>
-<p>The <code>name</code> field under <code>[package]</code> determines the name of the project. This is
-used by <code>crates.io</code> if you publish the crate (more later). It is also the name
-of the output binary when you compile.</p>
-<p>The <code>version</code> field is a crate version number using <a href="http://semver.org/">Semantic
-Versioning</a>.</p>
-<p>The <code>authors</code> field is a list of authors used when publishing the crate.</p>
-<p>The <code>[dependencies]</code> section lets you add dependencies for your project.</p>
-<p>For example, suppose that we want our program to have a great CLI. You can find
-lots of great packages on <a href="https://crates.io">crates.io</a> (the official Rust
-package registry). One popular choice is <a href="https://crates.io/crates/clap">clap</a>.
-As of this writing, the most recent published version of <code>clap</code> is <code>2.27.1</code>. To
-add a dependency to our program, we can simply add the following to our
-<code>Cargo.toml</code> under <code>[dependencies]</code>: <code>clap = &quot;2.27.1&quot;</code>.  And of course, <code>extern crate clap</code> in <code>main.rs</code>, just like normal. And that's it! You can start using
-<code>clap</code> in your program.</p>
-<p><code>cargo</code> also supports <a href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html">other types of dependencies</a>. Here is just
-a small sampling:</p>
+<p><code>[package]</code>下の<code>name</code>フィールドはプロジェクト名です。これはクレートを
+<code>crates.io</code>に公開するときに使われます。(詳しくは後で) これはコンパイルされた
+バイナリの名前にもなります。</p>
+<p><code>version</code>フィールドは<a href="http://semver.org/">セマンティックバージョニング</a>
+をベースとしたバージョン番号です。</p>
+<p><code>authors</code>フィールドはクレートを公開するときの開発者のリストです。</p>
+<p><code>[dependencies]</code>節にプロジェクトの依存を記述します。</p>
+<p>例えば、素晴らしいCLIツールを作りたいときは、<a href="https://crates.io">crates.io</a> (Rust
+の公式パッケージレジストリ)にたくさんの素晴らしいクレートがあります。ポピュラーなものでは
+<a href="https://crates.io/crates/clap">clap</a>などが良いでしょう。
+これを書いている時点で、<code>clap</code>の最新版は<code>2.27.1</code>です。 プログラムに依存を追加するには、
+<code>Cargo.toml</code>の<code>[dependencies]</code>節に、<code>clap = &quot;2.27.1&quot;</code>という行を加え、もちろん<code>main.rs</code>に
+<code>extern crate clap</code>を加える必要がありますが、それだけで良いです! <code>clap</code>をプログラム内で
+使えるようになります。</p>
+<p><code>cargo</code>は<a href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html">他のタイプの依存</a>もサポートしています。
+こちらが小さなサンプルです。</p>
 <pre><code class="language-toml">[package]
 name = &quot;foo&quot;
 version = &quot;0.1.0&quot;
 authors = [&quot;mark&quot;]
 
 [dependencies]
-clap = &quot;2.27.1&quot; # from crates.io
-rand = { git = &quot;https://github.com/rust-lang-nursery/rand&quot; } # from online repo
-bar = { path = &quot;../bar&quot; } # from a path in the local filesystem
+clap = &quot;2.27.1&quot; # crates.ioから
+rand = { git = &quot;https://github.com/rust-lang-nursery/rand&quot; } # オンラインリポジトリから
+bar = { path = &quot;../bar&quot; } # ローカルファイルシステムから
 </code></pre>
-<p><code>cargo</code> is more than a dependency manager. All of the available
-configuration options are listed in the <a href="https://doc.rust-lang.org/cargo/reference/manifest.html">format specification</a> of
-<code>Cargo.toml</code>.</p>
-<p>To build our project we can execute <code>cargo build</code> anywhere in the project
-directory (including subdirectories!). We can also do <code>cargo run</code> to build and
-run. Notice that these commands will resolve all dependencies, download crates
-if needed, and build everything, including your crate. (Note that it only
-rebuilds what it has not already built, similar to <code>make</code>).</p>
-<p>Voila! That's all there is to it!</p>
+<p><code>cargo</code>は依存マネージャ以外の機能も備えています。<code>Cargo.toml</code>のすべての
+設定オプションの一覧はは<a href="https://doc.rust-lang.org/cargo/reference/manifest.html">format specification</a>にあります。</p>
+<p>プロジェクトを実行ファイルにビルドするには<code>cargo build</code>をプロジェクトディレクトリ内の
+いずれかのディレクトリ(サブディレクトリでもOKです!)から実行してください。また、
+<code>cargo run</code>でビルド後に実行できます。これらのコマンドは、依存関係を解決し、
+必要に応じてクレートをダウンロードし、すべてをビルドします。(<code>make</code>のように、まだビルド
+されていないもののみビルドします。)</p>
+<p>たったこれだけです!</p>
 
                     </main>
 
