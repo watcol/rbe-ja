@@ -1,29 +1,29 @@
-# Attributes
+# 属性
 
-An attribute is metadata applied to some module, crate or item. This metadata
-can be used to/for:
+属性は、モジュール、クレート、またはその要素などに対して適用されるメタデータです。
+このメタデータは次のような用途に使われます。
 
 <!-- TODO: Link these to their respective examples -->
 
-* [conditional compilation of code][cfg]
-* [set crate name, version and type (binary or library)][crate]
-* disable [lints][lint] (warnings)
-* enable compiler features (macros, glob imports, etc.)
-* link to a foreign library
-* mark functions as unit tests
-* mark functions that will be part of a benchmark
+* [条件に合致するときのみコードをコンパイルする][cfg]
+* [クレート名、バージョン、タイプ(バイナリかライブラリ)を指定する][crate]
+* [リント][lint](警告)を無効化する
+* コンパイラの機能を有効化する(マクロ、グロブ、インポートなど)
+* 外部ライブラリにリンクする
+* 関数をユニットテストとしてマークする
+* 関数をベンチマークとしてマークする
 
-When attributes apply to a whole crate, their syntax is `#![crate_attribute]`,
-and when they apply to a module or item, the syntax is `#[item_attribute]`
-(notice the missing bang `!`).
+クレート全体に属性を適用するときは、`#![crate_attribute]`構文を使い、
+モジュールや要素に対して適用するときは、`#[item_attribute]`構文を使います
+(`!`を忘れないでください)。
 
-Attributes can take arguments with different syntaxes:
+属性はこのような構文で引数を取ることができます:
 
 * `#[attribute = "value"]`
 * `#[attribute(key = "value")]`
 * `#[attribute(value)]`
 
-Attributes can have multiple values and can be separated over multiple lines, too:
+属性はこのようにして複数の引数を取ることもできます:
 
 ```rust,ignore
 #[attribute(value, value2)]

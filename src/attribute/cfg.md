@@ -1,22 +1,21 @@
 # `cfg`
 
-Configuration conditional checks are possible through two different operators:
+条件付きコンパイルは次の2つのオペレータによって行われます。
 
-* the `cfg` attribute: `#[cfg(...)]` in attribute position
-* the `cfg!` macro: `cfg!(...)` in boolean expressions
+* `cfg`属性: 属性としての`#[cfg(...)]`
+* `cfg!`マクロ: 真偽値式を使ったマクロ`cfg!(...)`
 
-While the former enables conditional compilation, the latter conditionally
-evaluates to `true` or `false` literals allowing for checks at run-time. Both
-utilize identical argument syntax.
+後者は実行時にチェックされ、`true`や`false`などのリテラルも使えます。
+どちらも適切な構文で記述する必要があります。
 
 ```rust,editable
-// This function only gets compiled if the target OS is linux
+// この関数はターゲットOSがlinuxである場合のみコンパイルされます
 #[cfg(target_os = "linux")]
 fn are_you_on_linux() {
     println!("You are running linux!");
 }
 
-// And this function only gets compiled if the target OS is *not* linux
+// この関数はターゲットOSがlinuxで*ない*場合のみコンパイルされます
 #[cfg(not(target_os = "linux"))]
 fn are_you_on_linux() {
     println!("You are *not* running linux!");
@@ -34,9 +33,11 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[the reference][ref], [`cfg!`][cfg], and [macros][macros].
+- [参照][ref]
+- [`cfg!`][cfg]
+- [マクロ][macros]
 
 [cfg]: https://doc.rust-lang.org/std/macro.cfg!.html
 [macros]: ../macros.md

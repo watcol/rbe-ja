@@ -147,9 +147,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#custom" id="custom">Custom</a></h1>
-<p>Some conditionals like <code>target_os</code> are implicitly provided by <code>rustc</code>, but
-custom conditionals must be passed to <code>rustc</code> using the <code>--cfg</code> flag.</p>
+                        <h1><a class="header" href="#カスタマイズ" id="カスタマイズ">カスタマイズ</a></h1>
+<p><code>target_os</code>など、いくつかの条件は<code>rustc</code>によって提供されますが、<code>ructc</code>に
+<code>--cfg</code>フラグを追加することで指定できるカスタム条件もあります。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">#[cfg(some_condition)]
 fn conditional_function() {
     println!(&quot;condition met!&quot;);
@@ -159,8 +159,8 @@ fn main() {
     conditional_function();
 }
 </code></pre></pre>
-<p>Try to run this to see what happens without the custom <code>cfg</code> flag.</p>
-<p>With the custom <code>cfg</code> flag:</p>
+<p><code>cfg</code>フラグがないとどうなるか試してみてください。</p>
+<p><code>cfg</code>フラグを指定すると:</p>
 <pre><code class="language-shell">$ rustc --cfg some_condition custom.rs &amp;&amp; ./custom
 condition met!
 </code></pre>

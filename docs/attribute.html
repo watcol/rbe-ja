@@ -147,29 +147,29 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#attributes" id="attributes">Attributes</a></h1>
-<p>An attribute is metadata applied to some module, crate or item. This metadata
-can be used to/for:</p>
+                        <h1><a class="header" href="#属性" id="属性">属性</a></h1>
+<p>属性は、モジュール、クレート、またはその要素などに対して適用されるメタデータです。
+このメタデータは次のような用途に使われます。</p>
 <!-- TODO: Link these to their respective examples -->
 <ul>
-<li><a href="attribute/cfg.html">conditional compilation of code</a></li>
-<li><a href="attribute/crate.html">set crate name, version and type (binary or library)</a></li>
-<li>disable <a href="https://en.wikipedia.org/wiki/Lint_%28software%29">lints</a> (warnings)</li>
-<li>enable compiler features (macros, glob imports, etc.)</li>
-<li>link to a foreign library</li>
-<li>mark functions as unit tests</li>
-<li>mark functions that will be part of a benchmark</li>
+<li><a href="attribute/cfg.html">条件に合致するときのみコードをコンパイルする</a></li>
+<li><a href="attribute/crate.html">クレート名、バージョン、タイプ(バイナリかライブラリ)を指定する</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Lint_%28software%29">リント</a>(警告)を無効化する</li>
+<li>コンパイラの機能を有効化する(マクロ、グロブ、インポートなど)</li>
+<li>外部ライブラリにリンクする</li>
+<li>関数をユニットテストとしてマークする</li>
+<li>関数をベンチマークとしてマークする</li>
 </ul>
-<p>When attributes apply to a whole crate, their syntax is <code>#![crate_attribute]</code>,
-and when they apply to a module or item, the syntax is <code>#[item_attribute]</code>
-(notice the missing bang <code>!</code>).</p>
-<p>Attributes can take arguments with different syntaxes:</p>
+<p>クレート全体に属性を適用するときは、<code>#![crate_attribute]</code>構文を使い、
+モジュールや要素に対して適用するときは、<code>#[item_attribute]</code>構文を使います
+(<code>!</code>を忘れないでください)。</p>
+<p>属性はこのような構文で引数を取ることができます:</p>
 <ul>
 <li><code>#[attribute = &quot;value&quot;]</code></li>
 <li><code>#[attribute(key = &quot;value&quot;)]</code></li>
 <li><code>#[attribute(value)]</code></li>
 </ul>
-<p>Attributes can have multiple values and can be separated over multiple lines, too:</p>
+<p>属性はこのようにして複数の引数を取ることもできます:</p>
 <pre><code class="language-rust ignore">#[attribute(value, value2)]
 
 

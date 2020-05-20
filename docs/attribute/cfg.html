@@ -148,21 +148,20 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#cfg" id="cfg"><code>cfg</code></a></h1>
-<p>Configuration conditional checks are possible through two different operators:</p>
+<p>条件付きコンパイルは次の2つのオペレータによって行われます。</p>
 <ul>
-<li>the <code>cfg</code> attribute: <code>#[cfg(...)]</code> in attribute position</li>
-<li>the <code>cfg!</code> macro: <code>cfg!(...)</code> in boolean expressions</li>
+<li><code>cfg</code>属性: 属性としての<code>#[cfg(...)]</code></li>
+<li><code>cfg!</code>マクロ: 真偽値式を使ったマクロ<code>cfg!(...)</code></li>
 </ul>
-<p>While the former enables conditional compilation, the latter conditionally
-evaluates to <code>true</code> or <code>false</code> literals allowing for checks at run-time. Both
-utilize identical argument syntax.</p>
-<pre><pre class="playpen"><code class="language-rust editable">// This function only gets compiled if the target OS is linux
+<p>後者は実行時にチェックされ、<code>true</code>や<code>false</code>などのリテラルも使えます。
+どちらも適切な構文で記述する必要があります。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// この関数はターゲットOSがlinuxである場合のみコンパイルされます
 #[cfg(target_os = &quot;linux&quot;)]
 fn are_you_on_linux() {
     println!(&quot;You are running linux!&quot;);
 }
 
-// And this function only gets compiled if the target OS is *not* linux
+// この関数はターゲットOSがlinuxで*ない*場合のみコンパイルされます
 #[cfg(not(target_os = &quot;linux&quot;))]
 fn are_you_on_linux() {
     println!(&quot;You are *not* running linux!&quot;);
@@ -179,8 +178,12 @@ fn main() {
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/reference/attributes.html#conditional-compilation">the reference</a>, <a href="https://doc.rust-lang.org/std/macro.cfg!.html"><code>cfg!</code></a>, and <a href="../macros.html">macros</a>.</p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/reference/attributes.html#conditional-compilation">参照</a></li>
+<li><a href="https://doc.rust-lang.org/std/macro.cfg!.html"><code>cfg!</code></a></li>
+<li><a href="../macros.html">マクロ</a></li>
+</ul>
 
                     </main>
 

@@ -1,26 +1,25 @@
 # `dead_code`
 
-The compiler provides a `dead_code`
-[*lint*][lint] that will warn
-about unused functions. An *attribute* can be used to disable the lint.
+コンパイラは使っていない関数に対して警告する
+`dead_code`[*リント*][lint]を提供します。これを無効化
+するための*属性*があります。
 
 ```rust,editable
 fn used_function() {}
 
-// `#[allow(dead_code)]` is an attribute that disables the `dead_code` lint
+// `#[allow(dead_code)]`は`dead_code`リントを無効化します
 #[allow(dead_code)]
 fn unused_function() {}
 
 fn noisy_unused_function() {}
-// FIXME ^ Add an attribute to suppress the warning
+// FIXME ^ 警告を消すために属性を加えてください
 
 fn main() {
     used_function();
 }
 ```
 
-Note that in real programs, you should eliminate dead code. In these examples
-we'll allow dead code in some places because of the interactive nature of the
-examples.
+実用のプログラムでは使わない関数は取り除いたほうが良いです。しかし、このような
+サンプルでは自然なサンプルになるように所々でこの属性を使います。
 
 [lint]: https://en.wikipedia.org/wiki/Lint_%28software%29

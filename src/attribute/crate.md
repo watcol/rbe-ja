@@ -1,18 +1,16 @@
-# Crates
+# クレート
 
-The `crate_type` attribute can be used to tell the compiler whether a crate is
-a binary or a library (and even which type of library), and the `crate_name`
-attribute can be used to set the name of the crate.
+`crate_type`属性でクレートがバイナリかライブラリか(そしてどのタイプのライブラリか)
+を指定し、`crate_name`属性でクレート名を設定します。
 
-However, it is important to note that both the `crate_type` and `crate_name`
-attributes have **no** effect whatsoever when using Cargo, the Rust package
-manager. Since Cargo is used for the majority of Rust projects, this means
-real-world uses of `crate_type` and `crate_name` are relatively limited.
+しかし、`crate_type`や`crate_name`は、Cargoを使う場合は使わ**ない**方が良いことに
+注意してください。これとCargoがメジャーなツールであることから、実用でこれが使われる
+ケースは限られています。
 
 ```rust,editable
-// This crate is a library
+// このクレートはライブラリです
 #![crate_type = "lib"]
-// The library is named "rary"
+// そしてライブラリ名は"rary"です
 #![crate_name = "rary"]
 
 pub fn public_function() {
@@ -30,8 +28,8 @@ pub fn indirect_access() {
 }
 ```
 
-When the `crate_type` attribute is used, we no longer need to pass the
-`--crate-type` flag to `rustc`.
+`crate_type`属性を使えば、`--crate-type`フラグを`rustc`に
+渡す必要はもはやありません。
 
 ```shell
 $ rustc lib.rs

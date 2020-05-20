@@ -147,17 +147,15 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#crates" id="crates">Crates</a></h1>
-<p>The <code>crate_type</code> attribute can be used to tell the compiler whether a crate is
-a binary or a library (and even which type of library), and the <code>crate_name</code>
-attribute can be used to set the name of the crate.</p>
-<p>However, it is important to note that both the <code>crate_type</code> and <code>crate_name</code>
-attributes have <strong>no</strong> effect whatsoever when using Cargo, the Rust package
-manager. Since Cargo is used for the majority of Rust projects, this means
-real-world uses of <code>crate_type</code> and <code>crate_name</code> are relatively limited.</p>
-<pre><pre class="playpen"><code class="language-rust editable">// This crate is a library
+                        <h1><a class="header" href="#クレート" id="クレート">クレート</a></h1>
+<p><code>crate_type</code>属性でクレートがバイナリかライブラリか(そしてどのタイプのライブラリか)
+を指定し、<code>crate_name</code>属性でクレート名を設定します。</p>
+<p>しかし、<code>crate_type</code>や<code>crate_name</code>は、Cargoを使う場合は使わ<strong>ない</strong>方が良いことに
+注意してください。これとCargoがメジャーなツールであることから、実用でこれが使われる
+ケースは限られています。</p>
+<pre><pre class="playpen"><code class="language-rust editable">// このクレートはライブラリです
 #![crate_type = &quot;lib&quot;]
-// The library is named &quot;rary&quot;
+// そしてライブラリ名は&quot;rary&quot;です
 #![crate_name = &quot;rary&quot;]
 
 pub fn public_function() {
@@ -174,8 +172,8 @@ pub fn indirect_access() {
     private_function();
 }
 </code></pre></pre>
-<p>When the <code>crate_type</code> attribute is used, we no longer need to pass the
-<code>--crate-type</code> flag to <code>rustc</code>.</p>
+<p><code>crate_type</code>属性を使えば、<code>--crate-type</code>フラグを<code>rustc</code>に
+渡す必要はもはやありません。</p>
 <pre><code class="language-shell">$ rustc lib.rs
 $ ls lib*
 library.rlib
