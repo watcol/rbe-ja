@@ -1,16 +1,16 @@
-# Implementation
+# 実装
 
-Similar to functions, implementations require care to remain generic.
+関数のように、メソッドの実装に関してもジェネリック型特有の記法が必要です。
 
 ```rust
-struct S; // Concrete type `S`
-struct GenericVal<T>(T); // Generic type `GenericVal`
+struct S; // 具象型`S`
+struct GenericVal<T>(T); // ジェネリック型`GenericVal`
 
-// impl of GenericVal where we explicitly specify type parameters:
-impl GenericVal<f32> {} // Specify `f32`
-impl GenericVal<S> {} // Specify `S` as defined above
+// GenericValを明示的に型パラメータを指定して実装する。
+impl GenericVal<f32> {} // `f32`を指定する
+impl GenericVal<S> {} // 上で定義した`S`を指定する
 
-// `<T>` Must precede the type to remain generic
+// ジェネリックにするには`<T>`が必要です。
 impl<T> GenericVal<T> {}
 ```
 
@@ -30,7 +30,7 @@ impl Val {
     }
 }
 
-// impl of GenVal for a generic type `T`
+// ジェネリック型`T`に対するGenValの実装
 impl<T> GenVal<T> {
     fn value(&self) -> &T {
         &self.gen_val
@@ -45,9 +45,11 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[functions returning references][fn], [`impl`][methods], and [`struct`][structs]
+- [参照を返す関数][fn]
+- [`impl`][methods]
+- [`struct`][structs]
 
 
 [fn]: ../scope/lifetime/fn.md

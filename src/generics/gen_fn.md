@@ -1,59 +1,57 @@
-# Functions
+# 関数
 
-The same set of rules can be applied to functions: a type `T` becomes
-generic when preceded by `<T>`.
+同じことが関数でも言えます。つまり、`<T>`のように指定された型`T`は
+ジェネリックになります。
 
-Using generic functions sometimes requires explicitly specifying type 
-parameters. This may be the case if the function is called where the return type 
-is generic, or if the compiler doesn't have enough information to infer 
-the necessary type parameters.
+ジェネリックな関数を使う時は、返り値がジェネリック型であり、それをコンパイラ
+が推論できない場合、明示的な型パラメータが必要になります。
 
-A function call with explicitly specified type parameters looks like:
+このように、明示的な型宣言を使って関数を呼び出すことができます。
 `fun::<A, B, ...>()`.
 
 ```rust,editable
-struct A;          // Concrete type `A`.
-struct S(A);       // Concrete type `S`.
-struct SGen<T>(T); // Generic type `SGen`.
+struct A;          // 具象型`A`
+struct S(A);       // 具象型`S`
+struct SGen<T>(T); // ジェネリック型`SGen`
 
-// The following functions all take ownership of the variable passed into
-// them and immediately go out of scope, freeing the variable.
+// 以下の関数はすべて変数の所有権をもらい、すぐにスコープを抜けるため、
+// 変数を開放します。
 
-// Define a function `reg_fn` that takes an argument `_s` of type `S`.
-// This has no `<T>` so this is not a generic function.
+// `S`型の引数`_s`を取る関数`reg_fn`を定義する。
+// ジェネリックな関数ではないので、`<T>`を使わない。
 fn reg_fn(_s: S) {}
 
-// Define a function `gen_spec_t` that takes an argument `_s` of type `SGen<T>`.
-// It has been explicitly given the type parameter `A`, but because `A` has not 
-// been specified as a generic type parameter for `gen_spec_t`, it is not generic.
+// `SGen<A>`型の引数`_s`を取る関数`gen_spec_t`を定義する。
+// `A`はジェネリックな型パラメータとして定義されていないため、
+// これはジェネリックではない。
 fn gen_spec_t(_s: SGen<A>) {}
 
-// Define a function `gen_spec_i32` that takes an argument `_s` of type `SGen<i32>`.
-// It has been explicitly given the type parameter `i32`, which is a specific type.
-// Because `i32` is not a generic type, this function is also not generic.
+// `SGen<i32>`型の引数`_s`を取る関数`gen_spec_i32`を定義する。
+// `i32`はジェネリックではないので、この関数もジェネリックでない。
 fn gen_spec_i32(_s: SGen<i32>) {}
 
-// Define a function `generic` that takes an argument `_s` of type `SGen<T>`.
-// Because `SGen<T>` is preceded by `<T>`, this function is generic over `T`.
+// `SGen<T>`型の引数`_s`をとる関数`generic`を定義する。
+// `<T>`があるため、`SGen<T>`はジェネリックであり、この関数は`T`に対してジェネリックです。
 fn generic<T>(_s: SGen<T>) {}
 
 fn main() {
-    // Using the non-generic functions
-    reg_fn(S(A));          // Concrete type.
-    gen_spec_t(SGen(A));   // Implicitly specified type parameter `A`.
-    gen_spec_i32(SGen(6)); // Implicitly specified type parameter `i32`.
+    // 非ジェネリックな関数を使う
+    reg_fn(S(A));          // 具象型
+    gen_spec_t(SGen(A));   // 型パラメータ`A`を暗示的に渡す。
+    gen_spec_i32(SGen(6)); // 型パラメータ`i32`を暗示的に渡す。
 
-    // Explicitly specified type parameter `char` to `generic()`.
+    // 明示的に`char`を`generic()`の型パラメータとして渡す。
     generic::<char>(SGen('a'));
 
-    // Implicitly specified type parameter `char` to `generic()`.
+    // 暗示的に`char`が`generic()`の型パラメータとなる。
     generic(SGen('c'));
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[functions][fn] and [`struct`s][structs]
+- [functions][fn]
+- [`struct`][structs]
 
 [fn]: ../fn.md
 [structs]: ../custom_types/structs.md

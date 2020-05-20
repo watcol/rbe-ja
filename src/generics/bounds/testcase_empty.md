@@ -1,8 +1,7 @@
-# Testcase: empty bounds
+# テストケース: 空の境界
 
-A consequence of how bounds work is that even if a `trait` doesn't
-include any functionality, you can still use it as a bound. `Eq` and
-`Copy` are examples of such `trait`s from the `std` library.
+`トレイト`がもし何も機能を含んでいなくても、境界として使うことができます。
+`Eq`や`Copy`は`std`ライブラリ内でのそのようなトレイトの例です。
 
 ```rust,editable
 struct Cardinal;
@@ -15,8 +14,8 @@ trait Blue {}
 impl Red for Cardinal {}
 impl Blue for BlueJay {}
 
-// These functions are only valid for types which implement these
-// traits. The fact that the traits are empty is irrelevant.
+// 以下の関数はトレイト境界を設けているが、そのトレイトが空かどうか
+// は関係ありません。
 fn red<T: Red>(_: &T)   -> &'static str { "red" }
 fn blue<T: Blue>(_: &T) -> &'static str { "blue" }
 
@@ -25,18 +24,19 @@ fn main() {
     let blue_jay = BlueJay;
     let _turkey   = Turkey;
 
-    // `red()` won't work on a blue jay nor vice versa
-    // because of the bounds.
+    // 境界があるため、`red()`は`blue jay`に対して実行できない。
     println!("A cardinal is {}", red(&cardinal));
     println!("A blue jay is {}", blue(&blue_jay));
     //println!("A turkey is {}", red(&_turkey));
-    // ^ TODO: Try uncommenting this line.
+    // ^ TODO: この行をアンコメントしてみてください
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`std::cmp::Eq`][eq], [`std::marker::Copy`][copy], and [`trait`s][traits]
+- [`std::cmp::Eq`][eq]
+- [`std::marker::Copy`][copy]
+- [`trait`][traits]
 
 [eq]: https://doc.rust-lang.org/std/cmp/trait.Eq.html
 [copy]: https://doc.rust-lang.org/std/marker/trait.Copy.html

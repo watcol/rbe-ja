@@ -1,64 +1,60 @@
-# Generics
+# ジェネリック
 
-*Generics* is the topic of generalizing types and functionalities to broader
-cases. This is extremely useful for reducing code duplication in many ways,
-but can call for rather involving syntax. Namely, being generic requires 
-taking great care to specify over which types a generic type 
-is actually considered valid. The simplest and most common use of generics 
-is for type parameters.
+*ジェネリック*は違う型の間で同じ機能を提供するのに使う機構です。
+これはコードの重複を減らすのに有用ですが、複雑な構文が必要になります。
+ジェネリック型を使うにはきちんと機能するか最新の注意を払わなければ
+いけません。そして、型パラメータとしての使い方が最も単純で一般的です。
 
-A type parameter is specified as generic by the use of angle brackets and upper
-[camel case][camelcase]: `<Aaa, Bbb, ...>`. "Generic type parameters" are
-typically represented as `<T>`. In Rust, "generic" also describes anything that
-accepts one or more generic type parameters `<T>`. Any type specified as a 
-generic type parameter is generic, and everything else is concrete (non-generic).
+ジェネリック型の型パラメータはカギ括弧と[キャメルケース][camelcase](`<Aaa, Bbb, ...>`)
+が使われます。「ジェネリックな型パラメータ」は普通`<T>`で表します。Rustでは、
+「ジェネリック」には「ジェネリックな型パラメータ`<T>`を1つ以上受け入れるもの」という
+意味もあります。ジェネリックな型パラメータを指定された場合それはジェネリック型になり、
+それ以外はすべて具象型(非ジェネリック)として扱われます。
 
-For example, defining a *generic function* named `foo` that takes an argument
-`T` of any type:
+例として、あらゆる型`T`の引数を受け取る*ジェネリック関数*`foo`を定義します。
 
 ```rust,ignore
 fn foo<T>(arg: T) { ... }
 ```
 
-Because `T` has been specified as a generic type parameter using `<T>`, it 
-is considered generic when used here as `(arg: T)`. This is the case even if `T` 
-has previously been defined as a `struct`.
+`T`は`<T>`によってジェネリックな型パラメータとして指定されているので、`(arg: T)`のように
+ジェネリック型として使うことができます。前に`T`が構造体として定義されていたとしても、
+ジェネリックが優先されます。
 
-This example shows some of the syntax in action:
+次の例で、手を動かしながらジェネリックを学んでいきましょう。
 
 ```rust,editable
-// A concrete type `A`.
+// 具象型`A`
 struct A;
 
-// In defining the type `Single`, the first use of `A` is not preceded by `<A>`.
-// Therefore, `Single` is a concrete type, and `A` is defined as above.
+// `Single`型の宣言では、前に`<A>`がないことと、`A`が具象型として定義されていることから、
+// `Single`は具象型になります。
 struct Single(A);
-//            ^ Here is `Single`s first use of the type `A`.
+//            ^ `Single`内で初めて型`A`が出てくる。
 
-// Here, `<T>` precedes the first use of `T`, so `SingleGen` is a generic type.
-// Because the type parameter `T` is generic, it could be anything, including
-// the concrete type `A` defined at the top.
-struct SingleGen<T>(T);
+// ここで、ジェネリックな型パラメータ`<T>`が出てくるので、`T`はジェネリック型になり、
+// `SingleGen`もジェネリック型になります。`T`どんな型にもなり得るので、上で定義した
+// 型`A`も受け取れます。
 
 fn main() {
-    // `Single` is concrete and explicitly takes `A`.
+    // `Single`は具象型で、`A`をとります。
     let _s = Single(A);
     
-    // Create a variable `_char` of type `SingleGen<char>`
-    // and give it the value `SingleGen('a')`.
-    // Here, `SingleGen` has a type parameter explicitly specified.
+    // `SingleGen<char>`型の変数`_char`を作り、
+    // `SingleGen('a')`で初期化します。
+    // ここで、`SingleGen`には明示的に型パラメータが与えられています。
     let _char: SingleGen<char> = SingleGen('a');
 
-    // `SingleGen` can also have a type parameter implicitly specified:
+    // `SingleGen`型の変数には明示的に型パラメータを与えなくても良い。
     let _t    = SingleGen(A); // Uses `A` defined at the top.
     let _i32  = SingleGen(6); // Uses `i32`.
     let _char = SingleGen('a'); // Uses `char`.
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`structs`][structs]
+- [`structs`][structs]
 
 [structs]: custom_types/structs.md
 [camelcase]: https://en.wikipedia.org/wiki/CamelCase

@@ -1,25 +1,24 @@
-# Where clauses
+# Where節
 
-A bound can also be expressed using a `where` clause immediately
-before the opening `{`, rather than at the type's first mention. 
-Additionally, `where` clauses can apply bounds to arbitrary types, 
-rather than just to type parameters.
+境界は`where`節を`{`の直前に置くことでも表現できます。
+さらに、`where`節は境界を型パラメータだけでなく、任意の型に
+適用することもできます。
 
-Some cases that a `where` clause is useful:
+場合によっては`where`節は有用です。
 
-* When specifying generic types and bounds separately is clearer:
+* ジェネリック型の指定と境界の指定を明確に分けたい時
 
 ```rust,ignore
 impl <A: TraitB + TraitC, D: TraitE + TraitF> MyTrait<A, D> for YourType {}
 
-// Expressing bounds with a `where` clause
+// `where`節で境界を表現する
 impl <A, D> MyTrait<A, D> for YourType where
     A: TraitB + TraitC,
     D: TraitE + TraitF {}
 ```
 
-* When using a `where` clause is more expressive than using normal syntax. 
-The `impl` in this example cannot be directly expressed without a `where` clause:
+* `where`節の方が通常の構文より表現力が高いときがあります。
+この例の`impl`は`where`節を使わないと表現できません。
 
 ```rust,editable
 use std::fmt::Debug;
@@ -28,12 +27,12 @@ trait PrintInOption {
     fn print_in_option(self);
 }
 
-// Because we would otherwise have to express this as `T: Debug` or 
-// use another method of indirect approach, this requires a `where` clause:
+// この例は他に`T: Debug`を使うか他の直接的でない方法を使うしかありません。
+// これには`where`節が必要です。
 impl<T> PrintInOption for T where
     Option<T>: Debug {
-    // We want `Option<T>: Debug` as our bound because that is what's
-    // being printed. Doing otherwise would be using the wrong bound.
+    // プリントされるものが`Option<T>`型なので、`Option<T>: Debug`に
+    // 境界を設定したい。他の方法では間違った境界しか設定できない。
     fn print_in_option(self) {
         println!("{:?}", Some(self));
     }
@@ -46,9 +45,11 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[RFC][where], [`struct`][struct], and [`trait`][trait]
+- [RFC][where]
+- [`struct`][struct]
+- [`trait`][trait]
 
 [struct]: ../custom_types/structs.md
 [trait]: ../trait.md

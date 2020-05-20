@@ -1,25 +1,25 @@
-# Traits
+# トレイト
 
-Of course `trait`s can also be generic. Here we define one which reimplements
-the `Drop` `trait` as a generic method to `drop` itself and an input.
+もちろん`トレイト`もジェネリックにできます。自分自身を入力とした
+ジェネリックなメソッド`drop`をもつ`Drop`トレイトをジェネリックで
+再実装します。
 
 ```rust,editable
-// Non-copyable types.
+// コピーできない型
 struct Empty;
 struct Null;
 
-// A trait generic over `T`.
+// `T`に対してジェネリックなトレイト
 trait DoubleDrop<T> {
-    // Define a method on the caller type which takes an
-    // additional single parameter `T` and does nothing with it.
+    // 呼び出し元と`T`型の引数をとり、何もしないメソッド。
     fn double_drop(self, _: T);
 }
 
-// Implement `DoubleDrop<T>` for any generic parameter `T` and
-// caller `U`.
+// `DoubleDrop<T>`をジェネリックな引数`T`と
+// 呼び出し元`U`に対して実装する。
 impl<T, U> DoubleDrop<T> for U {
-    // This method takes ownership of both passed arguments,
-    // deallocating both.
+    // このメソッドは両方の所有権をとり、
+    // 両方開放する。
     fn double_drop(self, _: T) {}
 }
 
@@ -27,18 +27,20 @@ fn main() {
     let empty = Empty;
     let null  = Null;
 
-    // Deallocate `empty` and `null`.
+    // `empty`と`null`を開放する。
     empty.double_drop(null);
 
     //empty;
     //null;
-    // ^ TODO: Try uncommenting these lines.
+    // ^ TODO: これらの行をアンコメントしてみてください
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`Drop`][Drop], [`struct`][structs], and [`trait`][traits]
+- [`Drop`][Drop]
+- [`struct`][structs]
+- [`trait`][traits]
 
 [Drop]: https://doc.rust-lang.org/std/ops/trait.Drop.html
 [structs]: ../custom_types/structs.md

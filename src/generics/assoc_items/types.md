@@ -1,43 +1,41 @@
-# Associated types
+# 関連型
 
-The use of "Associated types" improves the overall readability of code 
-by moving inner types locally into a trait as *output* types. Syntax
-for the `trait` definition is as follows:
+「関連型」を使えば、コンテナ型の中の要素を*出力型*として書くことができるため、
+可読性が上げられます。トレイトを定義する構文は以下の通りです。
 
 ```rust
-// `A` and `B` are defined in the trait via the `type` keyword.
-// (Note: `type` in this context is different from `type` when used for
-// aliases).
+// `A`と`B`はトレイト内で`type`キーワードを使って定義できる。
+// (注意: この文脈での`type`は型エイリアスを作る`type`とは別物です。)
 trait Contains {
     type A;
     type B;
 
-    // Updated syntax to refer to these new types generically.
+    // これらの型をジェネリックに使うため、構文を変える。
     fn contains(&self, &Self::A, &Self::B) -> bool;
 }
 ```
 
-Note that functions that use the `trait` `Contains` are no longer required
-to express `A` or `B` at all:
+`Contains`トレイトを使用する時に、`A`と`B`を明示することは
+もはや必要ありません。
 
 ```rust,ignore
-// Without using associated types
+// 関連型を使わない時
 fn difference<A, B, C>(container: &C) -> i32 where
     C: Contains<A, B> { ... }
 
-// Using associated types
+// 関連型を使った時
 fn difference<C: Contains>(container: &C) -> i32 { ... }
 ```
 
-Let's rewrite the example from the previous section using associated types:
+前の節の例を関連型を使って書き直しましょう。
 
 ```rust,editable
 struct Container(i32, i32);
 
-// A trait which checks if 2 items are stored inside of container.
-// Also retrieves first or last value.
+// コンテナが2つの要素を持つことをチェックするトレイト
+// 最初と最後の要素も取得できます。
 trait Contains {
-    // Define generic types here which methods will be able to utilize.
+    // メソッドで使われるジェネリック型を定義する
     type A;
     type B;
 
@@ -47,20 +45,19 @@ trait Contains {
 }
 
 impl Contains for Container {
-    // Specify what types `A` and `B` are. If the `input` type
-    // is `Container(i32, i32)`, the `output` types are determined
-    // as `i32` and `i32`.
+    // `A`と`B`の型を定義します。もし入力型が`Container(i32, i32)`なら、
+    // 出力型は`i32`と`i32`になります。
     type A = i32;
     type B = i32;
 
-    // `&Self::A` and `&Self::B` are also valid here.
+    // `&Self::A`と`&Self::B`も利用可能です。
     fn contains(&self, number_1: &i32, number_2: &i32) -> bool {
         (&self.0 == number_1) && (&self.1 == number_2)
     }
-    // Grab the first number.
+    // 最初の値を取得する
     fn first(&self) -> i32 { self.0 }
 
-    // Grab the last number.
+    // 最後の値を取得する
     fn last(&self) -> i32 { self.1 }
 }
 

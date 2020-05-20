@@ -1,33 +1,34 @@
-# Bounds
+# 境界
 
-When working with generics, the type parameters often must use traits as *bounds* to
-stipulate what functionality a type implements. For example, the following
-example uses the trait `Display` to print and so it requires `T` to be bound
-by `Display`; that is, `T` *must* implement `Display`.
+ジェネリックを使っていると、型パラメータが特定の機能を持っていることを規定するために、
+トレイトを*境界*として使うことがあります。例えば、次の例は変数をプリントするため、
+型`T`が`Display`トレイトを実装していることを規定しています。つまり、`T`は`Display`
+を実装していなければならないのです。
 
 ```rust,ignore
-// Define a function `printer` that takes a generic type `T` which
-// must implement trait `Display`.
+// `Display`トレイトを実装している型`T`に対してジェネリックな
+// 関数`printer`を定義する。
 fn printer<T: Display>(t: T) {
     println!("{}", t);
 }
 ```
 
-Bounding restricts the generic to types that conform to the bounds. That is:
+境界はジェネリックをすべての型ではなく、あるトレイトを実装している
+型だけに対して適用するためにあります。つまり
 
 ```rust,ignore
 struct S<T: Display>(T);
 
-// Error! `Vec<T>` does not implement `Display`. This
-// specialization will fail.
+// エラー! `Vec<T>`は`Display`を実装していません。
+// この特殊化は失敗します。
 let s = S(vec![1]);
 ```
 
-Another effect of bounding is that generic instances are allowed to access the 
-[methods] of traits specified in the bounds. For example:
+境界のもう一つの効果は、境界となるトレイトに実装されているメソッドを使用できることです。
+例えば
 
 ```rust,editable
-// A trait which implements the print marker: `{:?}`.
+// プリントマーカー`{:?}`を実装するトレイト
 use std::fmt::Debug;
 
 trait HasArea {
@@ -43,14 +44,14 @@ struct Rectangle { length: f64, height: f64 }
 #[allow(dead_code)]
 struct Triangle  { length: f64, height: f64 }
 
-// The generic `T` must implement `Debug`. Regardless
-// of the type, this will work properly.
+// ジェネリック型`T`は`Debug`を実装している必要があります。型に関係なく、
+// これは動作します。
 fn print_debug<T: Debug>(t: &T) {
     println!("{:?}", t);
 }
 
-// `T` must implement `HasArea`. Any type which meets
-// the bound can access `HasArea`'s function `area`.
+// `T`は`HasArea`を実装している必要があります。`HasArea`のメソッド`area`
+// を使用するための境界です。
 fn area<T: HasArea>(t: &T) -> f64 { t.area() }
 
 fn main() {
@@ -62,17 +63,19 @@ fn main() {
 
     //print_debug(&_triangle);
     //println!("Area: {}", area(&_triangle));
-    // ^ TODO: Try uncommenting these.
-    // | Error: Does not implement either `Debug` or `HasArea`. 
+    // ^ TODO: これらをアンコメントしてみてください。
+    // | エラー: `Debug`または`HasArea`を実装していません。
 }
 ```
 
-As an additional note, [`where`][where] clauses can also be used to apply bounds in
-some cases to be more expressive.
+さらに、読みやすくするため、場合によっては[`where`][where]節も
+境界を適用するのに使われます。
 
-### See also:
+### こちらも参照:
 
-[`std::fmt`][fmt], [`struct`s][structs], and [`trait`s][traits]
+- [`std::fmt`][fmt]
+- [`struct`s][structs]
+- [`trait`s][traits]
 
 [fmt]: ../hello/print.md
 [methods]: ../fn/methods.md
