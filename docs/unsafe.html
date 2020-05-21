@@ -147,24 +147,23 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#unsafe-operations" id="unsafe-operations">Unsafe Operations</a></h1>
-<p>As an introduction to this section, to borrow from <a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">the official docs</a>,
-&quot;one should try to minimize the amount of unsafe code in a code base.&quot; With that
-in mind, let's get started! Unsafe annotations in Rust are used to bypass
-protections put in place by the compiler; specifically, there are four primary
-things that unsafe is used for:</p>
+                        <h1><a class="header" href="#安全でない操作" id="安全でない操作">安全でない操作</a></h1>
+<p>この節では、まず<a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">公式ドキュメント</a>から、「one should try to minimize
+the amount of unsafe code in a code base.」(安全でないコードがコードベースに
+しめる割合が最小になるよう努力しなければならない。)これを念頭に置いて、始めましょう。
+Rustの<code>unsafe</code>アノテーションは、コンパイラによる保護を無効化するのに使います。
+<code>unsafe</code>はおもにこれらの4つのことに使われます。</p>
 <ul>
-<li>dereferencing raw pointers</li>
-<li>calling functions or methods which are <code>unsafe</code> (including calling a function
-over FFI, see <a href="std_misc/ffi.html">a previous chapter</a> of the book) </li>
-<li>accessing or modifying static mutable variables</li>
-<li>implementing unsafe traits</li>
+<li>生ポインタを参照する</li>
+<li><code>unsafe</code>な関数やメソッドを呼び出す。(FFIから関数を呼び出すときも含みます。
+この本の<a href="std_misc/ffi.html">前の章</a>も参照してください。) </li>
+<li>静的可変変数を変更する</li>
+<li>安全でないトレイトを実装する</li>
 </ul>
-<h3><a class="header" href="#raw-pointers" id="raw-pointers">Raw Pointers</a></h3>
-<p>Raw pointers <code>*</code> and references <code>&amp;T</code> function similarly, but references are
-always safe because they are guaranteed to point to valid data due to the
-borrow checker. Dereferencing a raw pointer can only be done through an unsafe
-block.</p>
+<h3><a class="header" href="#生ポインタ" id="生ポインタ">生ポインタ</a></h3>
+<p>生ポインタ<code>*</code>と参照<code>&amp;T</code>は似ていますが、参照は有効なデータを参照していることが
+ボローチェッカーによっていつも保証されています。生ポインタを参照するには<code>unsafe</code>
+ブロックを使う必要があります。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let raw_p: *const u32 = &amp;10;
 
@@ -173,11 +172,10 @@ block.</p>
     }
 }
 </code></pre></pre>
-<h3><a class="header" href="#calling-unsafe-functions" id="calling-unsafe-functions">Calling Unsafe Functions</a></h3>
-<p>Some functions can be declared as <code>unsafe</code>, meaning it is the programmer's
-responsibility to ensure correctness instead of the compiler's. One example
-of this is <a href="https://doc.rust-lang.org/std/slice/fn.from_raw_parts.html"><code>std::slice::from_raw_parts</code></a> which will create a slice given a
-pointer to the first element and a length.</p>
+<h3><a class="header" href="#安全でない関数を呼び出す" id="安全でない関数を呼び出す">安全でない関数を呼び出す</a></h3>
+<p>いくつかの関数は<code>unsafe</code>ブロックで定義されていて、これはコンパイラの代わりに
+プログラマが正確性を管理しなければいけないことを意味します。一つの例は、最初の
+要素のポインタと長さからスライスを作る<a href="https://doc.rust-lang.org/std/slice/fn.from_raw_parts.html"><code>std::slice::from_raw_parts</code></a>関数です。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::slice;
 
 fn main() {
@@ -193,10 +191,9 @@ fn main() {
     }
 }
 </code></pre></pre>
-<p>For <code>slice::from_raw_parts</code>, one of the assumptions which <em>must</em> be upheld is 
-that the pointer passed in points to valid memory and that the memory pointed to
-is of the correct type. If these invariants aren't upheld then the program's 
-behaviour is undefined and there is no knowing what will happen.</p>
+<p><code>slice::from_raw_parts</code>は、メモリのポインタが有効で、かつすべて正しい型を持っている
+という一種の仮定に基づいています。これはいつも成り立つとは限らず、もし成り立たなかった
+ときの動作が未定義で、何が起こるかわかりません。</p>
 
                     </main>
 

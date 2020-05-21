@@ -1,22 +1,21 @@
-# Unsafe Operations
+# 安全でない操作
 
-As an introduction to this section, to borrow from [the official docs][unsafe],
-"one should try to minimize the amount of unsafe code in a code base." With that
-in mind, let's get started! Unsafe annotations in Rust are used to bypass
-protections put in place by the compiler; specifically, there are four primary
-things that unsafe is used for:
+この節では、まず[公式ドキュメント][unsafe]から、「one should try to minimize
+the amount of unsafe code in a code base.」(安全でないコードがコードベースに
+しめる割合が最小になるよう努力しなければならない。)これを念頭に置いて、始めましょう。
+Rustの`unsafe`アノテーションは、コンパイラによる保護を無効化するのに使います。
+`unsafe`はおもにこれらの4つのことに使われます。
 
-* dereferencing raw pointers
-* calling functions or methods which are `unsafe` (including calling a function
-  over FFI, see [a previous chapter](std_misc/ffi.md) of the book) 
-* accessing or modifying static mutable variables
-* implementing unsafe traits
+* 生ポインタを参照する
+* `unsafe`な関数やメソッドを呼び出す。(FFIから関数を呼び出すときも含みます。
+  この本の[前の章](std_misc/ffi.md)も参照してください。) 
+* 静的可変変数を変更する
+* 安全でないトレイトを実装する
 
-### Raw Pointers
-Raw pointers `*` and references `&T` function similarly, but references are
-always safe because they are guaranteed to point to valid data due to the
-borrow checker. Dereferencing a raw pointer can only be done through an unsafe
-block.
+### 生ポインタ
+生ポインタ`*`と参照`&T`は似ていますが、参照は有効なデータを参照していることが
+ボローチェッカーによっていつも保証されています。生ポインタを参照するには`unsafe`
+ブロックを使う必要があります。
 
 ```rust,editable
 fn main() {
@@ -28,11 +27,10 @@ fn main() {
 }
 ```
 
-### Calling Unsafe Functions
-Some functions can be declared as `unsafe`, meaning it is the programmer's
-responsibility to ensure correctness instead of the compiler's. One example
-of this is [`std::slice::from_raw_parts`] which will create a slice given a
-pointer to the first element and a length.
+### 安全でない関数を呼び出す
+いくつかの関数は`unsafe`ブロックで定義されていて、これはコンパイラの代わりに
+プログラマが正確性を管理しなければいけないことを意味します。一つの例は、最初の
+要素のポインタと長さからスライスを作る[`std::slice::from_raw_parts`]関数です。
 
 ```rust,editable
 use std::slice;
@@ -51,11 +49,9 @@ fn main() {
 }
 ```
 
-For `slice::from_raw_parts`, one of the assumptions which *must* be upheld is 
-that the pointer passed in points to valid memory and that the memory pointed to
-is of the correct type. If these invariants aren't upheld then the program's 
-behaviour is undefined and there is no knowing what will happen.
-
+`slice::from_raw_parts`は、メモリのポインタが有効で、かつすべて正しい型を持っている
+という一種の仮定に基づいています。これはいつも成り立つとは限らず、もし成り立たなかった
+ときの動作が未定義で、何が起こるかわかりません。
 
 [unsafe]: https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html
 [`std::slice::from_raw_parts`]: https://doc.rust-lang.org/std/slice/fn.from_raw_parts.html
