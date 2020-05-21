@@ -127,7 +127,7 @@
         - [構造体](scope/lifetime/struct.md)
         - [トレイト](scope/lifetime/trait.md)
         - [ライフタイムの境界](scope/lifetime/lifetime_bounds.md)
-        - [ライフタイムの強制](scope/lifetime/lifetime_coercion.md)
+        - [ライフタイムの圧縮](scope/lifetime/lifetime_coercion.md)
         - [静的ライフタイム](scope/lifetime/static_lifetime.md)
         - [省略](scope/lifetime/elision.md)
 

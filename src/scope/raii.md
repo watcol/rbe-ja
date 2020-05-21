@@ -1,45 +1,46 @@
 # RAII
 
-Variables in Rust do more than just hold data in the stack: they also *own*
-resources, e.g. `Box<T>` owns memory in the heap. Rust enforces [RAII][raii]
-(Resource Acquisition Is Initialization), so whenever an object goes out of
-scope, its destructor is called and its owned resources are freed.
+Rustの変数はスタック上のデータを保持するだけでなく、リソースを*所有*します。
+例えば、`Box<T>`はヒープ上のメモリを所有します。Rustは[RAII][raii](Resource
+Acquisition Is Initialization、リソースの取得は初期化である)に従っているため、
+オブジェクトがスコープを出ると、デストラクタが呼び出され、所有していたリソースが
+開放されます。
 
-This behavior shields against *resource leak* bugs, so you'll never have to
-manually free memory or worry about memory leaks again! Here's a quick showcase:
+この振る舞いによって、手動でメモリを開放しなくて良いため、*リソースリーク*が防げます。
+もうメモリリークを気にする必要はないのです! 以下に例があります。
 
 ```rust,editable
 // raii.rs
 fn create_box() {
-    // Allocate an integer on the heap
+    // ヒープに整数を格納する
     let _box1 = Box::new(3i32);
 
-    // `_box1` is destroyed here, and memory gets freed
+    // `_box1`は破棄され、メモリが開放されます。
 }
 
 fn main() {
-    // Allocate an integer on the heap
+    // ヒープに整数を格納する
     let _box2 = Box::new(5i32);
 
-    // A nested scope:
+    // ネストされたスコープ
     {
-        // Allocate an integer on the heap
+        // ヒープに整数を格納する
         let _box3 = Box::new(4i32);
 
-        // `_box3` is destroyed here, and memory gets freed
+        // `_box3`は破棄され、メモリが開放されます
     }
 
-    // Creating lots of boxes just for fun
-    // There's no need to manually free memory!
+    // 遊びでたくさんメモリを確保してみる
+    // 手動でメモリを開放する必要はありません!
     for _ in 0u32..1_000 {
         create_box();
     }
 
-    // `_box2` is destroyed here, and memory gets freed
+    // `_box2`が破棄され、メモリが開放されます
 }
 ```
 
-Of course, we can double check for memory errors using [`valgrind`][valgrind]:
+もちろん、[`valgrind`][valgrind]でメモリエラーを確認します。
 
 ```shell
 $ rustc raii.rs && valgrind ./raii
@@ -59,17 +60,17 @@ $ rustc raii.rs && valgrind ./raii
 ==26873== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 2 from 2)
 ```
 
-No leaks here!
+ひとつもリークしていません!
 
-## Destructor
+## デストラクタ
 
-The notion of a destructor in Rust is provided through the [`Drop`] trait. The
-destructor is called when the resource goes out of scope. This trait is not
-required to be implemented for every type, only implement it for your type if
-you require its own destructor logic.
+Rustのデストラクタは[`Drop`]トレイトによって実装されています。デストラクタは
+リソースがスコープを抜けた時に呼び出されます。このトレイトは、すべての型に実装
+する必要はなく、デストラクタに独自のロジックを実装する必要がある場合のみ実装
+します。
 
-Run the below example to see how the [`Drop`] trait works. When the variable in
-the `main` function goes out of scope the custom destructor will be invoked.
+どのように[`Drop`]トレイトが動くかを見てみるため、下の例を実行してください。
+`main`関数内の変数がスコープを抜けた時、独自のデストラクタが呼び出されます。
 
 ```rust,editable
 struct ToDrop;
@@ -86,9 +87,9 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[Box][box]
+- [Box][box]
 
 [raii]: https://en.wikipedia.org/wiki/Resource_Acquisition_Is_Initialization
 [box]: ../std/box.md

@@ -1,16 +1,16 @@
-# Traits
+# トレイト
 
-Annotation of lifetimes in trait methods basically are similar to functions.
-Note that `impl` may have annotation of lifetimes too.
+トレイトでのライフタイムも基本的に関数と同じです。
+`impl`も明示的アノテーションを持てることに注意してください。
 
 ```rust,editable
-// A struct with annotation of lifetimes.
+// ライフタイムのアノテーションを持つ構造体
 #[derive(Debug)]
  struct Borrowed<'a> {
      x: &'a i32,
  }
 
-// Annotate lifetimes to impl.
+// implブロックに対してライフタイムを明示する。
 impl<'a> Default for Borrowed<'a> {
     fn default() -> Self {
         Self {
@@ -25,9 +25,9 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`trait`s][trait]
+- [`trait`][trait]
 
 
 [trait]: ../../trait.md

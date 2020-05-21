@@ -1,43 +1,41 @@
-# Functions
+# 関数
 
-Ignoring [elision], function signatures with lifetimes have a few constraints: 
+[省略][elision]しなかった場合、関数のライフタイムにはいくつかの制限があります。
 
-* any reference *must* have an annotated lifetime.
-* any reference being returned *must* have the same lifetime as an input or
-be `static`.
+* すべての参照は明示的なライフタイムを持つ必要がある。
+* 返り値となる参照は、入力と同じか、`'static`ライフタイムを持つ必要がある。
 
-Additionally, note that returning references without input is banned if it
-would result in returning references to invalid data. The following example shows
-off some valid forms of functions with lifetimes:
+更に、返り値となる参照は、入力がなけく、無効なデータへの参照だった場合エラーになります。
+以下の例ではライフタイムを使ったいくつかの有効な関数を示しています。
 
 ```rust,editable
-// One input reference with lifetime `'a` which must live
-// at least as long as the function.
+// 少なくともこの関数より長いライフタイム`'a`を持つ
+// 一つの参照を入力として受け取る関数
 fn print_one<'a>(x: &'a i32) {
     println!("`print_one`: x is {}", x);
 }
 
-// Mutable references are possible with lifetimes as well.
+// ライフタイムが合っても可変参照は使えます。
 fn add_one<'a>(x: &'a mut i32) {
     *x += 1;
 }
 
-// Multiple elements with different lifetimes. In this case, it
-// would be fine for both to have the same lifetime `'a`, but
-// in more complex cases, different lifetimes may be required.
+// 異なるライフタイムを持つ複数の要素。ここでは、同じライフタイム`'a`
+// にしても良いかもしれませんが、もっと複雑なケースでは異なるライフタイム
+// が必要です。
 fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
     println!("`print_multi`: x is {}, y is {}", x, y);
 }
 
-// Returning references that have been passed in is acceptable.
-// However, the correct lifetime must be returned.
+// 渡された変数はそのまま返すことができます。
+// しかし、正しいライフタイムが返される必要があります。
 fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 { x }
 
 //fn invalid_output<'a>() -> &'a String { &String::from("foo") }
-// The above is invalid: `'a` must live longer than the function.
-// Here, `&String::from("foo")` would create a `String`, followed by a
-// reference. Then the data is dropped upon exiting the scope, leaving
-// a reference to invalid data to be returned.
+// 上は無効です。`'a`は関数より長いライフタイムを持つ必要がありますが、
+// ここで、`&String::from("foo")`は`String`を作り、その参照を返します。
+// スコープを抜けたときにデータがdropされるため、無効なデータへの参照を
+// 返すことになります。
 
 fn main() {
     let x = 7;
@@ -55,9 +53,9 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[functions][fn]
+- [functions][fn]
 
 [elision]: elision.md
 [fn]: fn.md

@@ -1,21 +1,21 @@
-# Structs
+# 構造体
 
-Annotation of lifetimes in structures are also similar to functions:
+構造体も関数と同じようにアノテーションできます。
 
 ```rust,editable
-// A type `Borrowed` which houses a reference to an
-// `i32`. The reference to `i32` must outlive `Borrowed`.
+// `Borrowed`は`i32`の参照を保存します。`i32`の参照は`Borrowed`より
+// 長生きする必要があります。
 #[derive(Debug)]
 struct Borrowed<'a>(&'a i32);
 
-// Similarly, both references here must outlive this structure.
+// 同じように、両方共構造体より長生きする必要があります。
 #[derive(Debug)]
 struct NamedBorrowed<'a> {
     x: &'a i32,
     y: &'a i32,
 }
 
-// An enum which is either an `i32` or a reference to one.
+// `i32`またはその参照を格納するenum。
 #[derive(Debug)]
 enum Either<'a> {
     Num(i32),
@@ -38,9 +38,9 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`struct`s][structs]
+- [`struct`][structs]
 
 
 [structs]: ../../custom_types/structs.md

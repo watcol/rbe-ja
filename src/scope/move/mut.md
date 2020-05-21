@@ -1,6 +1,6 @@
-# Mutability
+# 可変性
 
-Mutability of data can be changed when ownership is transferred.
+所有権がムーブしたときに、データの可変性も変更できる。
 
 ```rust,editable
 fn main() {
@@ -8,15 +8,15 @@ fn main() {
 
     println!("immutable_box contains {}", immutable_box);
 
-    // Mutability error
+    // 可変性のエラー
     //*immutable_box = 4;
 
-    // *Move* the box, changing the ownership (and mutability)
+    // 所有権(と可変性)を変更してBoxを*ムーブ*する。
     let mut mutable_box = immutable_box;
 
     println!("mutable_box contains {}", mutable_box);
 
-    // Modify the contents of the box
+    // Boxの要素を変更する
     *mutable_box = 4;
 
     println!("mutable_box now contains {}", mutable_box);

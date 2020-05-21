@@ -1,28 +1,28 @@
-# Coercion
+# ライフタイムの圧縮
 
-A longer lifetime can be coerced into a shorter one 
-so that it works inside a scope it normally wouldn't work in.
-This comes in the form of inferred coercion by the Rust compiler,
-and also in the form of declaring a lifetime difference:
+自分より短いライフタイムを持つものに自分を圧縮し、そのままでは
+動かないスコープの中でも使えるようにすることができます。これには、
+コンパイラが推論して圧縮する場合と、ライフタイムの違いを見て圧縮する
+場合があります。
 
 ```rust,editable
-// Here, Rust infers a lifetime that is as short as possible.
-// The two references are then coerced to that lifetime.
+// ここで、Rustはできるだけ短いライフタイムを推論し、
+// 2つの参照をそれに圧縮します。
 fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
     first * second
 }
 
-// `<'a: 'b, 'b>` reads as lifetime `'a` is at least as long as `'b`.
-// Here, we take in an `&'a i32` and return a `&'b i32` as a result of coercion.
+// `<'a: 'b, 'b>`は、`'a`は少なくとも`'b`より長いことを意味します。
+// ここでは、`&'a i32`を`&'b i32`に圧縮して返す。
 fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
     first
 }
 
 fn main() {
-    let first = 2; // Longer lifetime
+    let first = 2; // 長いライフタイム
     
     {
-        let second = 3; // Shorter lifetime
+        let second = 3; // 短いライフタイム
         
         println!("The product is {}", multiply(&first, &second));
         println!("{} is the first", choose_first(&first, &second));

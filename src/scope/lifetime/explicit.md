@@ -1,73 +1,70 @@
-# Explicit annotation
+# 明示的アノテーション
 
-The borrow checker uses explicit lifetime annotations to determine
-how long references should be valid. In cases where lifetimes are not
-elided[^1], Rust requires explicit annotations to determine what the 
-lifetime of a reference should be. The syntax for explicitly annotating 
-a lifetime uses an apostrophe character as follows: 
+ボローチェッカーは参照がどれだけの間有効か示すのに、ライフタイムの明示的
+アノテーションを使用します。ライフタイムが省略[^1]されない場合、Rustでは
+参照のライフタイムがどのようなものかを明示的に示すことが必要です。明示的
+アノテーションは、以下のようにアポストロフィの後に文字を置くことで表せます。
 
 ```rust,ignore
 foo<'a>
-// `foo` has a lifetime parameter `'a`
+// `foo`はライフタイムパラメータ`'a`を持っています。
 ```
 
-Similar to [closures][anonymity], using lifetimes requires generics. 
-Additionally, this lifetime syntax indicates that the lifetime of `foo` 
-may not exceed that of `'a`. Explicit annotation of a type has the form 
-`&'a T` where `'a` has already been introduced.
+[closures][anonymity]のように、ライフタイムを使うにはジェネリクスが必要です。
+更に、`foo`のライフタイムは`'a`を超えることはないということを表しています。
+型を明示した場合は`'a`は`&'a T`となります。
 
-In cases with multiple lifetimes, the syntax is similar:
+複数のライフタイムを持つ時、構文は以下のようになります。
 
 ```rust,ignore
 foo<'a, 'b>
-// `foo` has lifetime parameters `'a` and `'b`
+// `foo`はライフタイムパラメータ`'a`と`'b`を持っています。
 ```
 
-In this case, the lifetime of `foo` cannot exceed that of either `'a` *or* `'b`.
+この時、`foo`のライフタイムは`'a`も`'b`も超えることはないということを表しています。
 
-See the following example for explicit lifetime annotation in use:
+以下の例で明示的アノテーションの使い方を見てください。
 
 ```rust,editable,ignore,mdbook-runnable
-// `print_refs` takes two references to `i32` which have different
-// lifetimes `'a` and `'b`. These two lifetimes must both be at
-// least as long as the function `print_refs`.
+// `print_refs`は少なくとも`print_refs`のライフタイムより長い2つ
+// の異なったライフタイムを持つ2つの`i32`の参照をとります。
 fn print_refs<'a, 'b>(x: &'a i32, y: &'b i32) {
     println!("x is {} and y is {}", x, y);
 }
 
-// A function which takes no arguments, but has a lifetime parameter `'a`.
+// 引数は取らないが、ライフタイムパラメータ`'a`を持つ関数。
 fn failed_borrow<'a>() {
     let _x = 12;
 
-    // ERROR: `_x` does not live long enough
+    // エラー: `_x`のライフタイムが短いです。
     //let y: &'a i32 = &_x;
-    // Attempting to use the lifetime `'a` as an explicit type annotation 
-    // inside the function will fail because the lifetime of `&_x` is shorter
-    // than that of `y`. A short lifetime cannot be coerced into a longer one.
+    // `'a`を関数内で明示的アノテーションとして使うことを試みましたが、`&_x`の
+    // ライフタイムは`y`より短くいため、できません。短いライフタイムを長い
+    // ライフタイムを持つものに強制させることはできない。
 }
 
 fn main() {
-    // Create variables to be borrowed below.
+    // 下で使う変数を作る。
     let (four, nine) = (4, 9);
     
-    // Borrows (`&`) of both variables are passed into the function.
+    // 両方の変数の借用(`&`)が関数に渡される。
     print_refs(&four, &nine);
-    // Any input which is borrowed must outlive the borrower. 
-    // In other words, the lifetime of `four` and `nine` must 
-    // be longer than that of `print_refs`.
+    // 借用された入力は借用したものより長生きしなくてはならない。
+    // 言い換えれば、`four`と`nine`は`print_refs`より長いライフタイムを
+    // 持つ必要がある。
     
     failed_borrow();
-    // `failed_borrow` contains no references to force `'a` to be 
-    // longer than the lifetime of the function, but `'a` is longer.
-    // Because the lifetime is never constrained, it defaults to `'static`.
+    // `failed_borrow`関数のライフタイムよりも長くなるような`'a`の参照は
+    // 存在しませんが、このような場合、`'a`は`'static`になるため、長いです。
 }
 ```
 
-[^1]: [elision] implicitly annotates lifetimes and so is different.
+[^1]: [省略][elision] ライフタイムが暗示的に注釈されることを意味します。
 
-### See also:
+### こちらも参照:
 
-[generics][generics] and [closures][closures]
+- [ジェネリック][generics]
+- [クロージャ][closures]
 
 [anonymity]: ../../fn/closures/anonymity.md
 [closures]: ../../fn/closures.md

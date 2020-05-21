@@ -1,5 +1,5 @@
-# Scoping rules
+# スコープのルール
 
-Scopes play an important part in ownership, borrowing, and lifetimes.
-That is, they indicate to the compiler when borrows are valid, when 
-resources can be freed, and when variables are created or destroyed.
+スコープは所有権や借用、ライフタイムを考える上で重要な概念です。
+スコープで、いつ参照が有効になり、いつリソースが開放され、
+そしていつ変数が作られ、破棄されるかを示すことができます。

@@ -1,8 +1,8 @@
-# The ref pattern
+# refパターン
 
-When doing pattern matching or destructuring via the `let` binding, the `ref`
-keyword can be used to take references to the fields of a struct/tuple. The 
-example below shows a few instances where this can be useful:
+パターンマッチングや`let`束縛による分割代入をするとき、構造体やタプルのフィールド
+の参照をとるのに`ref`キーワードが使用できます。下の例では、有用な使い方をいくつか
+載せています。
 
 ```rust,editable
 #[derive(Clone, Copy)]
@@ -11,8 +11,8 @@ struct Point { x: i32, y: i32 }
 fn main() {
     let c = 'Q';
 
-    // A `ref` borrow on the left side of an assignment is equivalent to
-    // an `&` borrow on the right side.
+    // `ref`を使って左辺で借用を表している。
+    // 右辺で`&`を使って借用するのと等価
     let ref ref_c1 = c;
     let ref_c2 = &c;
 
@@ -20,34 +20,34 @@ fn main() {
 
     let point = Point { x: 0, y: 0 };
 
-    // `ref` is also valid when destructuring a struct.
+    // `ref`は構造体の分割代入にも使える。
     let _copy_of_x = {
-        // `ref_to_x` is a reference to the `x` field of `point`.
+        // `ref_to_x`は`point`のフィールド`x`の参照
         let Point { x: ref ref_to_x, y: _ } = point;
 
-        // Return a copy of the `x` field of `point`.
+        // `point`の`x`フィールドのコピーを返す
         *ref_to_x
     };
 
-    // A mutable copy of `point`
+    // `point`の可変コピー
     let mut mutable_point = point;
 
     {
-        // `ref` can be paired with `mut` to take mutable references.
+        // `ref`と`mut`を一緒に使うと可変参照が取れる。
         let Point { x: _, y: ref mut mut_ref_to_y } = mutable_point;
 
-        // Mutate the `y` field of `mutable_point` via a mutable reference.
+        // `mutable_point`の`y`フィールドを可変参照から変更する。
         *mut_ref_to_y = 1;
     }
 
     println!("point is ({}, {})", point.x, point.y);
     println!("mutable_point is ({}, {})", mutable_point.x, mutable_point.y);
 
-    // A mutable tuple that includes a pointer
+    // ポインタを含む可変なタプル
     let mut mutable_tuple = (Box::new(5u32), 3u32);
     
     {
-        // Destructure `mutable_tuple` to change the value of `last`.
+        // `mutable_tuple`を分割代入し、`last`の値を変更する。
         let (_, ref mut last) = mutable_tuple;
         *last = 2u32;
     }

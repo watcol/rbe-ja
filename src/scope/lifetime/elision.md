@@ -1,16 +1,14 @@
-# Elision
+# 省略
 
-Some lifetime patterns are overwhelmingly common and so the borrow checker
-will allow you to omit them to save typing and to improve readability.
-This is known as elision. Elision exists in Rust solely because these patterns
-are common.
+圧倒的によく使われるライフタイムパターンについては、可読性のために省略
+することができます。省略は、単にそれが一般的であるため、存在しています。
 
-The following code shows a few examples of elision. For a more comprehensive
-description of elision, see [lifetime elision][elision] in the book.
+次のコードではいくつかの省略の例を紹介します。もっと厳密な記述については、
+the bookの[lifetime elision][elision]を参照してください。
 
 ```rust,editable
-// `elided_input` and `annotated_input` essentially have identical signatures
-// because the lifetime of `elided_input` is inferred by the compiler:
+// `elided_input`と`annotated_input`は同じ意味で、`elided_input`の
+// ライフタイムはコンパイラによって推論されています。
 fn elided_input(x: &i32) {
     println!("`elided_input`: {}", x);
 }
@@ -19,8 +17,8 @@ fn annotated_input<'a>(x: &'a i32) {
     println!("`annotated_input`: {}", x);
 }
 
-// Similarly, `elided_pass` and `annotated_pass` have identical signatures
-// because the lifetime is added implicitly to `elided_pass`:
+// 同様に、`elided_pass`と`annotated_pass`は同じで、
+// `elided_pass`では暗示的に記述が加えられているだけです。
 fn elided_pass(x: &i32) -> &i32 { x }
 
 fn annotated_pass<'a>(x: &'a i32) -> &'a i32 { x }
@@ -36,8 +34,8 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[elision][elision]
+- [省略][elision]
 
 [elision]: https://doc.rust-lang.org/book/ch10-03-lifetime-syntax.html#lifetime-elision

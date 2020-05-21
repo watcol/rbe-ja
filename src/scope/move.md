@@ -1,59 +1,57 @@
-# Ownership and moves
+# 所有権とムーブ
 
-Because variables are in charge of freeing their own resources, 
-**resources can only have one owner**. This also prevents resources 
-from being freed more than once. Note that not all variables own 
-resources (e.g. [references]).
+変数は所有するリソースを開放する必要があるため、 **リソースは一つの所有者
+しか持ちません**。リソースを2度以上開放しないためでもあります。すべての変数
+がリソースを持つわけではないことに注意してください(例えば[参照][references])。
 
-When doing assignments (`let x = y`) or passing function arguments by value
-(`foo(x)`), the *ownership* of the resources is transferred. In Rust-speak, 
-this is known as a *move*.
+変数に値を代入(`let x = y`)したときや、関数に値を渡した(`foo(x)`)とき、
+リソースの*所有権*が渡されます。これをRustでは、*ムーブ*と呼んでいます。
 
-After moving resources, the previous owner can no longer be used. This avoids
-creating dangling pointers.
+リソースをムーブしたら、元の所有者はもうそのリソースを使うことができません。
+これによって、危険なポインタを作成するのを防ぎます。
 
 ```rust,editable
-// This function takes ownership of the heap allocated memory
+// ヒープに確保したメモリの所有権を必要とする関数
 fn destroy_box(c: Box<i32>) {
     println!("Destroying a box that contains {}", c);
 
-    // `c` is destroyed and the memory freed
+    // `c`は破棄され、メモリが開放される
 }
 
 fn main() {
-    // _Stack_ allocated integer
+    // _スタック_に整数を確保する
     let x = 5u32;
 
-    // *Copy* `x` into `y` - no resources are moved
+    // `x`を`y`に*コピー*する。所有権はムーブされない
     let y = x;
 
-    // Both values can be independently used
+    // どちらの値も独立して使える
     println!("x is {}, and y is {}", x, y);
 
-    // `a` is a pointer to a _heap_ allocated integer
+    // `a`は_ヒープ_に確保した整数のポインタ
     let a = Box::new(5i32);
 
     println!("a contains: {}", a);
 
-    // *Move* `a` into `b`
+    // `a`を`b`に*ムーブ*する
     let b = a;
-    // The pointer address of `a` is copied (not the data) into `b`.
-    // Both are now pointers to the same heap allocated data, but
-    // `b` now owns it.
+    // `a`のポインタアドレスは`b`にコピーされる。
+    // どちらも同じヒープのポインタをもつが、現在
+    // `b`が所有している。
     
-    // Error! `a` can no longer access the data, because it no longer owns the
-    // heap memory
+    // エラー! `a`はヒープメモリのデータを所有していないため、
+    // データを使用できない。
     //println!("a contains: {}", a);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // This function takes ownership of the heap allocated memory from `b`
+    // `b`が持っているメモリの所有権を取る関数
     destroy_box(b);
 
-    // Since the heap memory has been freed at this point, this action would
-    // result in dereferencing freed memory, but it's forbidden by the compiler
-    // Error! Same reason as the previous Error
+    // ここでヒープメモリは開放されたので、開放されたメモリのポインタを
+    // 使うことになるが、これはコンパイラによって禁止されている。
+    // エラー! 前のエラーと同じ理由
     //println!("b contains: {}", b);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 }
 ```
 

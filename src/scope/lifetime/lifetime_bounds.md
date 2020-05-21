@@ -1,34 +1,33 @@
-# Bounds
+# ライフタイムの境界
 
-Just like generic types can be bounded, lifetimes (themselves generic)
-use bounds as well. The `:` character has a slightly different meaning here, 
-but `+` is the same. Note how the following read:
+ジェネリックに境界が設定できたように、ライフタイム(これもジェネリックです)
+にも境界が使えます。`:`はここでは違った意味を持ちますが、`+`は同じ意味です。
+以下の注意を読んでください。
 
-1. `T: 'a`: *All* references in `T` must outlive lifetime `'a`.
-2. `T: Trait + 'a`: Type `T` must implement trait `Trait` and *all* references
-in `T` must outlive `'a`.
+1. `T: 'a`: `T`の*すべて*の参照が`'a`より長生きする必要がある。
+2. `T: Trait + 'a`: 型`T`は`Trait`トレイトを実装している必要があり、`T`の
+*すべて*の参照が`'a`より長生きする必要がある。
 
-The example below shows the above syntax in action used after keyword `where`:
+下の例では`where`節を使って上のことを表現しています。
 
 ```rust,editable
-use std::fmt::Debug; // Trait to bound with.
+use std::fmt::Debug; // 境界として設定するトレイト
 
 #[derive(Debug)]
 struct Ref<'a, T: 'a>(&'a T);
-// `Ref` contains a reference to a generic type `T` that has
-// an unknown lifetime `'a`. `T` is bounded such that any
-// *references* in `T` must outlive `'a`. Additionally, the lifetime
-// of `Ref` may not exceed `'a`.
+// `Ref`はジェネリック型`T`への参照を持ち、それは未知のライフタイム`'a`
+// を持ちます。`T`は`T`のすべての*参照*が`'a`より長生きする必要があり、
+// `Ref`のライフタイムは`'a`を超えられません。
 
-// A generic function which prints using the `Debug` trait.
+// `Debug`トレイトを持つジェネリック型`T`をプリントする関数
 fn print<T>(t: T) where
     T: Debug {
     println!("`print`: t is {:?}", t);
 }
 
-// Here a reference to `T` is taken where `T` implements
-// `Debug` and all *references* in `T` outlive `'a`. In
-// addition, `'a` must outlive the function.
+// `Debug`を実装し、`T`すべての参照が`'a`より長生きするような
+// ジェネリック型`T`の参照をとります。さらに、`'a`は関数より
+// 長生きする必要があります。
 fn print_ref<'a, T>(t: &'a T) where
     T: Debug + 'a {
     println!("`print_ref`: t is {:?}", t);
@@ -43,10 +42,11 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[generics][generics], [bounds in generics][bounds], and 
-[multiple bounds in generics][multibounds]
+- [ジェネリック][generics]
+- [ジェネリックの境界][bounds]
+- [ジェネリックでの複数の境界][multibounds]
 
 [generics]: ../../generics.md
 [bounds]: ../../generics/bounds.md

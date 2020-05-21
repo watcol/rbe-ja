@@ -1,76 +1,74 @@
-# Static
+# 静的ライフタイム
 
-Rust has a few reserved lifetime names. One of those is `'static`. You
-might encounter it in two situations:
+Rustはいくつかの定義済みのライフタイムを持ちます。その中の一つが
+`'static`です。このような2つの状況に出会うかもしれません。
 
 ```rust, editable
-// A reference with 'static lifetime:
+// 'staticライフタイムで参照する
 let s: &'static str = "hello world";
 
-// 'static as part of a trait bound:
+// トレイト境界としての'static
 fn generic<T>(x: T) where T: 'static {}
 ```
 
-Both are related but subtly different and this is a common source for
-confusion when learning Rust. Here are some examples for each situation:
+両者は関係していますが、微妙に異なります。Rustを学ぶ際に混同してしまうもの
+の一つです。それぞれについて例を見ていきましょう。
 
-## Reference lifetime
+## 参照のライフタイム
 
-As a reference lifetime `'static` indicates that the data pointed to by
-the reference lives for the entire lifetime of the running program.
-It can still be coerced to a shorter lifetime.
+参照のライフタイムとしての`'static`は、プログラムが走っている間中有効なデータ
+への参照を表します。これを短いライフタイムに圧縮することもできます。
 
-There are two ways to make a variable with `'static` lifetime, and both
-are stored in the read-only memory of the binary:
+`'static`ライフタイムの変数を作る方法は2つありますが、両方とも
+バイナリの読み取り専用メモリに保存されます。
 
-* Make a constant with the `static` declaration.
-* Make a `string` literal which has type: `&'static str`.
+* `static`宣言で定数を作る。
+* `&'static str`型の文字列リテラルを作る。
 
-See the following example for a display of each method:
+以下の例はそれぞれの方法を示しています。
 
 ```rust,editable
-// Make a constant with `'static` lifetime.
+// `'static`ライフタイムの定数を作る。
 static NUM: i32 = 18;
 
-// Returns a reference to `NUM` where its `'static`
-// lifetime is coerced to that of the input argument.
+// `NUM`の参照を`'static`ライフタイムを入力のライフタイムに圧縮して
+// 返す。
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
     &NUM
 }
 
 fn main() {
     {
-        // Make a `string` literal and print it:
+        // `string`リテラルを作ってプリントする。
         let static_string = "I'm in read-only memory";
         println!("static_string: {}", static_string);
 
-        // When `static_string` goes out of scope, the reference
-        // can no longer be used, but the data remains in the binary.
+        // `static_string`がスコープを出た時、参照は使えなくなりますが、
+        // データはバイナリに残ります。
     }
 
     {
-        // Make an integer to use for `coerce_static`:
+        // `coerce_static`に使う整数を作る。
         let lifetime_num = 9;
 
-        // Coerce `NUM` to lifetime of `lifetime_num`:
+        // `NUM`を`lifetime_num`のライフタイムに圧縮する
         let coerced_static = coerce_static(&lifetime_num);
 
         println!("coerced_static: {}", coerced_static);
     }
 
-    println!("NUM: {} stays accessible!", NUM);
+    println!("NUM: {} stays accessible!", NUM);  // NUM: {}はまだアクセスできます。
 }
 ```
 
-## Trait bound
+## トレイトの境界
 
-As a trait bound, it means the type does not contain any non-static
-references. Eg. the receiver can hold on to the type for as long as
-they want and it will never become invalid until they drop it.
+トレイトの境界として使った時、静的でない参照を含むことができないことを
+意味します。つまり、受け取り手はその型の変数を好きなだけ保持することができ、
+dropするまで無効にならないということです。
 
-It's important to understand this means that any owned data always passes
-a `'static` lifetime bound, but a reference to that owned data generally
-does not:
+所有しているすべてのデータは`'staic`ライフタイム境界を持ちますが、その参照は
+持ちません。
 
 ```rust,editable,compile_fail
 use std::fmt::Debug;
@@ -82,16 +80,16 @@ fn print_it( input: impl Debug + 'static )
 
 fn use_it()
 {
-    // i is owned and contains no references, thus it's 'static:
+    // iは所有していて、参照を持たないので'staticです。
     let i = 5;
     print_it(i);
 
-    // oops, &i only has the lifetime defined by the scope of
-    // use_it(), so it's not 'static:
+    // &iはuse_it()で定義されたスコープでしか使えないので、
+    // 'staticではありません。
     print_it(&i);
 }
 ```
-The compiler will tell you:
+コンパイラはこのように出力します。
 ```ignore
 error[E0597]: `i` does not live long enough
   --> src/lib.rs:15:15
@@ -105,8 +103,8 @@ error[E0597]: `i` does not live long enough
    | - `i` dropped here while still borrowed
 ```
 
-### See also:
+### こちらも参照:
 
-[`'static` constants][static_const]
+- [`'static`定数][static_const]
 
 [static_const]: ../../custom_types/constants.md

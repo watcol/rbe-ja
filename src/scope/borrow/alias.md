@@ -1,9 +1,8 @@
-# Aliasing
+# エイリアシング
 
-Data can be immutably borrowed any number of times, but while immutably
-borrowed, the original data can't be mutably borrowed. On the other hand, only
-*one* mutable borrow is allowed at a time. The original data can be borrowed
-again only *after* the mutable reference has been used for the last time.
+データは何度でも不変借用できますが、不変借用されている間はもとのデータは可変借用
+できません。言い換えれば、同時に*一つ*の可変参照ができ、もとのデータは可変参照が
+最後に使われた*後*でのみ借用できるということです。
 
 ```rust,editable
 struct Point { x: i32, y: i32, z: i32 }
@@ -14,43 +13,41 @@ fn main() {
     let borrowed_point = &point;
     let another_borrow = &point;
 
-    // Data can be accessed via the references and the original owner
+    // データには参照または所有者のみアクセスできます。
     println!("Point has coordinates: ({}, {}, {})",
                 borrowed_point.x, another_borrow.y, point.z);
 
-    // Error! Can't borrow `point` as mutable because it's currently
-    // borrowed as immutable.
+    // エラー! 現在不変参照されているため、`point`を可変参照
+    // することはできません。
     // let mutable_borrow = &mut point;
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // The borrowed values are used again here
+    // 借用された値はもう一度使用できます。
     println!("Point has coordinates: ({}, {}, {})",
                 borrowed_point.x, another_borrow.y, point.z);
 
-    // The immutable references are no longer used for the rest of the code so
-    // it is possible to reborrow with a mutable reference.
+    // もう不変参照は使われないため、残りのコードでは
+    // 可変参照として再び借用できます。
     let mutable_borrow = &mut point;
 
-    // Change data via mutable reference
+    // 可変参照でデータを変更する
     mutable_borrow.x = 5;
     mutable_borrow.y = 2;
     mutable_borrow.z = 1;
 
-    // Error! Can't borrow `point` as immutable because it's currently
-    // borrowed as mutable.
+    // エラー! `point`は現在可変借用されているため、不変借用はできません。
     // let y = &point.y;
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Error! Can't print because `println!` takes an immutable reference.
+    // エラー! `println!`は不変参照を必要とするため、呼び出せません。
     // println!("Point Z coordinate is {}", point.z);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Ok! Mutable references can be passed as immutable to `println!`
+    // Ok! 可変参照は不変参照として`println!`に渡せます
     println!("Point has coordinates: ({}, {}, {})",
                 mutable_borrow.x, mutable_borrow.y, mutable_borrow.z);
 
-    // The mutable reference is no longer used for the rest of the code so it
-    // is possible to reborrow
+    // 可変参照はもう使われないので、残りのコードでは再度借用できます。
     let new_borrowed_point = &point;
     println!("Point now has coordinates: ({}, {}, {})",
              new_borrowed_point.x, new_borrowed_point.y, new_borrowed_point.z);

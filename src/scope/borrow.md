@@ -1,49 +1,49 @@
-# Borrowing
+# 借用
 
-Most of the time, we'd like to access data without taking ownership over
-it. To accomplish this, Rust uses a *borrowing* mechanism. Instead of
-passing objects by value (`T`), objects can be passed by reference (`&T`).
+ほとんどの場合、データの所有権を取らずにデータにアクセスしたいです。このために、
+Rustは*借用*のメカニズムを使用しています。オブジェクトを値(`T`)で渡す代わりに、
+参照(`&T`)で渡すことができます。
 
-The compiler statically guarantees (via its borrow checker) that references 
-*always* point to valid objects. That is, while references to an object
-exist, the object cannot be destroyed.
+コンパイラは参照が*常に*有効なオブジェクトのポインタであることを(ボローチェッカー
+によって)保証します。つまり、オブジェクトの参照が存在する限り、そのオブジェクトは
+破棄されません。
 
 ```rust,editable,ignore,mdbook-runnable
-// This function takes ownership of a box and destroys it
+//  Boxの所有権をとって、破棄する関数
 fn eat_box_i32(boxed_i32: Box<i32>) {
     println!("Destroying box that contains {}", boxed_i32);
 }
 
-// This function borrows an i32
+// i32を借用する関数
 fn borrow_i32(borrowed_i32: &i32) {
     println!("This int is: {}", borrowed_i32);
 }
 
 fn main() {
-    // Create a boxed i32, and a stacked i32
+    // ヒープ上のi32とスタック上のi32を作る
     let boxed_i32 = Box::new(5_i32);
     let stacked_i32 = 6_i32;
 
-    // Borrow the contents of the box. Ownership is not taken,
-    // so the contents can be borrowed again.
+    // Boxの要素を借用する。所有権が取られないため、
+    // もう1度借用できる。
     borrow_i32(&boxed_i32);
     borrow_i32(&stacked_i32);
 
     {
-        // Take a reference to the data contained inside the box
+        // Box上のデータの参照を作る
         let _ref_to_i32: &i32 = &boxed_i32;
 
-        // Error!
-        // Can't destroy `boxed_i32` while the inner value is borrowed later in scope.
+        // エラー!
+        // `boxed_i32`は後に借用されるため、破棄できません。
         eat_box_i32(boxed_i32);
-        // FIXME ^ Comment out this line
+        // FIXME ^ この行をコメントアウトしてください
 
-        // Attempt to borrow `_ref_to_i32` after inner value is destroyed
+        // 中の値が破棄された後に`_ref_to_i32`を使用しようとする
         borrow_i32(_ref_to_i32);
-        // `_ref_to_i32` goes out of scope and is no longer borrowed.
+        // `_ref_to_i32`がスコープを出たため、もう借用されることはない
     }
 
-    // `boxed_i32` can now give up ownership to `eat_box` and be destroyed
+    // 今は`boxed_i32`は`eat_box`に所有権を与えて破棄することができる。
     eat_box_i32(boxed_i32);
 }
 ```
