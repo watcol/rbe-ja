@@ -1,14 +1,13 @@
-# Variadic Interfaces
+# 可変長引数
 
-A _variadic_ interface takes an arbitrary number of arguments. For example,
-`println!` can take an arbitrary number of arguments, as determined by the
-format string.
+可変長引数は様々な数の引数をとります。例えば、`println!`は、フォーマット文字列
+に従って、いろいろな数の引数をとります。
 
-We can extend our `calculate!` macro from the previous section to be variadic:
+前の章の`calculate!`マクロを拡張してみましょう。
 
 ```rust,editable
 macro_rules! calculate {
-    // The pattern for a single `eval`
+    // `eval`がひとつだけの場合
     (eval $e:expr) => {{
         {
             let val: usize = $e; // Force types to be integers
@@ -16,7 +15,7 @@ macro_rules! calculate {
         }
     }};
 
-    // Decompose multiple `eval`s recursively
+    // `eval`が複数ある場合、再帰を使う。
     (eval $e:expr, $(eval $es:expr),+) => {{
         calculate! { eval $e }
         calculate! { $(eval $es),+ }
@@ -24,7 +23,7 @@ macro_rules! calculate {
 }
 
 fn main() {
-    calculate! { // Look ma! Variadic `calculate!`!
+    calculate! { // 可変長の`calculate!`です!
         eval 1 + 2,
         eval 3 + 4,
         eval (2 * 3) + 1
@@ -32,7 +31,7 @@ fn main() {
 }
 ```
 
-Output:
+出力:
 
 ```txt
 1 + 2 = 3

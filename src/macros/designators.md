@@ -1,32 +1,30 @@
-# Designators
+# マクロ指定子
 
-The arguments of a macro are prefixed by a dollar sign `$` and type annotated
-with a *designator*:
+マクロの引数は`$`で始まり、そのタイプは*指定子*で注釈します。
 
 ```rust,editable
 macro_rules! create_function {
-    // This macro takes an argument of designator `ident` and
-    // creates a function named `$func_name`.
+    // このマクロは`ident`指定子の引数をとり、
+    // `$func_name`という名前の関数を作ります。
     // The `ident` designator is used for variable/function names.
     ($func_name:ident) => {
         fn $func_name() {
-            // The `stringify!` macro converts an `ident` into a string.
+            // `stringify!`マクロは`ident`を文字列に変換します。
             println!("You called {:?}()",
                      stringify!($func_name));
         }
     };
 }
 
-// Create functions named `foo` and `bar` with the above macro.
+// 上のマクロを使って、`foo`と`bar`という関数を定義します。
 create_function!(foo);
 create_function!(bar);
 
 macro_rules! print_result {
-    // This macro takes an expression of type `expr` and prints
-    // it as a string along with its result.
-    // The `expr` designator is used for expressions.
+    // このマクロは式`$expression`をとり、それを文字列にしたものと
+    // その結果を返します。`expr`指定子は式に対して指定します。
     ($expression:expr) => {
-        // `stringify!` will convert the expression *as it is* into a string.
+        // `stringify!`は式を*そのまま*文字列に変換します。
         println!("{:?} = {:?}",
                  stringify!($expression),
                  $expression);
@@ -39,7 +37,7 @@ fn main() {
 
     print_result!(1u32 + 1);
 
-    // Recall that blocks are expressions too!
+    // ブロックも式です!
     print_result!({
         let x = 1u32;
 
@@ -48,20 +46,20 @@ fn main() {
 }
 ```
 
-These are some of the available designators:
+これらが利用可能な指定子の一例です。
 
 * `block`
-* `expr` is used for expressions
-* `ident` is used for variable/function names
+* `expr`は式に使います。
+* `ident`は変数/関数名に使います。
 * `item`
-* `literal` is used for literal constants
-* `pat` (*pattern*)
+* `literal`はリテラルに使います
+* `pat` (*パターン*)
 * `path`
-* `stmt` (*statement*)
-* `tt` (*token tree*)
-* `ty` (*type*)
-* `vis` (*visibility qualifier*)
+* `stmt` (*式*)
+* `tt` (*トークン木*)
+* `ty` (*型*)
+* `vis` (*可視性指定子*(`pub`など))
 
-For a complete list, see the [Rust Reference].
+完全な一覧は[Rustリファレンス][Rust Reference]を参照してください。
 
 [Rust Reference]: https://doc.rust-lang.org/reference/macros-by-example.html

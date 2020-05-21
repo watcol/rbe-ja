@@ -1,11 +1,11 @@
-# Syntax
+# 構文
 
-In following subsections, we will show how to define macros in Rust.
-There are three basic ideas:
+以下のサブセクションで、Rustでのマクロの書き方を紹介します。
+基本的に3つの概念があります。
 
-- [Patterns and Designators][designators]
-- [Overloading][overloading]
-- [Repetition][repetition]
+- [マクロ指定子][designators]
+- [オーバーロード][overloading]
+- [繰り返し][repetition]
 
 [designators]: designators.md
 [overloading]: overload.md

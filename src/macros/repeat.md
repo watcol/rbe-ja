@@ -1,21 +1,19 @@
-# Repeat
+# 繰り返し
 
-Macros can use `+` in the argument list to indicate that an argument may
-repeat at least once, or `*`, to indicate that the argument may repeat zero or
-more times.
+マクロは引数リストに`+`を指定することで1回以上の、`*`を指定することで
+0回以上の繰り返しを表現できます。
 
-In the following example, surrounding the matcher with `$(...),+` will
-match one or more expression, separated by commas.
-Also note that the semicolon is optional on the last case.
+以下の例で、指定子を`$(...),+`で囲むことで、コンマで分けられた
+一つ以上の式を表現できます。また、最後のセミコロンは省略できます。
 
 ```rust,editable
-// `find_min!` will calculate the minimum of any number of arguments.
+// `find_min!`は引数の内最小のものを返します。
 macro_rules! find_min {
-    // Base case:
+    // 基本ケース:
     ($x:expr) => ($x);
-    // `$x` followed by at least one `$y,`
+    // `$x`と1つ以上の`$y,`からなる。
     ($x:expr, $($y:expr),+) => (
-        // Call `find_min!` on the tail `$y`
+        // `find_min!`を末尾の`$y`に対して実行する
         std::cmp::min($x, find_min!($($y),+))
     )
 }

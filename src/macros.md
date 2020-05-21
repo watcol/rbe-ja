@@ -1,21 +1,19 @@
 # macro_rules!
 
-Rust provides a powerful macro system that allows metaprogramming. As you've
-seen in previous chapters, macros look like functions, except that their name
-ends with a bang `!`, but instead of generating a function call, macros are
-expanded into source code that gets compiled with the rest of the program.
-However, unlike macros in C and other languages, Rust macros are expanded into
-abstract syntax trees, rather than string preprocessing, so you don't get
-unexpected precedence bugs.
+Rustはメタプログラミングのための強力なマクロシステムを備えています。前の章で
+見たように、マクロは関数のように働き、その名前は`!`で終わります。しかし、関数
+と違って、マクロはコンパイルされる前に、ソースコードに展開されます。また、Cの
+ような言語のマクロとは違い、Rustのマクロは抽象構文木に展開されるため、前処理
+より強力です。そのため、予期しない優先順位によるバグが起こることはありません。
 
-Macros are created using the `macro_rules!` macro.
+マクロは`macro_rules!`マクロで作ることができます。
 
 ```rust,editable
-// This is a simple macro named `say_hello`.
+// シンプルなマクロ`say_hello`
 macro_rules! say_hello {
-    // `()` indicates that the macro takes no argument.
+    // `()`はマクロが引数を取らないことを表します。
     () => {
-        // The macro will expand into the contents of this block.
+        // マクロはこのブロックの要素に展開されます。
         println!("Hello!");
     };
 }
@@ -26,15 +24,14 @@ fn main() {
 }
 ```
 
-So why are macros useful?
+マクロはなぜ有用なのでしょうか?
 
-1. Don't repeat yourself. There are many cases where you may need similar
-   functionality in multiple places but with different types. Often, writing a
-   macro is a useful way to avoid repeating code. (More on this later)
+1. 同じことを繰り返さない(Don't repeat yourself, DRY)。似たような処理を複数の場所に
+   使いたいが、違う型であるためにまとめるのが難しいときがあります。マクロを使えば、
+   コードの繰り返しを避けられることがあります。(詳しくは後で)
 
-2. Domain-specific languages. Macros allow you to define special syntax for a
-   specific purpose. (More on this later)
+2. ドメイン固有言語。マクロで特有の目的のための特殊な構文が定義できます。(詳しくは
+   後で)
 
-3. Variadic interfaces. Sometimes you want to define an interface that takes a
-   variable number of arguments. An example is `println!` which could take any
-   number of arguments, depending on the format string!. (More on this later)
+3. 可変長引数。時々可変長の引数を取るインターフェースを書きたいときがあります。例えば
+   `println!`はフォーマット文字列に従って様々な数の引数をとります。(詳しくは後で)

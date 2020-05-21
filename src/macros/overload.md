@@ -1,21 +1,21 @@
-# Overload
+# オーバーロード
 
-Macros can be overloaded to accept different combinations of arguments. 
-In that regard, `macro_rules!` can work similarly to a match block:
+マクロは違う引数を取るようにオーバーロードできます。
+ついては、`macro_rules!`はmatchブロックのように使用できます。
 
 ```rust,editable
 // `test!` will compare `$left` and `$right`
 // in different ways depending on how you invoke it:
 macro_rules! test {
-    // Arguments don't need to be separated by a comma.
-    // Any template can be used!
+    // 引数をコンマで区切る必要はありません。
+    // テンプレートが使えます!
     ($left:expr; and $right:expr) => {
         println!("{:?} and {:?} is {:?}",
                  stringify!($left),
                  stringify!($right),
                  $left && $right)
     };
-    // ^ each arm must end with a semicolon.
+    // ^ それぞれのアームはセミコロンで終わる必要があります。
     ($left:expr; or $right:expr) => {
         println!("{:?} or {:?} is {:?}",
                  stringify!($left),

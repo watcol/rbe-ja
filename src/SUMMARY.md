@@ -147,8 +147,8 @@
         - [マクロ指定子](macros/designators.md)
         - [オーバーロード](macros/overload.md)
         - [繰り返し](macros/repeat.md)
-    - [DRY (Don't Repeat Yourself)](macros/dry.md)
-    - [DSL (Domain Specific Language)](macros/dsl.md)
+    - [同じことを繰り返さない(DRY)](macros/dry.md)
+    - [ドメイン固有言語(DSL)](macros/dsl.md)
     - [可変長引数](macros/variadics.md)
 
 - [エラー処理](error.md)
