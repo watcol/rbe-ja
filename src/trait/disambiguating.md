@@ -1,25 +1,26 @@
-# Disambiguating overlapping traits
+# 重複するトレイトの明確化
 
-A type can implement many different traits. What if two traits both require the same name? For example, many traits might have a method named `get()`. They might even have different return types! 
+一つの型には多くのトレイトが実装できます。2つのトレイトが同じ名前を持つ場合はどうでしょう? 例えば、多くのトレイトが`get()`メソッドを持っているかもしれません。
+そして、それらは違う型を返すかもしれません!
 
-Good news: because each trait implementation gets its own `impl` block, it's 
-clear which trait's `get` method you're implementing. 
+それぞれのトレイトが独自の`impl`ブロックを使って宣言するため、
+どのトレイトの`get`メソッドなのか明確にわかります。
 
-What about when it comes time to _call_ those methods? To disambiguate between
-them, we have to use Fully Qualified Syntax.
+それを_呼び出す_ ときはどうでしょうか? それらを明確化するために、
+完全修飾構文(Fully Qualified Syntax)を使います。
 
 ```rust,editable
 trait UsernameWidget {
-    // Get the selected username out of this widget
+    // そのウィジェットで指定されたユーザー名を返す
     fn get(&self) -> String;
 }
 
 trait AgeWidget {
-    // Get the selected age out of this widget
+    // そのウィジェットで指定された年齢を返す
     fn get(&self) -> u8;
 }
 
-// A form with both a UsernameWidget and an AgeWidget
+// UsernameWidgetとAgeWidgetを両方実装したフォーム
 struct Form {
     username: String,
     age: u8,
@@ -43,9 +44,8 @@ fn main() {
         age: 28,
     };
 
-    // If you uncomment this line, you'll get an error saying 
-    // "multiple `get` found". Because, after all, there are multiple methods
-    // named `get`.
+    // これをアンコメントすると、「複数の`get`が見つかりました」というエラー
+    // を返します。なぜなら、`get`という名前のメソッドが複数あるためです。
     // println!("{}", form.get());
 
     let username = <Form as UsernameWidget>::get(&form);
@@ -55,8 +55,8 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[The Rust Programming Language chapter on Fully Qualified syntax][trpl_fqsyntax]
+[The Rust Programming Languageの完全修飾構文の節][trpl_fqsyntax]
 
 [trpl_fqsyntax]: https://doc.rust-lang.org/book/ch19-03-advanced-traits.html#fully-qualified-syntax-for-disambiguation-calling-methods-with-the-same-name

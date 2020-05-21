@@ -1,35 +1,39 @@
-# Returning Traits with `dyn`
+# `dyn`でトレイトを返す
 
-The Rust compiler needs to know how much space every function's return type requires. This means all your functions have to return a concrete type. Unlike other languages, if you have a trait like `Animal`, you can't write a function that returns `Animal`, because its different implementations will need different amounts of memory. 
+Rustコンパイラは返り値にどのくらいスペースが必要か事前に把握する必要があります。これは、すべての関数が具象型を返す必要があることを意味します。他の言語と違って、
+異なる実装は異なるメモリ容量を持つため、`Animal`のようなトレイトを持っていたとしても、`Animal`を返す関数は書けません。
 
-However, there's an easy workaround. Instead of returning a trait object directly, our functions return a `Box` which _contains_ some `Animal`. A `box` is just a reference to some memory in the heap. Because a reference has a statically-known size, and the compiler can guarantee it points to a heap-allocated `Animal`, we can return a trait from our function!
+しかし、これには簡単な回避策があります。トレイとオブジェクトを直接返す代わりに、`Animal`を含む`Box`型を返せばよいのです。`box`はヒープメモリの参照に
+過ぎませんが、参照は固定されたサイズを持っている上、コンパイラはヒープに格納された`Animal`の参照を返すことが保証されているため、関数からトレイトを返すことが
+できます!
 
-Rust tries to be as explicit as possible whenever it allocates memory on the heap. So if your function returns a pointer-to-trait-on-heap in this way, you need to write the return type with the `dyn` keyword, e.g. `Box<dyn Animal>`.
+Rustはヒープへのメモリ確保ができるだけ明示的になるようにしてきました。そのため、ヒープに確保されたトレイトの参照を返すときも、
+返す型を`dyn`キーワードで明示しなければいけません (例えば`Box<dyn Animal>`)
 
 ```rust,editable
 struct Sheep {}
 struct Cow {}
 
 trait Animal {
-    // Instance method signature
+    // インスタンスメソッド
     fn noise(&self) -> &'static str;
 }
 
-// Implement the `Animal` trait for `Sheep`.
+// `Sheep`に`Animal`トレイトを実装する。
 impl Animal for Sheep {
     fn noise(&self) -> &'static str {
         "baaaaah!"
     }
 }
 
-// Implement the `Animal` trait for `Cow`.
+// `Cow`に`Animal`トレイトを実装する。
 impl Animal for Cow {
     fn noise(&self) -> &'static str {
         "moooooo!"
     }
 }
 
-// Returns some struct that implements Animal, but we don't know which one at compile time.
+// Animalを実装したいくつかの構造体を返しますが、コンパイル時にはその型がわかりません。
 fn random_animal(random_number: f64) -> Box<dyn Animal> {
     if random_number < 0.5 {
         Box::new(Sheep {})

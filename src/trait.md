@@ -1,25 +1,24 @@
-# Traits
+# トレイト
 
-A `trait` is a collection of methods defined for an unknown type:
-`Self`. They can access other methods declared in the same trait.
+トレイトは、未知の型`Self`に対して実装されたメソッドの集合です。
+ここでは、同じトレイトで実装されたメソッドにアクセスすることができます。
 
-Traits can be implemented for any data type. In the example below,
-we define `Animal`, a group of methods. The `Animal` `trait` is 
-then implemented for the `Sheep` data type, allowing the use of 
-methods from `Animal` with a `Sheep`.
+トレイトはいかなるデータ型にも実装できます。下の例では、メソッド群`Animal`
+を定義し、`Animal`トレイトをデータ型`Sheep`に対して実装することで、`Animal`
+のメソッドを`Sheep`から使えるようにしています。
 
 ```rust,editable
 struct Sheep { naked: bool, name: &'static str }
 
 trait Animal {
-    // Static method signature; `Self` refers to the implementor type.
+    //  コンストラクタとなる静的メソッドを定義する。`Self`は実装する型を表す。
     fn new(name: &'static str) -> Self;
 
-    // Instance method signatures; these will return a string.
+    // インスタンスメソッドの定義。ここでは文字列を返す。
     fn name(&self) -> &'static str;
     fn noise(&self) -> &'static str;
 
-    // Traits can provide default method definitions.
+    // トレイトはデフォルト実装を提供することができる。
     fn talk(&self) {
         println!("{} says {}", self.name(), self.noise());
     }
@@ -32,7 +31,7 @@ impl Sheep {
 
     fn shear(&mut self) {
         if self.is_naked() {
-            // Implementor methods can use the implementor's trait methods.
+            // 実装者のメソッドは実装者のトレイトで定義したメソッドを使うことができる。
             println!("{} is already naked...", self.name());
         } else {
             println!("{} gets a haircut!", self.name);
@@ -42,9 +41,9 @@ impl Sheep {
     }
 }
 
-// Implement the `Animal` trait for `Sheep`.
+// `Animal`トレイトを`Sheep`に実装する。
 impl Animal for Sheep {
-    // `Self` is the implementor type: `Sheep`.
+    // `Self`は実装する型(`Sheep`)
     fn new(name: &'static str) -> Sheep {
         Sheep { name: name, naked: false }
     }
@@ -61,17 +60,17 @@ impl Animal for Sheep {
         }
     }
     
-    // Default trait methods can be overridden.
+    // デフォルトメソッドは上書きできる。
     fn talk(&self) {
-        // For example, we can add some quiet contemplation.
-        println!("{} pauses briefly... {}", self.name, self.noise());
+        // 例えば、熟考を加えることができる。
+        println!("{} pauses briefly... {}", self.name, self.noise());  // {}は一息おいた... {}
     }
 }
 
 fn main() {
-    // Type annotation is necessary in this case.
+    // この場合、型注釈は必要です。
     let mut dolly: Sheep = Animal::new("Dolly");
-    // TODO ^ Try removing the type annotations.
+    // TODO ^ 型注釈を消してみてください。
 
     dolly.talk();
     dolly.shear();

@@ -1,14 +1,14 @@
 # `impl Trait`
 
-If your function returns a type that implements `MyTrait`, you can write its
-return type as `-> impl MyTrait`. This can help simplify your type signatures quite a lot!
+もし関数が`MyTrait`を実装した型を返す時、返り値を`-> impl MyTrait`と書くことができます。
+これによって型指定師をシンプルに書くことができます!
 
 ```rust,editable
 use std::iter;
 use std::vec::IntoIter;
 
-// This function combines two `Vec<i32>` and returns an iterator over it.
-// Look how complicated its return type is!
+// この関数は2つの`Vec<i32>`を連結し、イテレータを返します。
+// 返り値が複雑になっています。
 fn combine_vecs_explicit_return_type(
     v: Vec<i32>,
     u: Vec<i32>,
@@ -16,8 +16,8 @@ fn combine_vecs_explicit_return_type(
     v.into_iter().chain(u.into_iter()).cycle()
 }
 
-// This is the exact same function, but its return type uses `impl Trait`.
-// Look how much simpler it is!
+// 上と同じですが、返り値に`impl Trait`を使っています。
+// とてもシンプルになっています。
 fn combine_vecs(
     v: Vec<i32>,
     u: Vec<i32>,
@@ -38,13 +38,12 @@ fn main() {
 }
 ```
 
-More importantly, some Rust types can't be written out. For example, every
-closure has its own unnamed concrete type. Before `impl Trait` syntax, you had
-to allocate on the heap in order to return a closure. But now you can do it all
-statically, like this:
+さらに、Rustのいくつかの型は直接記述できません。例えば、クロージャは、無名な
+具象型を持っていて、`impl Trait`構文を使わなければ、ヒープにクロージャを格納して
+返す必要がありました。しかし、今は静的にこう書けます。
 
 ```rust,editable
-// Returns a function that adds `y` to its input
+// 入力に`y`を加えて返すクロージャをかえす関数
 fn make_adder_function(y: i32) -> impl Fn(i32) -> i32 {
     let closure = move |x: i32| { x + y };
     closure
@@ -56,10 +55,10 @@ fn main() {
 }
 ```
 
-You can also use `impl Trait` to return an iterator that uses `map` or `filter`
-closures! This makes using `map` and `filter` easier. Because closure types don't
-have names, you can't write out an explicit return type if your function returns
-iterators with closures. But with `impl Trait` you can do this easily:
+また、`impl Trait`は`map`、`filter`などのクロージャを使ったイテレータを返すのにも
+使えます! これによって、`map`や`filter`を簡単に使えるようになります。以前はクロージャ
+の型は名前を持たないため、クロージャを使ったイテレータは、明示的に返り値の型が書けなかった
+ものが、`impl Trait`を使って簡単に書けるようになったからです。
 
 ```rust,editable
 fn double_positives<'a>(numbers: &'a Vec<i32>) -> impl Iterator<Item = i32> + 'a {

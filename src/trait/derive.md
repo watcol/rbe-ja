@@ -1,24 +1,24 @@
-# Derive
+# 継承
 
-The compiler is capable of providing basic implementations for some traits via
-the `#[derive]` [attribute][attribute]. These traits can still be
-manually implemented if a more complex behavior is required.
+コンパイラは、`#[derive]`[属性][attribute]によって、いくつかのトレイトの
+標準実装を提供しています。これらのトレイトは、もっと複雑な振る舞いが必要な
+場合、手動で実装することもできます。
 
-The following is a list of derivable traits:
-* Comparison traits:
-  [`Eq`][eq], [`PartialEq`][partial-eq], [`Ord`][ord], [`PartialOrd`][partial-ord].
-* [`Clone`][clone], to create `T` from `&T` via a copy.
-* [`Copy`][copy], to give a type 'copy semantics' instead of 'move semantics'.
-* [`Hash`][hash], to compute a hash from `&T`.
-* [`Default`][default], to create an empty instance of a data type.
-* [`Debug`][debug], to format a value using the `{:?}` formatter.
+以下が継承できるトレイトの一覧です。
+* 比較トレイト:
+  [`Eq`][eq]、[`PartialEq`][partial-eq]、[`Ord`][ord]、[`PartialOrd`][partial-ord]。
+* `&T`をコピーして`T`を作成する[`Clone`][clone]
+* 'ムーブを行わず、コピーするための[`Copy`][copy]
+* `&T`からハッシュを算出する[`Hash`][hash]
+* データ型のからのインスタンスを作る[`Default`][default]
+* `{:?}`フォーマットで値を出力する[`Debug`][debug]
  
 ```rust,editable
-// `Centimeters`, a tuple struct that can be compared
+// `Centimeters`は比較できるタプル構造体です。
 #[derive(PartialEq, PartialOrd)]
 struct Centimeters(f64);
 
-// `Inches`, a tuple struct that can be printed
+// `Inches`は出力できるタプル構造体です。
 #[derive(Debug)]
 struct Inches(i32);
 
@@ -30,19 +30,19 @@ impl Inches {
     }
 }
 
-// `Seconds`, a tuple struct with no additional attributes
+// `Seconds`は何も属性がないタプル構造体です。
 struct Seconds(i32);
 
 fn main() {
     let _one_second = Seconds(1);
 
-    // Error: `Seconds` can't be printed; it doesn't implement the `Debug` trait
+    // エラー: `Seconds`は`Debug`トレイトを実装していないためプリントできません。
     //println!("One second looks like: {:?}", _one_second);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Error: `Seconds` can't be compared; it doesn't implement the `PartialEq` trait
+    // エラー: `Seconds`は`PartialEq`トレイトを実装していないため比較できません。
     //let _this_is_true = (_one_second == _one_second);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
     let foot = Inches(12);
 
@@ -61,8 +61,8 @@ fn main() {
 }
 ```
 
-### See also:
-[`derive`][derive]
+### こちらも参照:
+- [`derive`][derive]
 
 [attribute]: ../attribute.md
 [eq]: https://doc.rust-lang.org/std/cmp/trait.Eq.html

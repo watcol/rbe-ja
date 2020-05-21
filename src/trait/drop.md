@@ -1,22 +1,19 @@
 # Drop
 
-The [`Drop`][Drop] trait only has one method: `drop`, which is called automatically 
-when an object goes out of scope. The main use of the `Drop` trait is to free the
-resources that the implementor instance owns.
+[`Drop`][Drop]トレイトは唯一つのメソッド`drop`を持ち、オブジェクトがスコープを抜けたときに
+自動的に呼び出されます。`Drop`トレイトは主に実装者のインスタンスを開放するのに使われます。
 
-`Box`, `Vec`, `String`, `File`, and `Process` are some examples of types that
-implement the `Drop` trait to free resources. The `Drop` trait can also be
-manually implemented for any custom data type.
+`Box`、`Vec`、`String`、`File`、`Process` などはリソースを開放するために
+`Drop`トレイトを実装している型の例です。`Drop`はカスタム型に手動で実装することもできます。
 
-The following example adds a print to console to the `drop` function to announce
-when it is called.
+以下の例では、`drop`が呼び出されたときにコンソールに出力します。
 
 ```rust,editable
 struct Droppable {
     name: &'static str,
 }
 
-// This trivial implementation of `drop` adds a print to console.
+// `drop`が呼び出されたときにコンソールに出力する小さな実装
 impl Drop for Droppable {
     fn drop(&mut self) {
         println!("> Dropping {}", self.name);
@@ -26,11 +23,11 @@ impl Drop for Droppable {
 fn main() {
     let _a = Droppable { name: "a" };
 
-    // block A
+    // ブロックA
     {
         let _b = Droppable { name: "b" };
 
-        // block B
+        // ブロックB
         {
             let _c = Droppable { name: "c" };
             let _d = Droppable { name: "d" };
@@ -43,14 +40,13 @@ fn main() {
     }
     println!("Just exited block A");
 
-    // Variable can be manually dropped using the `drop` function
+    // `drop`関数を使って手動で呼び出すこともできます。
     drop(_a);
-    // TODO ^ Try commenting this line
+    // TODO ^ この行をコメントアウトしてください。
 
     println!("end of the main function");
 
-    // `_a` *won't* be `drop`ed again here, because it already has been
-    // (manually) `drop`ed
+    // `_a`はもう手動で`drop`されたので、ここでは`drop`されません。
 }
 ```
 

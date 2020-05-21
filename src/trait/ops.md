@@ -1,12 +1,12 @@
-# Operator Overloading
+# 演算子オーバーロード
 
-In Rust, many of the operators can be overloaded via traits. That is, some operators can
-be used to accomplish different tasks based on their input arguments. This is possible
-because operators are syntactic sugar for method calls. For example, the `+` operator in
-`a + b` calls the `add` method (as in `a.add(b)`). This `add` method is part of the `Add`
-trait. Hence, the `+` operator can be used by any implementor of the `Add` trait.
+Rustでは、ほとんどの演算子がトレイトによってオーバーロードできます。つまり、いくつかの演算子は
+引数によって違う操作を行うことができます。これは、演算子がメソッド呼び出しの糖衣構文だからこそ
+実現できます。例えば、`a + b`の`+`演算子は`add`メソッドを`a.add(b)`のように呼び出します。
+この`add`メソッドは`Add`トレイトによって定義されていないため、`+`演算子は`Add`トレイトを
+実装すれば使えるようになります。
 
-A list of the traits, such as `Add`, that overload operators can be found in [`core::ops`][ops].
+`Add`のような、演算子オーバーロードに使うトレイトの一覧は[`core::ops`][ops]にあります。
 
 ```rust,editable
 use std::ops;
@@ -20,9 +20,9 @@ struct FooBar;
 #[derive(Debug)]
 struct BarFoo;
 
-// The `std::ops::Add` trait is used to specify the functionality of `+`.
-// Here, we make `Add<Bar>` - the trait for addition with a RHS of type `Bar`.
-// The following block implements the operation: Foo + Bar = FooBar
+// `std::ops::Add`トレイトは`+`演算子の動作を定義するのに使います。
+// ここでは、右辺値が`Bar`のときの足し算を定義する`Add<Bar>`を実装します。
+// このブロックはFoo + Bar = FooBarを実装しています。
 impl ops::Add<Bar> for Foo {
     type Output = FooBar;
 
@@ -33,9 +33,9 @@ impl ops::Add<Bar> for Foo {
     }
 }
 
-// By reversing the types, we end up implementing non-commutative addition.
-// Here, we make `Add<Foo>` - the trait for addition with a RHS of type `Foo`.
-// This block implements the operation: Bar + Foo = BarFoo
+// 型を逆にすることで、交換法則に従わない実装を作ることができます。
+// ここでは、右辺値が`Foo`のときの足し算を定義する`Add<Foo>`を実装します。
+// このブロックはBar + Foo = BarFooを定義しています。
 impl ops::Add<Foo> for Bar {
     type Output = BarFoo;
 
@@ -52,9 +52,10 @@ fn main() {
 }
 ```
 
-### See Also
+### こちらも参照
 
-[Add][add], [Syntax Index][syntax]
+- [Add][add]
+- [構文インデックス][syntax]
 
 [add]: https://doc.rust-lang.org/core/ops/trait.Add.html
 [ops]: https://doc.rust-lang.org/core/ops/

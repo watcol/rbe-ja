@@ -1,53 +1,53 @@
-# Clone
+# 複製
 
-When dealing with resources, the default behavior is to transfer them during
-assignments or function calls. However, sometimes we need to make a
-copy of the resource as well.
+リソースについて対処する時、デフォルトで代入元や関数呼び出しによって
+値が受け渡されます。しかし、ときどきレソースのコピーが作りたい場合が
+あります。
 
-The [`Clone`][clone] trait helps us do exactly this. Most commonly, we can
-use the `.clone()` method defined by the `Clone` trait.
+[`Clone`][clone]トレイトによって、これを正確に行なえます。一般的なもので
+いうと、`.clone()`めそっどは`Clone`トレイトによって定義されています。
 
 ```rust,editable
-// A unit struct without resources
+// リソースのない構造体
 #[derive(Debug, Clone, Copy)]
 struct Unit;
 
-// A tuple struct with resources that implements the `Clone` trait
+// `Clone`トレイトを持つタプル構造体
 #[derive(Clone, Debug)]
 struct Pair(Box<i32>, Box<i32>);
 
 fn main() {
-    // Instantiate `Unit`
+    // `Unit`をインスタンス化する
     let unit = Unit;
-    // Copy `Unit`, there are no resources to move
+    // `Unit`をコピーする。ムーブするリソースが何もない。
     let copied_unit = unit;
 
-    // Both `Unit`s can be used independently
+    // `Unit`は独立して使える。
     println!("original: {:?}", unit);
     println!("copy: {:?}", copied_unit);
 
-    // Instantiate `Pair`
+    // `Pair`をインスタンス化する。
     let pair = Pair(Box::new(1), Box::new(2));
     println!("original: {:?}", pair);
 
-    // Copy `pair` into `moved_pair`, moves resources
+    // `pair`を`moved_pair`にコピーした時、リソースがムーブする。
     let moved_pair = pair;
     println!("copy: {:?}", moved_pair);
 
-    // Error! `pair` has lost its resources
+    // エラー! `pair`はリソースを持っていません。
     //println!("original: {:?}", pair);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // Clone `moved_pair` into `cloned_pair` (resources are included)
+    // `moved_pair`から`cloned_pair`に複製する(リソースも)
     let cloned_pair = moved_pair.clone();
-    // Drop the original pair using std::mem::drop
+    // std::mem::dropでもとのリソースをdropする。
     drop(moved_pair);
 
-    // Error! `moved_pair` has been dropped
+    // エラー! `moved_pair`はdropされています。
     //println!("copy: {:?}", moved_pair);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください
 
-    // The result from .clone() can still be used!
+    // .clone()の結果はまだ使えます!
     println!("clone: {:?}", cloned_pair);
 }
 ```
