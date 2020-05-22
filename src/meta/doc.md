@@ -1,38 +1,39 @@
-# Documentation
+# ドキュメンテーション
 
-Use `cargo doc` to build documentation in `target/doc`.
+`cargo doc`で`target/doc`上にドキュメンテーションを作ることができます。
 
-Use `cargo test` to run all tests (including documentation tests), and `cargo test --doc` to only run documentation tests.
+`cargo test`で(ドキュメンテーションテストを含む)すべてのテストを実行でき、さらに
+`cargo test --doc`でドキュメンテーションテストのみ実行できます。
 
-These commands will appropriately invoke `rustdoc` (and `rustc`) as required.
+このコマンドは`rustdoc`(や`rustc`)と必要に応じて連携をとります。
 
-## Doc comments
+## Docコメント
 
-Doc comments are very useful for big projects that require documentation. When
-running `rustdoc`, these are the comments that get compiled into
-documentation. They are denoted by a `///`, and support [Markdown].
+Docコメントはドキュメントが必要な巨大プロジェクトに有用です。`rustdoc`
+を実行した時、コメントがドキュメントにコンパイルされます。
+これは`///`から始まり、[Markdown]をサポートしています。
 
 ````rust,editable,ignore
 #![crate_name = "doc"]
 
-/// A human being is represented here
+/// 人類を表す
 pub struct Person {
-    /// A person must have a name, no matter how much Juliet may hate it
+    /// ジュリエットがどんなに嫌がろうとも、人は必ず名前を持ちます。
     name: String,
 }
 
 impl Person {
-    /// Returns a person with the name given them
+    /// 与えられた名前を持つPersonを返す。
     ///
-    /// # Arguments
+    /// # 引数
     ///
-    /// * `name` - A string slice that holds the name of the person
+    /// * `name` - 人の名前を保持する文字列
     ///
-    /// # Examples
+    /// # 例
     ///
     /// ```
-    /// // You can have rust code between fences inside the comments
-    /// // If you pass --test to `rustdoc`, it will even test it for you!
+    /// // コメント内のコードは実行できます。
+    /// // --testを`rustdoc`に渡すと、テストとして機能します!
     /// use doc::Person;
     /// let person = Person::new("name");
     /// ```
@@ -42,9 +43,9 @@ impl Person {
         }
     }
 
-    /// Gives a friendly hello!
+    /// フレンドリーな挨拶!
     ///
-    /// Says "Hello, [name]" to the `Person` it is called on.
+    /// `Person`に対して呼び出されたら、"Hello, [name]"と言う。
     pub fn hello(& self) {
         println!("Hello, {}!", self.name);
     }
@@ -57,36 +58,37 @@ fn main() {
 }
 ````
 
-To run the tests, first build the code as a library, then tell `rustdoc` where
-to find the library so it can link it into each doctest program:
+テストを実行するためには、コードをライブラリとしてビルドし、テストするライブラリ
+がどこにあるのか`rustdoc`に教えて、それぞれのテストとリンクできるようにする。
 
 ```shell
 $ rustc doc.rs --crate-type lib
 $ rustdoc --test --extern doc="libdoc.rlib" doc.rs
 ```
 
-## Doc attributes
+## Doc属性
 
-Below are a few examples of the most common `#[doc]` attributes used with `rustdoc`.
+以下は、`rustdoc`で使われる`#[doc]`属性についての例です。
 
 ### `inline`
 
-Used to inline docs, instead of linking out to separate page.
+分けられたページへのリンクの代わりにインラインドキュメント
+を使う。
 
 ```rust,ignore
 #[doc(inline)]
 pub use bar::Bar;
 
-/// bar docs
+/// barドキュメント
 mod bar {
-    /// the docs for Bar
+    /// Barのドキュメント
     pub struct Bar;
 }
 ```
 
 ### `no_inline`
 
-Used to prevent linking out to separate page or anywhere.
+別のページからリンクすることを宣言する
 
 ```rust,ignore
 // Example from libcore/prelude
@@ -96,7 +98,7 @@ pub use crate::mem::drop;
 
 ### `hidden`
 
-Using this tells `rustdoc` not to include this in documentation:
+これをドキュメント煮含めないことを`rustdoc`に教える
 
 ```rust,editable,ignore
 // Example from the futures-rs library
@@ -104,11 +106,12 @@ Using this tells `rustdoc` not to include this in documentation:
 pub use self::async_await::*;
 ```
 
-For documentation, `rustdoc` is widely used by the community. It's what is used to generate the [std library docs](https://doc.rust-lang.org/std/).
+ドキュメンテーション用に、`rustdoc`はコミュニティによって広く使われています。これは[標準ライブラリのドキュメント
+](https://doc.rust-lang.org/std/)にも使われています。
 
-### See also:
+### こちらも参照:
 
-- [The Rust Book: Making Useful Documentation Comments][book]
+- [The Rust Book: 有用なドキュメンテーションコメントを作る][book]
 - [The rustdoc Book][rustdoc-book]
 - [The Reference: Doc comments][ref-comments]
 - [RFC 1574: API Documentation Conventions][api-conv]

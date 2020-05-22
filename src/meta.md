@@ -1,12 +1,12 @@
-# Meta
+# メタデータ
 
-Some topics aren't exactly relevant to how you program but provide you
-tooling or infrastructure support which just makes things better for
-everyone. These topics include:
+プログラムの書き方とは直接関係はないが、コードを書くに当たって誰にとっても
+便利であろうツールやインフラサポートをまとめました。
+これらのトピックが含まれます:
 
-- [Documentation][doc]: Generate library documentation for users via the included
-  `rustdoc`.
-- [Playpen][playpen]: Integrate the Rust Playpen(also known as the Rust Playground) in your documentation.
+- [ドキュメンテーション][doc]: 組み込みの`rustdoc`でライブラリドキュメンテーションを書く。
+- [Playpen][playpen]: IRust Playpen(Rust Playgroundとしても知られる)とドキュメンテーションの
+  整合性を取る。
 
 [doc]: meta/doc.md
 [playpen]: meta/playpen.md

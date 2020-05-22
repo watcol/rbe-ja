@@ -1,10 +1,11 @@
 # Playpen
 
-The [Rust Playpen](https://github.com/rust-lang/rust-playpen) is a way to experiment with Rust code through a web interface. This project is now commonly referred to as [Rust Playground](https://play.rust-lang.org/).
+[Rust Playpen](https://github.com/rust-lang/rust-playpen)はRustコードをWeb上で実験するのに有用です。
+このプロジェクトは[Rust Playground](https://play.rust-lang.org/)とも呼ばれています。
 
-## Using it with `mdbook`
+## `mdbook`から使用する
 
-In [`mdbook`][mdbook], you can make code examples playable and editable.
+[`mdbook`][mdbook]上では、コード例を実行、編集可能にすることができます。
 
 ```rust,editable
 fn main() {
@@ -12,31 +13,34 @@ fn main() {
 }
 ```
 
-This allows the reader to both run your code sample, but also modify and tweak it. The key here is the adding the word `editable` to your codefence block separated by a comma.
+これによって、読者はコードの動作を確認し、また変更して詳しく知ることができます。そのためには`editable`をコンマ区切りで
+コードブロックのはじめに追加してください。
 
 ````markdown
 ```rust,editable
-//...place your code here
+//...ここにコードを書く
 ```
 ````
 
-Additionally, you can add `ignore` if you want `mdbook` to skip your code when it builds and tests.
+さらに、`ignore`で`mdbook`でビルド、テストをスキップすることができます。
 
 ````markdown
 ```rust,editable,ignore
-//...place your code here
+//...ここにコードを書く
 ```
 ````
 
-## Using it with docs
+## docsで使う
 
-You may have noticed in some of the [official Rust docs][official-rust-docs] a button that says "Run", which opens the code sample up in a new tab in Rust Playground. This feature is enabled if you use the #[doc] attribute called [`html_playground_url`][html-playground-url].
+[公式Rustドキュメント][official-rust-docs]に「Run」というボタンがついているのに気づいた人もいるかもしれません。
+これはサンプルコードをRust Playgroundで新しいタブに開きます。この機能は#[doc]属性の[`html_playground_url`][html-playground-url]で
+使うことができます。
 
-### See also:
+### こちらも参照:
 
-- [The Rust Playground][rust-playground]
-- [The next-gen playpen][next-gen-playpen]
-- [The rustdoc Book][rustdoc-book]
+- [Rust Playground][rust-playground]
+- [開発版playpen][next-gen-playpen]
+- [rustdoc Book][rustdoc-book]
 
 [rust-playground]: https://play.rust-lang.org/
 [next-gen-playpen]: https://github.com/integer32llc/rust-playground/
