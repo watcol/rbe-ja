@@ -1,25 +1,26 @@
-# Integration testing
+# 整合性テスト
 
-[Unit tests][unit] are testing one module in isolation at a time: they're small
-and can test private code. Integration tests are external to your crate and use
-only its public interface in the same way any other code would. Their purpose is
-to test that many parts of your library work correctly together.
+[ユニットテスト][unit]は独立した一つのモジュール上で実行されます。これはプライベート
+なコードをテストするには必要です。整合性テストはクレートの外にあり、他のコードがそうで
+あるように、パブリックなインターフェースだけにアクセスできます。これはライブラリの
+いろいろな部分が適切に動くかテストするのに使います。
 
-Cargo looks for integration tests in `tests` directory next to `src`.
+Cargoは整合性テストを`src`の隣の`tests`ディレクトリに置くことを想定しています。
 
-File `src/lib.rs`:
+ファイル`src/lib.rs`:
 
 ```rust,ignore
-// Assume that crate is called adder, will have to extern it in integration test.
+// このクレートadderは呼び出されることを想定しているため、整合性テストで
+// 正しく動くか確認する。
 pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 ```
 
-File with test: `tests/integration_test.rs`:
+テスト用ファイル`tests/integration_test.rs`:
 
 ```rust,ignore
-// extern crate we're testing, same as any other code would do.
+// 他のコードがするように、テストするクレートを持ってくる
 extern crate adder;
 
 #[test]
@@ -28,7 +29,7 @@ fn test_add() {
 }
 ```
 
-Running tests with `cargo test` command:
+テストを`cargo test`コマンドで実行する
 
 ```shell
 $ cargo test
@@ -50,38 +51,38 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
-Each Rust source file in `tests` directory is compiled as a separate crate. One
-way of sharing some code between integration tests is making module with public
-functions, importing and using it within tests.
+`tests`ディレクトリ内の各コードは異なるクレートとしてコンパイルされます。整合性
+テスト間でコードを共有したいときはパブリック関数を持つモジュールを定義し、それを
+インポートします。
 
-File `tests/common.rs`:
+ファイル`tests/common.rs`:
 
 ```rust,ignore
 pub fn setup() {
-    // some setup code, like creating required files/directories, starting
-    // servers, etc.
+    // 必要なファイルやディレクトリを作る、サーバーを起動する
+    // などの必要なセットアップを記述する。
 }
 ```
 
-File with test: `tests/integration_test.rs`
+テストファイル`tests/integration_test.rs`
 
 ```rust,ignore
-// extern crate we're testing, same as any other code will do.
+// 他のコードがするように、テストするクレートを持ってくる
 extern crate adder;
 
-// importing common module.
+// commonモジュールをインポートする。
 mod common;
 
 #[test]
 fn test_add() {
-    // using common code.
+    // common内のコードを実行する
     common::setup();
     assert_eq!(adder::add(3, 2), 5);
 }
 ```
 
-Modules with common code follow the ordinary [modules][mod] rules, so it's ok to
-create common module as `tests/common/mod.rs`.
+このようなコードのモジュール階層は普通の[モジュール][mod]の規則と同じであるため、
+`tests/common/mod.rs`のような場所に作ってもOKです。
 
 [unit]: unit_testing.md
 [mod]: ../mod.md

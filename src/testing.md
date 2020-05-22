@@ -1,22 +1,22 @@
-# Testing
+# テスト
 
-Rust is a programming language that cares a lot about correctness and it
-includes support for writing software tests within the language itself.
+Rustはプログラムの正確性に重点をおくプログラミング言語であるため、
+言語自体にテストを書く仕組みを備えています。
 
-Testing comes in three styles:
+テストはこの3つのスタイルからなります:
 
-* [Unit][unit] testing.
-* [Doc][doc] testing.
-* [Integration][integration] testing.
+* [ユニット][unit]テスト
+* [ドキュメンテーション][doc]テスト
+* [整合性][integration]テスト
 
-Also Rust has support for specifying additional dependencies for tests:
+さらに、テストのための依存を管理する仕組みも備えています:
 
 * [Dev-dependencies][dev-dependencies]
 
-## See Also
+## こちらも参照
 
-* [The Book][doc-testing] chapter on testing
-* [API Guidelines][doc-nursery] on doc-testing
+* [The Book][doc-testing]のテストの章
+* [API Guidelines][doc-nursery]のdoc-testの章
 
 [unit]: testing/unit_testing.md
 [doc]: testing/doc_testing.md

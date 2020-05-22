@@ -168,7 +168,7 @@
         - [エラーを`Box`に入れる](error/multiple_error_types/boxing_errors.md)
         - [他の`?`の使い方](error/multiple_error_types/reenter_question_mark.md)
         - [エラーをラップする](error/multiple_error_types/wrap_error.md)
-    - [`Result`を繰り返す](error/iter_result.md)
+    - [イテレーションで`Result`を扱う](error/iter_result.md)
 
 - [Stdライブラリの型](std.md)
     - [ボックス、スタック、ヒープ](std/box.md)

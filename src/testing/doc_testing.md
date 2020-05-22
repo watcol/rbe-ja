@@ -1,16 +1,15 @@
-# Documentation testing
+# ドキュメンテーションテスト
 
-The primary way of documenting a Rust project is through annotating the source
-code. Documentation comments are written in [markdown] and support code
-blocks in them. Rust takes care about correctness, so these code blocks are
-compiled and used as tests.
+Rustプロジェクトのドキュメントを作る簡単な方法は、ソースに注釈を付けることです。
+コメントドキュメントは[markdown]で書くことができ、コードブロックをサポートしています。
+また、コードブロックをテストとして扱うことができます。
 
 ```rust,ignore
-/// First line is a short summary describing function.
+/// 最初の行は関数の簡単な説明です。
 ///
-/// The next lines present detailed documentation. Code blocks start with
-/// triple backquotes and have implicit `fn main()` inside
-/// and `extern crate <cratename>`. Assume we're testing `doccomments` crate:
+/// 次の行から詳しい説明が始まります。コードブロックは
+/// 3つのバッククオートや`fn main()`、`extern crate <cratename>`
+/// などで始まり、`doccomments`クレートで実行されることが想定されています。
 ///
 /// ```
 /// let result = doccomments::add(2, 3);
@@ -20,9 +19,10 @@ pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 
-/// Usually doc comments may include sections "Examples", "Panics" and "Failures".
+/// 普通ドキュメンテーションコメントは"Examples"(例)、"Panics"(パニック)、"Failures"(失敗)
+/// のような章を持ちます
 ///
-/// The next function divides two numbers.
+/// 次の関数で2つの関数を割ります。
 ///
 /// # Examples
 ///
@@ -33,7 +33,7 @@ pub fn add(a: i32, b: i32) -> i32 {
 ///
 /// # Panics
 ///
-/// The function panics if the second argument is zero.
+/// この関数は第2引数が0のときにパニックします。
 ///
 /// ```rust,should_panic
 /// // panics on division by zero
@@ -48,7 +48,7 @@ pub fn div(a: i32, b: i32) -> i32 {
 }
 ```
 
-Tests can be run with `cargo test`:
+テストは`cargo test`で実行できます。
 
 ```shell
 $ cargo test
@@ -66,28 +66,27 @@ test src/lib.rs - div (line 31) ... ok
 test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
-## Motivation behind documentation tests
+## ドキュメンテーションテストのモチベーション
 
-The main purpose of documentation tests is to serve as examples that exercise
-the functionality, which is one of the most important
-[guidelines][question-instead-of-unwrap]. It allows using examples from docs as
-complete code snippets. But using `?` makes compilation fail since `main`
-returns `unit`. The ability to hide some source lines from documentation comes
-to the rescue: one may write `fn try_main() -> Result<(), ErrorType>`, hide it and
-`unwrap` it in hidden `main`. Sounds complicated? Here's an example:
+ドキュメンテーションテストの主な目的は機能を練習するための例を提供することであり、
+これは重要な[ガイドライン][question-instead-of-unwrap]です。これによりドキュメント
+のコード片が使用できるようになります。しかし、`main`関数は`unit`を返すため、
+`?`を使うとコンパイルエラーが起きます。ソースの行を隠すことでこれを防げます。
+例えば、`fn try_main() -> Result<(), ErrorType>`を書いたとしても、これを隠し、
+さらに`main`内の`unwrap`も隠すことができます。複雑に聞こえますか? これが例です。
 
 ```rust,ignore
-/// Using hidden `try_main` in doc tests.
+/// ドキュメンテーションテストで使う`try_main`を隠す
 ///
 /// ```
-/// # // hidden lines start with `#` symbol, but they're still compileable!
-/// # fn try_main() -> Result<(), String> { // line that wraps the body shown in doc
+/// # // `#`で行を隠すことができますが、これはまだコンパイルできます!
+/// # fn try_main() -> Result<(), String> { // ドキュメントで示す行をラップする
 /// let res = try::try_div(10, 2)?;
-/// # Ok(()) // returning from try_main
+/// # Ok(()) // try_mainから値を返す
 /// # }
-/// # fn main() { // starting main that'll unwrap()
-/// #    try_main().unwrap(); // calling try_main and unwrapping
-/// #                         // so that test will panic in case of error
+/// # fn main() { // unwrap()するmain関数を書く。
+/// #    try_main().unwrap(); // try_mainを呼び、unwrapする
+/// #                         // これでテストが失敗したときにパニックする
 /// # }
 /// ```
 pub fn try_div(a: i32, b: i32) -> Result<i32, String> {
@@ -99,10 +98,10 @@ pub fn try_div(a: i32, b: i32) -> Result<i32, String> {
 }
 ```
 
-## See Also
+## こちらも参照
 
-* [RFC505][RFC505] on documentation style
-* [API Guidelines][doc-nursery] on documentation guidelines
+* [RFC505][RFC505]のドキュメンテーションスタイル
+* [API Guidelines][doc-nursery]のドキュメンテーションガイドライン
 
 [doc-nursery]: https://rust-lang-nursery.github.io/api-guidelines/documentation.html
 [markdown]: https://daringfireball.net/projects/markdown/

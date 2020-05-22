@@ -1,23 +1,22 @@
-# Development dependencies
+# 開発時依存
 
-Sometimes there is a need to have dependencies for tests (examples,
-benchmarks) only. Such dependencies are added to `Cargo.toml` in the
-`[dev-dependencies]` section. These dependencies are not propagated to other
-packages which depend on this package.
+時々、テストにのみ必要な依存がある場合があります(例えばベンチマーク)
+このような依存は`Cargo.toml`の`[dev-dependencies]`節に追加してください。
+この依存は、このクレートに依存する他のクレートには影響しません。
 
-One such example is using a crate that extends standard `assert!` macros.  
-File `Cargo.toml`:
+`assert!`マクロを拡張するクレートを例に取ってみましょう。
+ファイル`Cargo.toml`:
 
 ```toml
-# standard crate data is left out
+# いつものデータは省略します
 [dev-dependencies]
 pretty_assertions = "0.4.0"
 ```
 
-File `src/lib.rs`:
+ファイル`src/lib.rs`:
 
 ```rust,ignore
-// externing crate for test-only use
+// クレートをテストのみの使用に制限する
 #[cfg(test)]
 #[macro_use]
 extern crate pretty_assertions;
@@ -37,7 +36,7 @@ mod tests {
 }
 ```
 
-## See Also
-[Cargo][cargo] docs on specifying dependencies.
+## こちらも参照
+[Cargo][cargo]のドキュメントの「依存を指定する」章
 
 [cargo]: http://doc.crates.io/specifying-dependencies.html

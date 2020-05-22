@@ -1,27 +1,24 @@
-# Unit testing
+# ユニットテスト
 
-Tests are Rust functions that verify that the non-test code is functioning in
-the expected manner. The bodies of test functions typically perform some setup,
-run the code we want to test, then assert whether the results are what we
-expect.
+テストはコードが期待した動作をすることを確かめるためのRustの機能です。テスト関数は
+典型的にはいくつかのセットアップをして、テストしたいコードを書き、期待したものと
+合致しているか確かめます。
 
-Most unit tests go into a `tests` [mod][mod] with the `#[cfg(test)]` [attribute][attribute].
-Test functions are marked with the `#[test]` attribute.
+ユニットテストの多くは`#[cfg(test)]`[属性][attribute]のついたtests[モジュール][mod]
+に入っていて、テスト関数には`#[test]`属性がついています。
 
-Tests fail when something in the test function [panics][panic]. There are some
-helper [macros][macros]:
+テストは、関数が[panic][panic]したときに失敗し、そのための[マクロ][macros]がいくつかあります。
 
-* `assert!(expression)` - panics if expression evaluates to `false`.
-* `assert_eq!(left, right)` and `assert_ne!(left, right)` - testing left and
-  right expressions for equality and inequality respectively.
+* `assert!(expression)` - 式が`false`ならパニックする
+* `assert_eq!(left, right)`と`assert_ne!(left, right)` - 右と左の式が
+  それぞれ違うとき、同じときにパニックする
 
 ```rust,ignore
 pub fn add(a: i32, b: i32) -> i32 {
     a + b
 }
 
-// This is a really bad adding function, its purpose is to fail in this
-// example.
+// これは失敗する例なので、間違った加算関数になっています。
 #[allow(dead_code)]
 fn bad_add(a: i32, b: i32) -> i32 {
     a - b
@@ -29,7 +26,7 @@ fn bad_add(a: i32, b: i32) -> i32 {
 
 #[cfg(test)]
 mod tests {
-    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    // これでモジュールの外側の関数をすべてスコープに導入できます。
     use super::*;
 
     #[test]
@@ -39,14 +36,14 @@ mod tests {
 
     #[test]
     fn test_bad_add() {
-        // This assert would fire and test will fail.
-        // Please note, that private functions can be tested too!
+        // この確認は失敗します。
+        // プライベート関数もテストできることを知っておいてください!
         assert_eq!(bad_add(1, 2), 3);
     }
 }
 ```
 
-Tests can be run with `cargo test`.
+`cargo test`でテストを走らせることができます。
 
 ```shell
 $ cargo test
@@ -70,10 +67,10 @@ failures:
 test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
-## Tests and `?`
-None of the previous unit test examples had a return type. But in Rust 2018,
-your unit tests can return `Result<()>`, which lets you use `?` in them! This
-can make them much more concise.
+## テストと`?`
+このテストは返り値を持ちませんでした。しかし、Rust 2018では、ユニットテストは
+`?`を使うための`Result<()>`を返すことができます。これを使えば、簡潔にテストが
+書けます。
 
 ```rust,editable
 fn sqrt(number: f64) -> Result<f64, String> {
@@ -97,14 +94,13 @@ mod tests {
 }
 ```
 
-See ["The Edition Guide"][editionguide] for more details.
+「[The Edition Guide][editionguide]」に詳細があります。
 
-## Testing panics
+## テストとパニック
 
-To check functions that should panic under certain circumstances, use attribute
-`#[should_panic]`. This attribute accepts optional parameter `expected = ` with
-the text of the panic message. If your function can panic in multiple ways, it helps
-make sure your test is testing the correct panic.
+パニックするべき処理をテストするときは、`#[should_panic]`属性を使ってください。この属性は
+オプションで引数`expected = `とパニックしたときのメッセージを渡すことができます。もし関数が
+複数のパニックをするときは、ここで正しいパニックを指定することを忘れないでください。
 
 ```rust,ignore
 pub fn divide_non_zero_result(a: u32, b: u32) -> u32 {
@@ -139,7 +135,7 @@ mod tests {
 }
 ```
 
-Running these tests gives us:
+これらのテストを実行すると:
 
 ```shell
 $ cargo test
@@ -158,9 +154,9 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
-## Running specific tests
+## 特定のテストを実行する
 
-To run specific tests one may specify the test name to `cargo test` command.
+`cargo test`コマンドにテストの名前を渡すことで、特定のテストを実行できます。
 
 ```shell
 $ cargo test test_any_panic
@@ -176,8 +172,7 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
-To run multiple tests one may specify part of a test name that matches all the
-tests that should be run.
+名前の一部を指定すると、それにマッチするすべてのテストが実行できます。
 
 ```shell
 $ cargo test panic
@@ -194,10 +189,10 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
-## Ignoring tests
+## テストを無視する
 
-Tests can be marked with the `#[ignore]` attribute to exclude some tests. Or to run
-them with command `cargo test -- --ignored`
+テストに`#[ignore]`属性を付けることでテストを無視することができます。そして、
+`cargo test -- --ignored`コマンドで実行することができます。
 
 ```rust
 pub fn add(a: i32, b: i32) -> i32 {
