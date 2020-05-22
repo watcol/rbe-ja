@@ -147,32 +147,29 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#raw-identifiers" id="raw-identifiers">Raw identifiers</a></h1>
-<p>Rust, like many programming languages, has the concept of &quot;keywords&quot;.
-These identifiers mean something to the language, and so you cannot use them in
-places like variable names, function names, and other places.
-Raw identifiers let you use keywords where they would not normally be allowed.
-This is particularly useful when Rust introduces new keywords, and a library
-using an older edition of Rust has a variable or function with the same name
-as a keyword introduced in a newer edition.</p>
-<p>For example, consider a crate <code>foo</code> compiled with the 2015 edition of Rust that
-exports a function named <code>try</code>. This keyword is reserved for a new feature in
-the 2018 edition, so without raw identifiers, we would have no way to name the
-function.</p>
+                        <h1><a class="header" href="#raw識別子" id="raw識別子">Raw識別子</a></h1>
+<p>Rustは他のプログラミング言語のように、「キーワード」を持っています。これは言語
+レベルで意味がある単語であるため、変数名や、関数名などには使えません。Raw識別子は
+本当は許可されていないキーワードを使うのに使われます。主に、これはRustが新しい
+キーワードを提供したが、ライブラリは古いエディションのRustを使っているため、変数名
+や関数名とキーワードがかぶってしまうときに使います・</p>
+<p>例えば、クレート<code>foo</code>がRust 2015を使っていて、<code>try</code>という名前の関数を持っているとします。
+Rust 2018では、これはキーワードとして使われているため、 Raw識別子なしではこの関数は
+使えません。</p>
 <pre><code class="language-rust ignore">extern crate foo;
 
 fn main() {
     foo::try();
 }
 </code></pre>
-<p>You'll get this error:</p>
+<p>このようなエラーに遭遇するでしょう:</p>
 <pre><code class="language-text">error: expected identifier, found keyword `try`
  --&gt; src/main.rs:4:4
   |
 4 | foo::try();
   |      ^^^ expected identifier, found keyword
 </code></pre>
-<p>You can write this with a raw identifier:</p>
+<p>Raw識別子を使うとこのように書けます。</p>
 <pre><code class="language-rust ignore">extern crate foo;
 
 fn main() {
