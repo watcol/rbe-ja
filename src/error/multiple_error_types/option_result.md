@@ -1,7 +1,6 @@
-# Pulling `Result`s out of `Option`s
+# `Result`を`Option`から引き出す
 
-The most basic way of handling mixed error types is to just embed them in each
-other.
+この問題の最も簡単な解決策は、どちらかがもう片方を埋め込むことです。
 
 ```rust,editable
 use std::num::ParseIntError;
@@ -20,16 +19,16 @@ fn main() {
     println!("The first doubled is {:?}", double_first(numbers));
 
     println!("The first doubled is {:?}", double_first(empty));
-    // Error 1: the input vector is empty
+    // エラー1: 入力ベクターが空です
 
     println!("The first doubled is {:?}", double_first(strings));
-    // Error 2: the element doesn't parse to a number
+    // エラー2: 入力を数値に変換できません
 }
 ```
 
-There are times when we'll want to stop processing on errors (like with
-[`?`][enter_question_mark]) but keep going when the `Option` is `None`. A
-couple of combinators come in handy to swap the `Result` and `Option`.
+エラーが起きた時に途中で処理を止めたい場合([`?`][enter_question_mark]などを使って)
+`Option`はそのまま`None`を返します。 コンビネータが`Result`と`Option`を入れ替えるのに
+役立ちます。
 
 ```rust,editable
 use std::num::ParseIntError;

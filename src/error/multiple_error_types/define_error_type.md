@@ -1,36 +1,36 @@
-# Defining an error type
+# エラー型を定義する
 
-Sometimes it simplifies the code to mask all of the different errors with a
-single type of error.  We'll show this with a custom error.
+すべてのエラー型を一つの型で包んだ方がシンプルな場合もあります。
+今回は、これを独自のエラーでやってみることにします。
 
-Rust allows us to define our own error types. In general, a "good" error type:
+Rustでは独自のエラー型を作成することができます。 一般的に、「良い」エラー型は:
 
-* Represents different errors with the same type
-* Presents nice error messages to the user
-* Is easy to compare with other types
-    - Good: `Err(EmptyVec)`
-    - Bad: `Err("Please use a vector with at least one element".to_owned())`
-* Can hold information about the error
-    - Good: `Err(BadChar(c, position))`
-    - Bad: `Err("+ cannot be used here".to_owned())`
-* Composes well with other errors
+* 異なるエラーを同じ型で表す
+* わかりやすいエラーメッセージを提供する
+* 他の型と比較しやすい
+    - 良い例: `Err(EmptyVec)`
+    - 悪い例: `Err("Please use a vector with at least one element".to_owned())`
+* エラーについての情報を保持する
+    - 良い例: `Err(BadChar(c, position))`
+    - 悪い例: `Err("+ cannot be used here".to_owned())`
+* 他のエラーと連携が取れる
 
 ```rust,editable
 use std::fmt;
 
 type Result<T> = std::result::Result<T, DoubleError>;
 
-// Define our error types. These may be customized for our error handling cases.
-// Now we will be able to write our own errors, defer to an underlying error
-// implementation, or do something in between.
+// 独自のエラー型を定義する。これはエラー処理の方法によってカスタマイズできる。
+// ここで独自のエラーを起こしたり、下層のエラー実装を持ち越したり、その間で
+// なにか処理をしたりすることができる。
 #[derive(Debug, Clone)]
 struct DoubleError;
 
-// Generation of an error is completely separate from how it is displayed.
-// There's no need to be concerned about cluttering complex logic with the display style.
+// エラーの生成とどのようにそれが出力されるかということとは関係ありません。
+// なので、出力のスタイルに複雑で乱雑なロジックを書く必要はありません。
 //
-// Note that we don't store any extra info about the errors. This means we can't state
-// which string failed to parse without modifying our types to carry that information.
+// ここにはエラーに関するどんなデータも含まれていないことに注意してください。これは、
+// どの処理が失敗したのかを知ることはできないということを意味します。
 impl fmt::Display for DoubleError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "invalid first item to double")
@@ -39,11 +39,11 @@ impl fmt::Display for DoubleError {
 
 fn double_first(vec: Vec<&str>) -> Result<i32> {
     vec.first()
-        // Change the error to our new type.
+        // エラーを独自の新しい型に変換します。
         .ok_or(DoubleError)
         .and_then(|s| {
             s.parse::<i32>()
-                // Update to the new error type here also.
+                // ここも新しい型に変換します。
                 .map_err(|_| DoubleError)
                 .map(|i| 2 * i)
         })

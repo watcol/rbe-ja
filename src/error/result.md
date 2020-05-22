@@ -1,29 +1,28 @@
 # `Result`
 
-[`Result`][result] is a richer version of the [`Option`][option] type that
-describes possible *error* instead of possible *absence*.
+[`Result`][result]は値の*不在*を*エラー*に置き換えた[`Option`][option]型
+の上位互換です。
 
-That is, `Result<T, E>` could have one of two outcomes:
+つまり、`Result<T, E>`は2つの結果を持つことができます。
 
-* `Ok(T)`: An element `T` was found
-* `Err(E)`: An error was found with element `E`
+* `Ok(T)`: `T`が存在する場合
+* `Err(E)`: `E`というエラーが見つかった場合
 
-By convention, the expected outcome is `Ok` while the unexpected outcome is `Err`.
+利便性のため、期待する値を`Ok`、予期せぬ値を`Err`に入れます。
 
-Like `Option`, `Result` has many methods associated with it. `unwrap()`, for
-example, either yields the element `T` or `panic`s. For case handling,
-there are many combinators between `Result` and `Option` that overlap.
+`Option`と同じように、`Result`は多くのメソッドを持っています。例えば、
+`unwrap()`は`T`型の値を返すか、`panic`します。また、条件処理のために、
+`Option`と同じようなコンビネータが`Result`にもあります。
 
-In working with Rust, you will likely encounter methods that return the
-`Result` type, such as the [`parse()`][parse] method. It might not always
-be possible to parse a string into the other type, so `parse()` returns a
-`Result` indicating possible failure.
+Rustを使っていると、おそらく、[`parse()`][parse]のように`Result`型を返す
+ようなメソッドに出会うでしょう。文字列をいつも他の型に変換できるとは限らない
+ため、`parse()`は失敗を処理するために`Result`を使っています。
 
-Let's see what happens when we successfully and unsuccessfully `parse()` a string:
+成功した場合と失敗した場合の文字列の`parse()`の振る舞いを見てみましょう。
 
 ```rust,editable,ignore,mdbook-runnable
 fn multiply(first_number_str: &str, second_number_str: &str) -> i32 {
-    // Let's try using `unwrap()` to get the number out. Will it bite us?
+    // `unwrap()`を使って数値を取り出してみましょう。
     let first_number = first_number_str.parse::<i32>().unwrap();
     let second_number = second_number_str.parse::<i32>().unwrap();
     first_number * second_number
@@ -38,17 +37,16 @@ fn main() {
 }
 ```
 
-In the unsuccessful case, `parse()` leaves us with an error for `unwrap()`
-to `panic` on. Additionally, the `panic` exits our program and provides an
-unpleasant error message.
+`parse()`が失敗した場合は、`unwrap()`で`panic`を起こしてプログラムを終了しました。
+さらに、`panic`は不快なエラーメッセージを返しました。
 
-To improve the quality of our error message, we should be more specific
-about the return type and consider explicitly handling the error.
+エラーメッセージの質を改善するため、返り値の型をさらに特定し、明示的に
+エラーを処理する必要があります。
 
-## Using `Result` in `main`
+## `main`で`Result`を使う
 
-The `Result` type can also be the return type of the `main` function if
-specified explicitly. Typically the `main` function will be of the form:
+明示的に指定することで、`Result`型を`main`関数で使うこともできます。
+典型的な`main`関数はこのような形です。
 
 ```rust
 fn main() {
@@ -56,10 +54,10 @@ fn main() {
 }
 ```
 
-However `main` is also able to have a return type of `Result`. If an error
-occurs within the `main` function it will return an error code and print a debug
-representation of the error (using the [`Debug`] trait). The following example
-shows such a scenario and touches on aspects covered in [the following section].
+しかし、`main`は返り値として`Result`を使うこともできます。`main`関数内でエラーが
+起これば、エラーコードを返し、デバッグプリントでエラーを報告します。([`Debug`]
+トレイトを使います。) 以下の例では、次の例では、そのようなシナリオを紹介し、
+[後の節][the following section]で扱う内容にも触れます。
 
 ```rust,editable
 use std::num::ParseIntError;

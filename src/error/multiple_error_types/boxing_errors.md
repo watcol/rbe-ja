@@ -1,18 +1,16 @@
-# `Box`ing errors
+# エラーを`Box`に入れる
 
-A way to write simple code while preserving the original errors is to [`Box`][box]
-them.  The drawback is that the underlying error type is only known at runtime and not
-[statically determined][dynamic_dispatch].
+シンプルなコードを書くために、[`Box`][box]にエラーデータの参照を入れることもできます。
+欠点は、実行時にしかエラー型がわからず、[静的に決定][dynamic_dispatch]できないことです。
 
-The stdlib helps in boxing our errors by having `Box` implement conversion from
-any type that implements the `Error` trait into the trait object `Box<Error>`,
-via [`From`][from].
+標準ライブラリは、[`From`][from]で、トレイトオブジェクト`Box<Error>`を`Error`トレイト
+を実装したすべての型に変換する実装を提供しています。
 
 ```rust,editable
 use std::error;
 use std::fmt;
 
-// Change the alias to `Box<error::Error>`.
+// エイリアスを`Box<error::Error>`に変更する
 type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 #[derive(Debug, Clone)]
@@ -54,9 +52,10 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[Dynamic dispatch][dynamic_dispatch] and [`Error` trait][error]
+- [動的ディスパッチ][dynamic_dispatch]
+- [`Error`トレイト][error]
 
 [box]: https://doc.rust-lang.org/std/boxed/struct.Box.html
 [dynamic_dispatch]: https://doc.rust-lang.org/book/ch17-02-trait-objects.html#trait-objects-perform-dynamic-dispatch

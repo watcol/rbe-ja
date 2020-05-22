@@ -1,12 +1,11 @@
-# Early returns
+# 早期のリターン
 
-In the previous example, we explicitly handled the errors using combinators.
-Another way to deal with this case analysis is to use a combination of
-`match` statements and *early returns*.
+前の例で、コンビネータを使って明示的にエラーを処理していました。
+もう一つの方法は、`match`文と*早期のリターン*を組み合わせて使うことです。
 
-That is, we can simply stop executing the function and return the error if
-one occurs. For some, this form of code can be easier to both read and
-write. Consider this version of the previous example, rewritten using early returns:
+つまり、単純に一つエラーが起こればそこでエラーを返すということです。
+しばしば、この方が読みやすく、書きやすいコードになります。早期のリターン
+を使って前の例を書き直しました。
 
 ```rust,editable
 use std::num::ParseIntError;
@@ -38,9 +37,8 @@ fn main() {
 }
 ```
 
-At this point, we've learned to explicitly handle errors using combinators
-and early returns. While we generally want to avoid panicking, explicitly
-handling all of our errors is cumbersome.
+ここまでで、コンビネータや早期のリターンを使って、明示的にエラーを処理する方法を
+見てきました。しかし、パニックを避け、明示的にすべてのエラーを処理するのは面倒です。
 
-In the next section, we'll introduce `?` for the cases where we simply
-need to `unwrap` without possibly inducing `panic`.
+次の節では、`unwrap`のようにシンプルに、しかし`panic`をせずにエラーを処理する`?`
+を導入します。

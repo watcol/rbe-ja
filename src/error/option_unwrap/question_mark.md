@@ -1,20 +1,19 @@
-# Unpacking options with `?`
+# `?`でOptionを解析する
 
-You can unpack `Option`s by using `match` statements, but it's often easier to
-use the `?` operator. If `x` is an `Option`, then evaluating `x?` will return
-the underlying value if `x` is `Some`, otherwise it will terminate whatever
-function is being executed and return `None`.
+`match`文で`Option`を解析できますが、しばしば`?`演算子を使った方が簡単です。
+もし`x`が`Option`だとしたら、`x?`と書けば、`x`が`Some`ならその値を、そうで
+なければ現在の関数をNoneを返して終了します。
 
 ```rust,editable
 fn next_birthday(current_age: Option<u8>) -> Option<String> {
-	// If `current_age` is `None`, this returns `None`.
-	// If `current_age` is `Some`, the inner `u8` gets assigned to `next_age`
+	// `current_age`が`None`なら`None`を返す。
+	// `current_age`が`Some`なら、`u8`は`next_age`に代入される
     let next_age: u8 = current_age?;
     Some(format!("Next year I will be {}", next_age))
 }
 ```
 
-You can chain many `?`s together to make your code much more readable.
+コードの可読性をあげるため、`?`はたくさん連結できます。
 
 ```rust,editable
 struct Person {
@@ -34,11 +33,10 @@ struct PhoneNumber {
 
 impl Person {
 
-    // Gets the area code of the phone number of the person's job, if it exists.
+    // その人の仕事用の電話番号のエリアコードを取得します。
     fn work_phone_area_code(&self) -> Option<u8> {
-        // This would need many nested `match` statements without the `?` operator.
-        // It would take a lot more code - try writing it yourself and see which
-        // is easier.
+        // `?`演算子がなければ、`match`文をたくさんネストする必要がありました。
+        // 簡単に連結を増やすこともできます。試してみてください。
         self.job?.phone_number?.area_code
     }
 }

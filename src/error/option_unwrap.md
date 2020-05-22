@@ -1,44 +1,42 @@
-# `Option` & `unwrap`
+# `Option`と`unwrap`
 
-In the last example, we showed that we can induce program failure at will. 
-We told our program to `panic` if the princess received an inappropriate 
-gift - a snake. But what if the princess expected a gift and didn't receive 
-one? That case would be just as bad, so it needs to be handled!
+前の例で、どのようにしてプログラムが失敗したときにストップするかを見て
+きました。ここではプリンセスが不適切な贈り物(ヘビ)を受け取ったときに
+`panic`を起こしました。しかし、プリンセスが贈り物をもらえなかったときは
+どうでしょうか? このケースも良くないため、処理しなければいけません。
 
-We *could* test this against the null string (`""`) as we do with a snake. 
-Since we're using Rust, let's instead have the compiler point out cases 
-where there's no gift.
+Rustでは使えない、空データを指すポインタの代わりに、なにも贈らないことを
+空文字列(`""`)を用いて表すこともできます。
 
-An `enum` called `Option<T>` in the `std` library is used when absence is a 
-possibility. It manifests itself as one of two "options":
+しかし、`std`ライブラリの`Option<T>`という`enum`を使えば、何も無いことを
+表すことができます。
 
-* `Some(T)`: An element of type `T` was found
-* `None`: No element was found
+* `Some(T)`: `T`型の値がある場合
+* `None`: なにも値がない場合
 
-These cases can either be explicitly handled via `match` or implicitly with 
-`unwrap`. Implicit handling will either return the inner element or `panic`.
+これは、`match`で明示的に処理することも、`unwrap`で暗示的に処理することが
+できます。暗示的な処理では、その中の値を返し、なければ`panic`を起こします。
 
-Note that it's possible to manually customize `panic` with [expect][expect], 
-but `unwrap` otherwise leaves us with a less meaningful output than explicit 
-handling. In the following example, explicit handling yields a more 
-controlled result while retaining the option to `panic` if desired.
+[expect][expect]を使えば、`panic`の表示をカスタマイズできますが、`unwrap`は
+意味のあまりない出力しか返しません。以下の例では、明示的に処理し、`panic`
+よりカスタマイズされた結果を返しています。
 
 ```rust,editable,ignore,mdbook-runnable
-// The commoner has seen it all, and can handle any gift well.
-// All gifts are handled explicitly using `match`.
+// 平民は、贈り物をすべて確認して、うまく処理します。
+// すべての贈り物は`match`で明示的に処理されています。
 fn give_commoner(gift: Option<&str>) {
     // Specify a course of action for each case.
     match gift {
-        Some("snake") => println!("Yuck! I'm putting this snake back in the forest."),
-        Some(inner)   => println!("{}? How nice.", inner),
-        None          => println!("No gift? Oh well."),
+        Some("snake") => println!("Yuck! I'm putting this snake back in the forest."),  // オエーッ! このヘビを森に返してくるわ。
+        Some(inner)   => println!("{}? How nice.", inner),  // {}? いいじゃないの。
+        None          => println!("No gift? Oh well."),  // 何もない? 仕方ないわ。
     }
 }
 
-// Our sheltered princess will `panic` at the sight of snakes.
-// All gifts are handled implicitly using `unwrap`.
+// 私達のプリンセスは世の中を知らないため、ヘビを見ると`panic`してしまいます。
+// すべての贈り物は`unwrap`で暗示的に処理されます。
 fn give_princess(gift: Option<&str>) {
-    // `unwrap` returns a `panic` when it receives a `None`.
+    // `unwrap`は`None`を受け取ると`panic`します。
     let inside = gift.unwrap();
     if inside == "snake" { panic!("AAAaaaaa!!!!"); }
 

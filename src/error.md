@@ -1,31 +1,27 @@
-# Error handling
+# エラー処理
 
-Error handling is the process of handling the possibility of failure. For
-example, failing to read a file and then continuing to use that *bad* input
-would clearly be problematic. Noticing and explicitly managing those errors
-saves the rest of the program from various pitfalls.
+エラー処理は操作の失敗を処理するのに使われます。例えば、ファイルを読み込む
+のに失敗したとき、*間違った*入力で操作を続けるのは問題があります。明示的に
+このようなエラーを管理することで、残りのプログラムで落とし穴にはまるのを防ぐ
+ことができます。
 
-There are various ways to deal with errors in Rust, which are described in the
-following subchapters. They all have more or less subtle differences and different
-use cases. As a rule of thumb:
+次の節から紹介するように、Rustでは様々な方法でこれを対処することができ、その微妙な
+違いを異なる場面で使い分けることができます。以下に大雑把な説明を載せます。
 
-An explicit `panic` is mainly useful for tests and dealing with unrecoverable errors.
-For prototyping it can be useful, for example when dealing with functions that
-haven't been implemented yet, but in those cases the more descriptive `unimplemented`
-is better. In tests `panic` is a reasonable way to explicitly fail.
+明示的な`panic`は、主にテストや修復不可能なエラーを処理するのに使います。これは
+プロトタイピングにも使えます。例えば、まだ実装していない関数の使用を処理するときは、
+`unimplemented`を使うのが説明的で良いでしょう。テストでは、`panic`は明示的に失敗する
+のに便利です。
 
-The `Option` type is for when a value is optional or when the lack of a value is
-not an error condition. For example the parent of a directory - `/` and `C:` don't
-have one. When dealing with `Option`s, `unwrap` is fine for prototyping and cases
-where it's absolutely certain that there is guaranteed to be a value. However `expect`
-is more useful since it lets you specify an error message in case something goes
-wrong anyway.
+`Option`型は、値がない場合もあり、それはエラーではないという時に使えます。例えば、
+`/`や`C:`は親ディレクトリを持ちません。`Option`を使うとき、値があることが確かに保証
+されている場合や、プロトタイピングの用途では`unwrap`が有用ですが、なにかの失敗があった
+時にエラーメッセージを表示する`expect`も有用です。
 
-When there is a chance that things do go wrong and the caller has to deal with the
-problem, use `Result`. You can `unwrap` and `expect` them as well (please don't
-do that unless it's a test or quick prototype).
+処理が失敗する可能性があり、それを呼び出し元が処理する必要がある時、`Result`を使います。
+これについても`unwrap`や`expect`が使用できます。(テストやプロトタイプ以外では使用しない
+でください。)
 
-For a more rigorous discussion of error handling, refer to the error
-handling section in the [official book][book].
+もっと厳密な議論については、[The book][book]のエラー処理の章を参照してください。
 
 [book]: https://doc.rust-lang.org/book/ch09-00-error-handling.html

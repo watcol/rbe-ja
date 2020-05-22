@@ -1,30 +1,30 @@
-# aliases for `Result`
+# `Result`のエイリアス
 
-How about when we want to reuse a specific `Result` type many times?
-Recall that Rust allows us to create [aliases][typealias]. Conveniently,
-we can define one for the specific `Result` in question.
+特定の`Result`型を何回も使い回すときはどうでしょう?
+前に言ったようにRustでは[型エイリアス][typealias]が使えるため、
+特定の`Result`型を再定義することができます。
 
-At a module level, creating aliases can be particularly helpful. Errors
-found in a specific module often have the same `Err` type, so a single alias
-can succinctly define *all* associated `Results`. This is so useful that the
-`std` library even supplies one: [`io::Result`][io_result]!
+モジュールレベルで型エイリアスを作ると非常に便利です。特定のモジュールでは
+同じ`Err`型を使うことが多いからです。これによって*すべて*の関連した`Result`
+に一つの型エイリアスを使うことができます。`std`ライブラリもこのような型[`io::Result`
+][io_result]を定義しています!
 
-Here's a quick example to show off the syntax:
+これは構文を紹介するための簡単な例です。
 
 ```rust,editable
 use std::num::ParseIntError;
 
-// Define a generic alias for a `Result` with the error type `ParseIntError`.
+// `ParseIntError`を持つ`Result`型のジェネリックなエイリアス
 type AliasedResult<T> = Result<T, ParseIntError>;
 
-// Use the above alias to refer to our specific `Result` type.
+// 特定のエラー型を持つ`Result`型を使ってみましょう。
 fn multiply(first_number_str: &str, second_number_str: &str) -> AliasedResult<i32> {
     first_number_str.parse::<i32>().and_then(|first_number| {
         second_number_str.parse::<i32>().map(|second_number| first_number * second_number)
     })
 }
 
-// Here, the alias again allows us to save some space.
+// ここでコード量を節約できます。
 fn print(result: AliasedResult<i32>) {
     match result {
         Ok(n)  => println!("n is {}", n),
@@ -38,9 +38,9 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`io::Result`][io_result]
+- [`io::Result`][io_result]
 
 [typealias]: ../../types/alias.md
 [io_result]: https://doc.rust-lang.org/std/io/type.Result.html

@@ -1,16 +1,14 @@
-# Multiple error types
+# 複数のエラー型
 
-The previous examples have always been very convenient; `Result`s interact
-with other `Result`s and `Option`s interact with other `Option`s.
+`Result`が他の`Result`と、`Option`が他の`Option`と連携が取れるため、
+前の例は非常に便利でした。
 
-Sometimes an `Option` needs to interact with a `Result`, or a
-`Result<T, Error1>` needs to interact with a `Result<T, Error2>`. In those
-cases, we want to manage our different error types in a way that makes them
-composable and easy to interact with.
+さて、時々`Option`と`Result`、`Result<T, Error1>`と`Result<T, Error2>`の間で
+連携を取る必要があるときがあります。この場合、異なるエラー型を簡単で構成可能
+に管理する必要があります。
 
-In the following code, two instances of `unwrap` generate different error
-types. `Vec::first` returns an `Option`, while `parse::<i32>` returns a
-`Result<i32, ParseIntError>`:
+以下のコードでは、`Vec::first`は`Option`を、`parse::<i32>`は`Result<i32, ParseIntError>`
+を返すため、2つの`unwrap`がそれぞれ異なるエラーを処理しています。
 
 ```rust,editable,ignore,mdbook-runnable
 fn double_first(vec: Vec<&str>) -> i32 {
@@ -26,11 +24,11 @@ fn main() {
     println!("The first doubled is {}", double_first(numbers));
 
     println!("The first doubled is {}", double_first(empty));
-    // Error 1: the input vector is empty
+    // エラー1: 入力ベクターが空です。
 
     println!("The first doubled is {}", double_first(strings));
-    // Error 2: the element doesn't parse to a number
+    // エラー2: 入力を数値に変換できません。
 }
 ```
 
-Over the next sections, we'll see several strategies for handling these kind of problems.
+次の節から、このような問題を処理するいくつかの方法を見ていきます。

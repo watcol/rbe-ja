@@ -1,12 +1,13 @@
-# Combinators: `and_then`
+# コンビネータ: `and_then`
 
-`map()` was described as a chainable way to simplify `match` statements. 
-However, using `map()` on a function that returns an `Option<T>` results 
-in the nested `Option<Option<T>>`. Chaining multiple calls together can 
-then become confusing. That's where another combinator called `and_then()`, 
-known in some languages as flatmap, comes in.
+`map()`は`match`文を連結してシンプルにするものでした。しかし、
+`Option<T>`を返す関数で`map()`を使えば、ネストされた`Option<Option<t>>`
+が必要になります。この場合、複数の呼び出しを連続で使うと混乱を招きます。
+ここで、他の言語では`flatmap`として知られている、別のコンビネータ
+`and_then()`の登場です。
 
-`and_then()` calls its function input with the wrapped value and returns the result. If the `Option` is `None`, then it returns `None` instead.
+`and_then()`は引数として渡された関数にラップされた値を返しますが、それが`None`なら、
+`None`を返します。
 
 In the following example, `cookable_v2()` results in an `Option<Food>`. 
 Using `map()` instead of `and_then()` would have given an 
@@ -18,7 +19,7 @@ Using `map()` instead of `and_then()` would have given an
 #[derive(Debug)] enum Food { CordonBleu, Steak, Sushi }
 #[derive(Debug)] enum Day { Monday, Tuesday, Wednesday }
 
-// We don't have the ingredients to make Sushi.
+// 寿司の材料を持っていません。
 fn have_ingredients(food: Food) -> Option<Food> {
     match food {
         Food::Sushi => None,
@@ -26,7 +27,7 @@ fn have_ingredients(food: Food) -> Option<Food> {
     }
 }
 
-// We have the recipe for everything except Cordon Bleu.
+// コルドン・ブルー(訳注: カツレツのようなもの)のレシピを持っていません。
 fn have_recipe(food: Food) -> Option<Food> {
     match food {
         Food::CordonBleu => None,
@@ -34,8 +35,8 @@ fn have_recipe(food: Food) -> Option<Food> {
     }
 }
 
-// To make a dish, we need both the recipe and the ingredients.
-// We can represent the logic with a chain of `match`es:
+// 料理を作るには、材料とレシピの両方が必要です。
+// `match`でロジックの流れを表す。
 fn cookable_v1(food: Food) -> Option<Food> {
     match have_recipe(food) {
         None       => None,
@@ -46,7 +47,7 @@ fn cookable_v1(food: Food) -> Option<Food> {
     }
 }
 
-// This can conveniently be rewritten more compactly with `and_then()`:
+// `and_then()`でコンパクトに書き直すことができます。
 fn cookable_v2(food: Food) -> Option<Food> {
     have_recipe(food).and_then(have_ingredients)
 }
@@ -67,9 +68,11 @@ fn main() {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[closures][closures], [`Option`][option], and [`Option::and_then()`][and_then]
+- [クロージャ][closures]
+- [`Option`][option]
+- [`Option::and_then()`][and_then]
 
 [closures]: ../../fn/closures.md
 [option]: https://doc.rust-lang.org/std/option/enum.Option.html

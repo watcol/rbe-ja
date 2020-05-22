@@ -1,21 +1,19 @@
-# `map` for `Result`
+# `Result`の`map`
 
-Panicking in the previous example's `multiply` does not make for robust code.
-Generally, we want to return the error to the caller so it can decide what is
-the right way to respond to errors.
+前の例の`multiply`でのパニックは実用コードのために作られていません。
+普通、呼び出し元にエラーを返し、エラー処理を呼び出し元に任せます。
 
-We first need to know what kind of error type we are dealing with. To determine
-the `Err` type, we look to [`parse()`][parse], which is implemented with the
-[`FromStr`][from_str] trait for [`i32`][i32]. As a result, the `Err` type is
-specified as [`ParseIntError`][parse_int_error].
+まず、どのようなタイプのエラーがあるのか知る必要があります。`Err`の型を決めるため、
+[`FromStr`][from_str]トレイトを[`i32`][i32]に実装することで提供されている[`parse()`
+][parse]関数を見てみます。すると、`Err`の型は[`ParseIntError`][parse_int_error]だと
+定義されていることがわかります。
 
-In the example below, the straightforward `match` statement leads to code
-that is overall more cumbersome.
+以下の例では、愚直に`match`文を使っていますが、これは面倒です。
 
 ```rust,editable
 use std::num::ParseIntError;
 
-// With the return type rewritten, we use pattern matching without `unwrap()`.
+// 返り値の型を書き直し、`unwrap()`を使わずパターンマッチしています。
 fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, ParseIntError> {
     match first_number_str.parse::<i32>() {
         Ok(first_number)  => {
@@ -38,25 +36,25 @@ fn print(result: Result<i32, ParseIntError>) {
 }
 
 fn main() {
-    // This still presents a reasonable answer.
+    // これはまだ使えます。
     let twenty = multiply("10", "2");
     print(twenty);
 
-    // The following now provides a much more helpful error message.
+    // これは有用なエラーメッセージを返すようになりました。
     let tt = multiply("t", "2");
     print(tt);
 }
 ```
 
-Luckily, `Option`'s `map`, `and_then`, and many other combinators are also
-implemented for `Result`. [`Result`][result] contains a complete listing.
+幸運なことに、`Option`の`map`や`and_then`などのコンビネータは`Result`にも
+実装されています。[`Result`][result]に完全な一覧があります。
 
 ```rust,editable
 use std::num::ParseIntError;
 
-// As with `Option`, we can use combinators such as `map()`.
-// This function is otherwise identical to the one above and reads:
-// Modify n if the value is valid, otherwise pass on the error.
+// `Option`のように、`map()`コンビネータが使えます。
+// この関数は上と同じ動作をします。
+// 値が有効な場合nを渡し、その他の場合はエラーを渡す。
 fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, ParseIntError> {
     first_number_str.parse::<i32>().and_then(|first_number| {
         second_number_str.parse::<i32>().map(|second_number| first_number * second_number)
@@ -71,11 +69,11 @@ fn print(result: Result<i32, ParseIntError>) {
 }
 
 fn main() {
-    // This still presents a reasonable answer.
+    // これはまだ使えます。
     let twenty = multiply("10", "2");
     print(twenty);
 
-    // The following now provides a much more helpful error message.
+    // これは有用なエラーメッセージを返すようになりました。
     let tt = multiply("t", "2");
     print(tt);
 }

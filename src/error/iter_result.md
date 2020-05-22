@@ -1,6 +1,6 @@
-# Iterating over `Result`s
+# `Result`を繰り返す
 
-An `Iter::map` operation might fail, for example:
+`Iter::map`は失敗する可能性があります。例えば:
 
 ```rust,editable
 fn main() {
@@ -13,11 +13,11 @@ fn main() {
 }
 ```
 
-Let's step through strategies for handling this.
+これを処理する方法を見ていきましょう。
 
-## Ignore the failed items with `filter_map()`
+## `filter_map()`で失敗したものを無視する
 
-`filter_map` calls a function and filters out the results that are `None`.
+`filter_map`は`None`である結果をフィルタにかける。
 
 ```rust,editable
 fn main() {
@@ -31,11 +31,11 @@ fn main() {
 }
 ```
 
-## Fail the entire operation with `collect()`
+## `collect()`でコードを失敗にする
 
-`Result` implements `FromIter` so that a vector of results (`Vec<Result<T, E>>`)
-can be turned into a result with a vector (`Result<Vec<T>, E>`). Once an
-`Result::Err` is found, the iteration will terminate.
+`Result`は`FromIter`を実装しているため、`Result`型のベクター(`Vec<Result<T, E>>`)
+をベクター型の`Result`(`Result<Vec<T>, E>`)に変換することができます。
+そして、`Result::Err`が見つかれば処理を終了できます。
 
 ```rust,editable
 fn main() {
@@ -48,9 +48,9 @@ fn main() {
 }
 ```
 
-This same technique can be used with `Option`.
+`Option`でも同じことができます。
 
-## Collect all valid values and failures with `partition()`
+## すべての利用可能な値を集めて`partition()`で失敗を振り分ける。
 
 ```rust,editable
 fn main() {
@@ -64,8 +64,8 @@ fn main() {
 }
 ```
 
-When you look at the results, you'll note that everything is still wrapped in
-`Result`.  A little more boilerplate is needed for this.
+結果を見たら、これがまだ`Result`で包まれていることに気付くでしょう。
+もう少し典型コードが必要です。
 
 ```rust,editable
 fn main() {

@@ -1,32 +1,29 @@
-# Other uses of `?`
+# `?`の他の使い方
 
-Notice in the previous example that our immediate reaction to calling
-`parse` is to `map` the error from a library error into a boxed
-error:
+前の例では、`parse`を即座に`map`に渡して、エラーを`Box`に格納していました。
 
 ```rust,ignore
 .and_then(|s| s.parse::<i32>()
     .map_err(|e| e.into())
 ```
 
-Since this is a simple and common operation, it would be convenient if it
-could be elided. Alas, because `and_then` is not sufficiently flexible, it
-cannot. However, we can instead use `?`.
+これは一般的な操作なので、利便性のため省略することができます。
+悲しいかな、`and_then`は柔軟性が低いため、できません。しかし、
+`?`を使えばできます。
 
-`?` was previously explained as either `unwrap` or `return Err(err)`.
-This is only mostly true. It actually means `unwrap` or
-`return Err(From::from(err))`. Since `From::from` is a conversion utility
-between different types, this means that if you `?` where the error is
-convertible to the return type, it will convert automatically.
+`?`は`unwrap`や`return Err(err)`と同じだと説明しました。これは大体合って
+いますが、実際には`unwrap`や`return Err(From::from(err))`です。
+`From::from`は他の型に変更するツールであるため、これは`?`によって返り値の型
+に変換できることを意味しています。
 
-Here, we rewrite the previous example using `?`. As a result, the
-`map_err` will go away when `From::from` is implemented for our error type:
+ここで、前の例を`?`を使って書き直してみましょう。結果的に、`map_err`は
+`From::from`がエラー型に実装されていることから不要になります。
 
 ```rust,editable
 use std::error;
 use std::fmt;
 
-// Change the alias to `Box<dyn error::Error>`.
+// エイリアスを`Box<dyn error::Error>`に変更します。
 type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 #[derive(Debug)]
@@ -40,8 +37,8 @@ impl fmt::Display for EmptyVec {
 
 impl error::Error for EmptyVec {}
 
-// The same structure as before but rather than chain all `Results`
-// and `Options` along, we `?` to get the inner value out immediately.
+// 前と同じ構造ですが、すべての`Results`と`Options`を一つにつながず、
+// `?`から値を変数に代入しています。
 fn double_first(vec: Vec<&str>) -> Result<i32> {
     let first = vec.first().ok_or(EmptyVec)?;
     let parsed = first.parse::<i32>()?;
@@ -66,14 +63,14 @@ fn main() {
 }
 ```
 
-This is actually fairly clean now. Compared with the original `panic`, it
-is very similar to replacing the `unwrap` calls with `?` except that the
-return types are `Result`. As a result, they must be destructured at the
-top level.
+これで非常にきれいになりました。もともとの`panic`と比べると、返り値の型が
+`Result`担ったことを除いて、`unwrap`が`?`に変わっただけであることがわかります。
+また、`Result`はトップレベルで分解する必要があります。
 
-### See also:
+### こちらも参照:
 
-[`From::from`][from] and [`?`][q_mark]
+- [`From::from`][from]
+- [`?`][q_mark]
 
 [from]: https://doc.rust-lang.org/std/convert/trait.From.html
 [q_mark]: https://doc.rust-lang.org/reference/expressions/operator-expr.html#the-question-mark-operator

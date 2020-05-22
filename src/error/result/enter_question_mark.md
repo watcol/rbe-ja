@@ -1,17 +1,16 @@
-# Introducing `?`
+# `?`の導入
 
-Sometimes we just want the simplicity of `unwrap` without the possibility of
-a `panic`. Until now, `unwrap` has forced us to nest deeper and deeper when
-what we really wanted was to get the variable *out*. This is exactly the purpose of `?`.
+時々、`panic`なしに、`unwrap`のような単純さが欲しくなることがあります。
+今まで、変数を取得するためだけに、ますます深くネストすることが必要でした。
+これをなくすのが`?`の目的です。
 
-Upon finding an `Err`, there are two valid actions to take:
+`Err`を見つけると、このような挙動を取ることができます。
 
-1. `panic!` which we already decided to try to avoid if possible
-2. `return` because an `Err` means it cannot be handled
+1. `panic!`。これはできるだけ避けるべきです。
+2. `return`。`Err`は処理できないことを意味するため、`return`する。
 
-`?` is *almost*[^†] exactly equivalent to an `unwrap` which `return`s
-instead of `panic`king on `Err`s. Let's see how we can simplify the earlier
-example that used combinators:
+`?`は*ほとんど*[^†] `unwrap`の`panic`を`return`に変えたもとと等価です。
+先程の例がどれだけシンプルになるか見てみましょう。
 
 ```rust,editable
 use std::num::ParseIntError;
@@ -36,16 +35,15 @@ fn main() {
 }
 ```
 
-## The `try!` macro
+## `try!`マクロ
 
-Before there was `?`, the same functionality was achieved with the `try!` macro.
-The `?` operator is now recommended, but you may still find `try!` when looking
-at older code. The same `multiply` function from the previous example
-would look like this using `try!`:
+`?`がなかった頃、同じ機能を`try!`マクロが持っていました。現在は`?`演算子が推奨されていますが、
+古いコードを見ていると、`try!`に遭遇するかもしれません。前の例と同じ`multiply`関数を`try!`で
+実装してみます。
 
 ```rust,editable
-// To compile and run this example without errors, while using Cargo, change the value 
-// of the `edition` field, in the `[package]` section of the `Cargo.toml` file, to "2015".
+// この例を警告なしに実行するにはCargo.tomlの`[package]`節にある`edition`フィールドを
+// "2015"に変更する必要があります。
 
 use std::num::ParseIntError;
 
@@ -70,6 +68,6 @@ fn main() {
 ```
 
 
-[^†]: See [re-enter ?][re_enter_?] for more details.
+[^†]: 詳しくは[他の?の使い方][re_enter_?]を参照してください。
 
 [re_enter_?]: ../multiple_error_types/reenter_question_mark.md
