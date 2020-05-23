@@ -148,11 +148,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#" id=""><code>?</code></a></h1>
-<p>Chaining results using match can get pretty untidy; luckily, the <code>?</code> operator
-can be used to make things pretty again. <code>?</code> is used at the end of an expression
-returning a <code>Result</code>, and is equivalent to a match expression, where the 
-<code>Err(err)</code> branch expands to an early <code>Err(From::from(err))</code>, and the <code>Ok(ok)</code>
-branch expands to an <code>ok</code> expression.</p>
+<p>Resultの処理をチェーンすると、だらしないです。幸運なことに、<code>?</code>演算子を使えば
+きれいに書くことができます。<code>Result</code>を返す<code>?</code>を式の最後につけると、match式のように、
+<code>Err(err)</code>ならば<code>Err(From::from(err))</code>を返して関数を終了し、<code>Ok(ok)</code>ならば<code>ok</code>を返します。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">mod checked {
     #[derive(Debug)]
     enum MathError {
@@ -187,12 +185,12 @@ branch expands to an <code>ok</code> expression.</p>
         }
     }
 
-    // Intermediate function
+    // 中間関数
     fn op_(x: f64, y: f64) -&gt; MathResult {
-        // if `div` &quot;fails&quot;, then `DivisionByZero` will be `return`ed
+        // `div`が失敗したら、`DivisionByZero`が`return`される
         let ratio = div(x, y)?;
 
-        // if `ln` &quot;fails&quot;, then `NonPositiveLogarithm` will be `return`ed
+        // `ln`が失敗したら、`NonPositiveLogarithm`が`return`される
         let ln = ln(ratio)?;
 
         sqrt(ln)
@@ -217,8 +215,8 @@ fn main() {
     checked::op(1.0, 10.0);
 }
 </code></pre></pre>
-<p>Be sure to check the <a href="https://doc.rust-lang.org/std/result/index.html">documentation</a>,
-as there are many methods to map/compose <code>Result</code>.</p>
+<p><a href="https://doc.rust-lang.org/std/result/index.html">ドキュメンテーション</a>を参照し、<code>Result</code>を
+操作するたくさんのメソッドを探してみてください。</p>
 
                     </main>
 

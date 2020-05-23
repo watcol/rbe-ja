@@ -147,74 +147,69 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#strings" id="strings">Strings</a></h1>
-<p>There are two types of strings in Rust: <code>String</code> and <code>&amp;str</code>.</p>
-<p>A <code>String</code> is stored as a vector of bytes (<code>Vec&lt;u8&gt;</code>), but guaranteed to
-always be a valid UTF-8 sequence. <code>String</code> is heap allocated, growable and not
-null terminated.</p>
-<p><code>&amp;str</code> is a slice (<code>&amp;[u8]</code>) that always points to a valid UTF-8 sequence, and
-can be used to view into a <code>String</code>, just like <code>&amp;[T]</code> is a view into <code>Vec&lt;T&gt;</code>.</p>
+                        <h1><a class="header" href="#文字列" id="文字列">文字列</a></h1>
+<p>Rustには2つのタイプの文字列<code>String</code>、<code>&amp;str</code>があります。</p>
+<p><code>String</code>は<code>Vec&lt;u8&gt;</code>でバイト列が保存されていますが、UTF-8が使えることは保証されて
+います。<code>String</code>はヒープに保存されるので、可変長で、ヌル文字で終わりません。</p>
+<p><code>&amp;str</code>はスライス<code>&amp;[u8]</code>であり、いつも有効なUTF-8文字列を参照しています。
+そしてこれは<code>&amp;[T]</code>が<code>Vec&lt;T&gt;</code>に変換できるように、<code>String</code>に変換できます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // (all the type annotations are superfluous)
-    // A reference to a string allocated in read only memory
-    let pangram: &amp;'static str = &quot;the quick brown fox jumps over the lazy dog&quot;;
+    // (すべての型注釈は必要ないものです)
+    // 読み取りメモリに保存された文字列へのポインタ
+    let pangram: &amp;'static str = &quot;the quick brown fox jumps over the lazy dog&quot;;  // 茶色く素早い狐がのろまな犬を飛び越える
     println!(&quot;Pangram: {}&quot;, pangram);
 
-    // Iterate over words in reverse, no new string is allocated
+    // 単語を逆順でイテレートします。新しくメモリの確保はされません。
     println!(&quot;Words in reverse&quot;);
     for word in pangram.split_whitespace().rev() {
         println!(&quot;&gt; {}&quot;, word);
     }
 
-    // Copy chars into a vector, sort and remove duplicates
+    // 文字をすべてベクターにコピーし、ソートし、重複を消す。
     let mut chars: Vec&lt;char&gt; = pangram.chars().collect();
     chars.sort();
     chars.dedup();
 
-    // Create an empty and growable `String`
+    // 空の可変長な`String`を作る
     let mut string = String::new();
     for c in chars {
-        // Insert a char at the end of string
+        // 文字列の最後に文字を挿入する
         string.push(c);
-        // Insert a string at the end of string
+        // 文字列の最後に文字列を挿入する
         string.push_str(&quot;, &quot;);
     }
 
-    // The trimmed string is a slice to the original string, hence no new
-    // allocation is performed
+    // 文字列をトリミングすると、元の文字列のスライスを作るため、
+    // 新しくメモリ確保はされない。
     let chars_to_trim: &amp;[char] = &amp;[' ', ','];
     let trimmed_str: &amp;str = string.trim_matches(chars_to_trim);
     println!(&quot;Used characters: {}&quot;, trimmed_str);
 
-    // Heap allocate a string
+    // 文字列をヒープに格納する。
     let alice = String::from(&quot;I like dogs&quot;);
-    // Allocate new memory and store the modified string there
+    // 新しくメモリ確保して、置換後の文字列を格納する。
     let bob: String = alice.replace(&quot;dog&quot;, &quot;cat&quot;);
 
     println!(&quot;Alice says: {}&quot;, alice);
     println!(&quot;Bob says: {}&quot;, bob);
 }
 </code></pre></pre>
-<p>More <code>str</code>/<code>String</code> methods can be found under the
-<a href="https://doc.rust-lang.org/std/str/">std::str</a> and
-<a href="https://doc.rust-lang.org/std/string/">std::string</a>
-modules</p>
-<h2><a class="header" href="#literals-and-escapes" id="literals-and-escapes">Literals and escapes</a></h2>
-<p>There are multiple ways to write string literals with special characters in them.
-All result in a similar <code>&amp;str</code> so it's best to use the form that is the most
-convenient to write. Similarly there are multiple ways to write byte string literals,
-which all result in <code>&amp;[u8; N]</code>.</p>
-<p>Generally special characters are escaped with a backslash character: <code>\</code>.
-This way you can add any character to your string, even unprintable ones
-and ones that you don't know how to type. If you want a literal backslash,
-escape it with another one: <code>\\</code></p>
-<p>String or character literal delimiters occuring within a literal must be escaped: <code>&quot;\&quot;&quot;</code>, <code>'\''</code>.</p>
+<p><code>str</code>と<code>String</code>のさらなるメソッドについては<a href="https://doc.rust-lang.org/std/str/">std::str</a>や
+<a href="https://doc.rust-lang.org/std/string/">std::string</a>モジュールのドキュメントを参照してください。</p>
+<h2><a class="header" href="#リテラルとエスケープ" id="リテラルとエスケープ">リテラルとエスケープ</a></h2>
+<p>文字列のリテラルを書き、特殊文字をその中に入れる方法は複数あり、そのすべてが
+、最も書きやすく、扱いやすい<code>&amp;str</code>になります。同様にバイト文字列リテラルの書き方
+は複数ありますが、すべて<code>&amp;[u8; N]</code>になります。</p>
+<p>一般的に特殊文字はバックスラッシュ<code>\</code>でエスケープできます。これを使えば、
+出力できない文字や、打ち方を知らない文字でも表すことができます。バックスラッシュ
+のリテラルは<code>\\</code>と表します。</p>
+<p>文字列や文字のリテラルの終端を表す文字は、<code>&quot;\&quot;&quot;</code>や<code>'\''</code>で表します。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // You can use escapes to write bytes by their hexadecimal values...
+    // 16進数で文字を一つ一つ書くこともできます...
     let byte_escape = &quot;I'm writing \x52\x75\x73\x74!&quot;;
     println!(&quot;What are you doing\x3F (\\x3F means ?) {}&quot;, byte_escape);
 
-    // ...or Unicode code points.
+    // ...Unicodeコードポイントも使えます。
     let unicode_codepoint = &quot;\u{211D}&quot;;
     let character_name = &quot;\&quot;DOUBLE-STRUCK CAPITAL R\&quot;&quot;;
 
@@ -222,52 +217,52 @@ escape it with another one: <code>\\</code></p>
                 unicode_codepoint, character_name );
 
 
-    let long_string = &quot;String literals
+    let long_string = &quot;String literals  // 文字列リテラルは改行やインデントもエスケープできます。
                         can span multiple lines.
                         The linebreak and indentation here -&gt;\
                         &lt;- can be escaped too!&quot;;
     println!(&quot;{}&quot;, long_string);
 }
 </code></pre></pre>
-<p>Sometimes there are just too many characters that need to be escaped or it's just
-much more convenient to write a string out as-is. This is where raw string literals come into play.</p>
+<p>エスケープに使われる文字をたくさん使った文字列を書きたいときもあります。
+この場合はRaw文字列リテラルを使います。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let raw_str = r&quot;Escapes don't work here: \x3F \u{211D}&quot;;
     println!(&quot;{}&quot;, raw_str);
 
-    // If you need quotes in a raw string, add a pair of #s
+    // Raw1文字列にクオートを使うときは、#で囲みます。
     let quotes = r#&quot;And then I said: &quot;There is no escape!&quot;&quot;#;
     println!(&quot;{}&quot;, quotes);
 
-    // If you need &quot;# in your string, just use more #s in the delimiter.
-    // There is no limit for the number of #s you can use.
+    // &quot;も#も使う場合は、さらに#を重ねてください。
+    // #の重ねられる数に上限はありません。
     let longer_delimiter = r###&quot;A string with &quot;# in it. And even &quot;##!&quot;###;
     println!(&quot;{}&quot;, longer_delimiter);
 }
 </code></pre></pre>
-<p>Want a string that's not UTF-8? (Remember, <code>str</code> and <code>String</code> must be valid UTF-8).
-Or maybe you want an array of bytes that's mostly text? Byte strings to the rescue!</p>
+<p>UTF-8出ない文字列を使いたいですか? (<code>str</code>と<code>String</code>はUTF-8でないといけません)
+またはバイト列を文字列として使いたいですか? バイト文字列が使えます!</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::str;
 
 fn main() {
-    // Note that this is not actually a `&amp;str`
+    // これは`&amp;str`ではありません。
     let bytestring: &amp;[u8; 21] = b&quot;this is a byte string&quot;;
 
-    // Byte arrays don't have the `Display` trait, so printing them is a bit limited
+    // バイト列は`Display`トレイトを持っていないので、出力は多少難しいです。
     println!(&quot;A byte string: {:?}&quot;, bytestring);
 
-    // Byte strings can have byte escapes...
+    // バイト文字列はバイトエスケープができます...
     let escaped = b&quot;\x52\x75\x73\x74 as bytes&quot;;
-    // ...but no unicode escapes
+    // ...しかしユニコードエスケープはできません
     // let escaped = b&quot;\u{211D} is not allowed&quot;;
     println!(&quot;Some escaped bytes: {:?}&quot;, escaped);
 
 
-    // Raw byte strings work just like raw strings
+    // Rawバイト列もRaw文字列のように使えます。
     let raw_bytestring = br&quot;\u{211D} is not escaped here&quot;;
     println!(&quot;{:?}&quot;, raw_bytestring);
 
-    // Converting a byte array to `str` can fail
+    // バイト列から`str`への変換は時々失敗します。
     if let Ok(my_str) = str::from_utf8(raw_bytestring) {
         println!(&quot;And the same as text: '{}'&quot;, my_str);
     }
@@ -275,19 +270,19 @@ fn main() {
     let _quotes = br#&quot;You can also use &quot;fancier&quot; formatting, \
                     like with normal raw strings&quot;#;
 
-    // Byte strings don't have to be UTF-8
-    let shift_jis = b&quot;\x82\xe6\x82\xa8\x82\xb1\x82\xbb&quot;; // &quot;ようこそ&quot; in SHIFT-JIS
+    // バイト文字列はUTF-8である必要はありません。
+    let shift_jis = b&quot;\x82\xe6\x82\xa8\x82\xb1\x82\xbb&quot;; // Shift-JISで&quot;ようこそ&quot;
 
-    // But then they can't always be converted to `str`
+    // しかし`str`には変換できません
     match str::from_utf8(shift_jis) {
         Ok(my_str) =&gt; println!(&quot;Conversion successful: '{}'&quot;, my_str),
         Err(e) =&gt; println!(&quot;Conversion failed: {:?}&quot;, e),
     };
 }
 </code></pre></pre>
-<p>For conversions between character encodings check out the <a href="https://crates.io/crates/encoding">encoding</a> crate.</p>
-<p>A more detailed listing of the ways to write string literals and escape characters
-is given in the <a href="https://doc.rust-lang.org/reference/tokens.html">'Tokens' chapter</a> of the Rust Reference.</p>
+<p>エンコードの違う文字列を変換するには<a href="https://crates.io/crates/encoding">encoding</a>クレートを使用します。</p>
+<p>リテラルの書き方やエスケープシーケンスの詳細はRustリファレンスの
+<a href="https://doc.rust-lang.org/reference/tokens.html">'Tokens'</a>章を参照してください。</p>
 
                     </main>
 

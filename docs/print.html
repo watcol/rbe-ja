@@ -7165,25 +7165,28 @@ fn main() {
     println!(&quot;Errors: {:?}&quot;, errors);
 }
 </code></pre></pre>
-<h1><a class="header" href="#std-library-types" id="std-library-types">Std library types</a></h1>
-<p>The <code>std</code> library provides many custom types which expands drastically on
-the <code>primitives</code>. Some of these include:</p>
+<h1><a class="header" href="#stdライブラリの型" id="stdライブラリの型">Stdライブラリの型</a></h1>
+<p><code>std</code>ライブラリはプリミティブを劇的に拡張する多くのカスタム型を
+提供しています。これはそのうちの一つです。</p>
 <ul>
-<li>growable <code>String</code>s like: <code>&quot;hello world&quot;</code></li>
-<li>growable vectors: <code>[1, 2, 3]</code></li>
-<li>optional types: <code>Option&lt;i32&gt;</code></li>
-<li>error handling types: <code>Result&lt;i32, i32&gt;</code></li>
-<li>heap allocated pointers: <code>Box&lt;i32&gt;</code></li>
+<li><code>&quot;hello world&quot;</code>のような可変長文字列<code>String</code></li>
+<li><code>[1, 2, 3]</code>のような可変長配列<code>Vector</code></li>
+<li><code>Option&lt;i32&gt;</code>型</li>
+<li>エラー制御をする<code>Result&lt;i32, i32&gt;</code>型</li>
+<li>ヒープのポインタ<code>Box&lt;i32&gt;</code>型</li>
 </ul>
-<h3><a class="header" href="#see-also-1" id="see-also-1">See also:</a></h3>
-<p><a href="primitives.html">primitives</a> and <a href="https://doc.rust-lang.org/std/">the std library</a></p>
-<h1><a class="header" href="#box-stack-and-heap" id="box-stack-and-heap">Box, stack and heap</a></h1>
-<p>All values in Rust are stack allocated by default. Values can be <em>boxed</em>
-(allocated on the heap) by creating a <code>Box&lt;T&gt;</code>. A box is a smart pointer to a
-heap allocated value of type <code>T</code>. When a box goes out of scope, its destructor
-is called, the inner object is destroyed, and the memory on the heap is freed.</p>
-<p>Boxed values can be dereferenced using the <code>*</code> operator; this removes one layer
-of indirection. </p>
+<h3><a class="header" href="#こちらも参照-63" id="こちらも参照-63">こちらも参照:</a></h3>
+<ul>
+<li><a href="primitives.html">基本型</a></li>
+<li><a href="https://doc.rust-lang.org/std/">stdライブラリ</a></li>
+</ul>
+<h1><a class="header" href="#ボックススタックヒープ" id="ボックススタックヒープ">ボックス、スタック、ヒープ</a></h1>
+<p>Rustではすべての変数がデフォルトでスタックに保存されます。しかし、<code>Box&lt;T&gt;</code>を
+使うことで、値をヒープに保存することができます。<code>Box&lt;T&gt;</code>はヒープ上に保存された
+型<code>T</code>の値をさすスマートポインタです。<code>Box</code>がスコープを出ると、デストラクタが
+呼び出されることで、中の値も破棄され、ヒープメモリが開放されます。</p>
+<p><code>Box</code>内の値は<code>*</code>演算子で参照できます。これによって、間接参照のコストが
+低くなります。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::mem;
 
 #[allow(dead_code)]
@@ -7193,8 +7196,7 @@ struct Point {
     y: f64,
 }
 
-// A Rectangle can be specified by where its top left and bottom right 
-// corners are in space
+// 長方形は左上の点と右下の点によって定義できます。
 #[allow(dead_code)]
 struct Rectangle {
     top_left: Point,
@@ -7206,183 +7208,177 @@ fn origin() -&gt; Point {
 }
 
 fn boxed_origin() -&gt; Box&lt;Point&gt; {
-    // Allocate this point on the heap, and return a pointer to it
+    // ヒープ上に作られた原点を指すPointのポインタを返す
     Box::new(Point { x: 0.0, y: 0.0 })
 }
 
 fn main() {
-    // (all the type annotations are superfluous)
-    // Stack allocated variables
+    // (すべての型注釈は必要ないものです)
+    // スタックに保存された変数
     let point: Point = origin();
     let rectangle: Rectangle = Rectangle {
         top_left: origin(),
         bottom_right: Point { x: 3.0, y: -4.0 }
     };
 
-    // Heap allocated rectangle
+    // ヒープに保存された長方形
     let boxed_rectangle: Box&lt;Rectangle&gt; = Box::new(Rectangle {
         top_left: origin(),
         bottom_right: Point { x: 3.0, y: -4.0 },
     });
 
-    // The output of functions can be boxed
+    // 関数の出力をBoxする
     let boxed_point: Box&lt;Point&gt; = Box::new(origin());
 
-    // Double indirection
+    // 二重参照
     let box_in_a_box: Box&lt;Box&lt;Point&gt;&gt; = Box::new(boxed_origin());
 
-    println!(&quot;Point occupies {} bytes on the stack&quot;,
+    println!(&quot;Point occupies {} bytes on the stack&quot;,  // Pointはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;point));
-    println!(&quot;Rectangle occupies {} bytes on the stack&quot;,
+    println!(&quot;Rectangle occupies {} bytes on the stack&quot;,  // Rectangleはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;rectangle));
 
-    // box size == pointer size
-    println!(&quot;Boxed point occupies {} bytes on the stack&quot;,
+    // Boxのサイズはポインタのサイズと等しい
+    println!(&quot;Boxed point occupies {} bytes on the stack&quot;,  // BoxされたPointはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;boxed_point));
-    println!(&quot;Boxed rectangle occupies {} bytes on the stack&quot;,
+    println!(&quot;Boxed rectangle occupies {} bytes on the stack&quot;,  // BoxされたRectangleはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;boxed_rectangle));
-    println!(&quot;Boxed box occupies {} bytes on the stack&quot;,
+    println!(&quot;Boxed box occupies {} bytes on the stack&quot;,  // BoxされたBoxはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;box_in_a_box));
 
-    // Copy the data contained in `boxed_point` into `unboxed_point`
+    // `boxed_point`内のデータを`unboxed_point`にコピーする
     let unboxed_point: Point = *boxed_point;
-    println!(&quot;Unboxed point occupies {} bytes on the stack&quot;,
+    println!(&quot;Unboxed point occupies {} bytes on the stack&quot;,  // BoxされていないPointはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;unboxed_point));
 }
 </code></pre></pre>
-<h1><a class="header" href="#vectors" id="vectors">Vectors</a></h1>
-<p>Vectors are re-sizable arrays. Like slices, their size is not known at compile
-time, but they can grow or shrink at any time. A vector is represented using
-3 parameters: </p>
+<h1><a class="header" href="#ベクター" id="ベクター">ベクター</a></h1>
+<p>ベクターは可変長の配列です。スライスのように、コンパイル時にはサイズがわかりませんが、
+自由にサイズを伸縮できます。ベクターは次の3要素からなります。</p>
 <ul>
-<li>pointer to the data</li>
-<li>length</li>
-<li>capacity </li>
+<li>データへのポインタ</li>
+<li>長さ</li>
+<li>容量</li>
 </ul>
-<p>The capacity indicates how much memory is reserved for the vector. The vector 
-can grow as long as the length is smaller than the capacity. When this threshold 
-needs to be surpassed, the vector is reallocated with a larger capacity.</p>
+<p>容量は、ベクターにどれだけのメモリが割り当てられているかを表します。容量を超えない
+範囲で、ベクターの長さを伸ばすことができます。これを超える長さが必要になった時、
+ベクターはもっと多い容量の場所へ再確保されます。 </p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">fn main() {
-    // Iterators can be collected into vectors
+    // イテレータはベクターに変換することができます。
     let collected_iterator: Vec&lt;i32&gt; = (0..10).collect();
     println!(&quot;Collected (0..10) into: {:?}&quot;, collected_iterator);
 
-    // The `vec!` macro can be used to initialize a vector
+    // `vec!`マクロでベクターを初期化できます。
     let mut xs = vec![1i32, 2, 3];
     println!(&quot;Initial vector: {:?}&quot;, xs);
 
-    // Insert new element at the end of the vector
+    // ベクターに新しい要素を入れる
     println!(&quot;Push 4 into the vector&quot;);
     xs.push(4);
     println!(&quot;Vector: {:?}&quot;, xs);
 
-    // Error! Immutable vectors can't grow
+    // エラー! 不変なベクターは伸ばすことができません。
     collected_iterator.push(0);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください
 
-    // The `len` method yields the number of elements currently stored in a vector
+    // `len`メソッドで現在のベクターの要素数を取得できます。
     println!(&quot;Vector length: {}&quot;, xs.len());
 
-    // Indexing is done using the square brackets (indexing starts at 0)
+    // 角括弧で要素にアクセスできます。(インデックスは0から始まります)
     println!(&quot;Second element: {}&quot;, xs[1]);
 
-    // `pop` removes the last element from the vector and returns it
+    // `pop`はベクターから最後の要素を消し、それを返します。
     println!(&quot;Pop last element: {:?}&quot;, xs.pop());
 
-    // Out of bounds indexing yields a panic
+    // 長さ以上のインデックスを指定するとパニックします。
     println!(&quot;Fourth element: {}&quot;, xs[3]);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください
 
-    // `Vector`s can be easily iterated over
+    // `Vector`は簡単にイテレーションできます。
     println!(&quot;Contents of xs:&quot;);
     for x in xs.iter() {
         println!(&quot;&gt; {}&quot;, x);
     }
 
-    // A `Vector` can also be iterated over while the iteration
-    // count is enumerated in a separate variable (`i`)
+    // enumerateを使って要素のインデックスを変数(`i`)に
+    // とってイテレーションできます。
     for (i, x) in xs.iter().enumerate() {
         println!(&quot;In position {} we have value {}&quot;, i, x);
     }
 
-    // Thanks to `iter_mut`, mutable `Vector`s can also be iterated
-    // over in a way that allows modifying each value
+    // `iter_mut`のおかげで、可変な`Vector`を変更しながら
+    // イテレーションできます。
     for x in xs.iter_mut() {
         *x *= 3;
     }
     println!(&quot;Updated vector: {:?}&quot;, xs);
 }
 </code></pre></pre>
-<p>More <code>Vec</code> methods can be found under the
-<a href="https://doc.rust-lang.org/std/vec/">std::vec</a> module</p>
-<h1><a class="header" href="#strings" id="strings">Strings</a></h1>
-<p>There are two types of strings in Rust: <code>String</code> and <code>&amp;str</code>.</p>
-<p>A <code>String</code> is stored as a vector of bytes (<code>Vec&lt;u8&gt;</code>), but guaranteed to
-always be a valid UTF-8 sequence. <code>String</code> is heap allocated, growable and not
-null terminated.</p>
-<p><code>&amp;str</code> is a slice (<code>&amp;[u8]</code>) that always points to a valid UTF-8 sequence, and
-can be used to view into a <code>String</code>, just like <code>&amp;[T]</code> is a view into <code>Vec&lt;T&gt;</code>.</p>
+<p><code>Vec</code>のメソッドをさらに知りたいときは<a href="https://doc.rust-lang.org/std/vec/">std::vec</a>モジュール
+のドキュメントを参照してください。</p>
+<h1><a class="header" href="#文字列" id="文字列">文字列</a></h1>
+<p>Rustには2つのタイプの文字列<code>String</code>、<code>&amp;str</code>があります。</p>
+<p><code>String</code>は<code>Vec&lt;u8&gt;</code>でバイト列が保存されていますが、UTF-8が使えることは保証されて
+います。<code>String</code>はヒープに保存されるので、可変長で、ヌル文字で終わりません。</p>
+<p><code>&amp;str</code>はスライス<code>&amp;[u8]</code>であり、いつも有効なUTF-8文字列を参照しています。
+そしてこれは<code>&amp;[T]</code>が<code>Vec&lt;T&gt;</code>に変換できるように、<code>String</code>に変換できます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // (all the type annotations are superfluous)
-    // A reference to a string allocated in read only memory
-    let pangram: &amp;'static str = &quot;the quick brown fox jumps over the lazy dog&quot;;
+    // (すべての型注釈は必要ないものです)
+    // 読み取りメモリに保存された文字列へのポインタ
+    let pangram: &amp;'static str = &quot;the quick brown fox jumps over the lazy dog&quot;;  // 茶色く素早い狐がのろまな犬を飛び越える
     println!(&quot;Pangram: {}&quot;, pangram);
 
-    // Iterate over words in reverse, no new string is allocated
+    // 単語を逆順でイテレートします。新しくメモリの確保はされません。
     println!(&quot;Words in reverse&quot;);
     for word in pangram.split_whitespace().rev() {
         println!(&quot;&gt; {}&quot;, word);
     }
 
-    // Copy chars into a vector, sort and remove duplicates
+    // 文字をすべてベクターにコピーし、ソートし、重複を消す。
     let mut chars: Vec&lt;char&gt; = pangram.chars().collect();
     chars.sort();
     chars.dedup();
 
-    // Create an empty and growable `String`
+    // 空の可変長な`String`を作る
     let mut string = String::new();
     for c in chars {
-        // Insert a char at the end of string
+        // 文字列の最後に文字を挿入する
         string.push(c);
-        // Insert a string at the end of string
+        // 文字列の最後に文字列を挿入する
         string.push_str(&quot;, &quot;);
     }
 
-    // The trimmed string is a slice to the original string, hence no new
-    // allocation is performed
+    // 文字列をトリミングすると、元の文字列のスライスを作るため、
+    // 新しくメモリ確保はされない。
     let chars_to_trim: &amp;[char] = &amp;[' ', ','];
     let trimmed_str: &amp;str = string.trim_matches(chars_to_trim);
     println!(&quot;Used characters: {}&quot;, trimmed_str);
 
-    // Heap allocate a string
+    // 文字列をヒープに格納する。
     let alice = String::from(&quot;I like dogs&quot;);
-    // Allocate new memory and store the modified string there
+    // 新しくメモリ確保して、置換後の文字列を格納する。
     let bob: String = alice.replace(&quot;dog&quot;, &quot;cat&quot;);
 
     println!(&quot;Alice says: {}&quot;, alice);
     println!(&quot;Bob says: {}&quot;, bob);
 }
 </code></pre></pre>
-<p>More <code>str</code>/<code>String</code> methods can be found under the
-<a href="https://doc.rust-lang.org/std/str/">std::str</a> and
-<a href="https://doc.rust-lang.org/std/string/">std::string</a>
-modules</p>
-<h2><a class="header" href="#literals-and-escapes" id="literals-and-escapes">Literals and escapes</a></h2>
-<p>There are multiple ways to write string literals with special characters in them.
-All result in a similar <code>&amp;str</code> so it's best to use the form that is the most
-convenient to write. Similarly there are multiple ways to write byte string literals,
-which all result in <code>&amp;[u8; N]</code>.</p>
-<p>Generally special characters are escaped with a backslash character: <code>\</code>.
-This way you can add any character to your string, even unprintable ones
-and ones that you don't know how to type. If you want a literal backslash,
-escape it with another one: <code>\\</code></p>
-<p>String or character literal delimiters occuring within a literal must be escaped: <code>&quot;\&quot;&quot;</code>, <code>'\''</code>.</p>
+<p><code>str</code>と<code>String</code>のさらなるメソッドについては<a href="https://doc.rust-lang.org/std/str/">std::str</a>や
+<a href="https://doc.rust-lang.org/std/string/">std::string</a>モジュールのドキュメントを参照してください。</p>
+<h2><a class="header" href="#リテラルとエスケープ" id="リテラルとエスケープ">リテラルとエスケープ</a></h2>
+<p>文字列のリテラルを書き、特殊文字をその中に入れる方法は複数あり、そのすべてが
+、最も書きやすく、扱いやすい<code>&amp;str</code>になります。同様にバイト文字列リテラルの書き方
+は複数ありますが、すべて<code>&amp;[u8; N]</code>になります。</p>
+<p>一般的に特殊文字はバックスラッシュ<code>\</code>でエスケープできます。これを使えば、
+出力できない文字や、打ち方を知らない文字でも表すことができます。バックスラッシュ
+のリテラルは<code>\\</code>と表します。</p>
+<p>文字列や文字のリテラルの終端を表す文字は、<code>&quot;\&quot;&quot;</code>や<code>'\''</code>で表します。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
-    // You can use escapes to write bytes by their hexadecimal values...
+    // 16進数で文字を一つ一つ書くこともできます...
     let byte_escape = &quot;I'm writing \x52\x75\x73\x74!&quot;;
     println!(&quot;What are you doing\x3F (\\x3F means ?) {}&quot;, byte_escape);
 
-    // ...or Unicode code points.
+    // ...Unicodeコードポイントも使えます。
     let unicode_codepoint = &quot;\u{211D}&quot;;
     let character_name = &quot;\&quot;DOUBLE-STRUCK CAPITAL R\&quot;&quot;;
 
@@ -7390,52 +7386,52 @@ escape it with another one: <code>\\</code></p>
                 unicode_codepoint, character_name );
 
 
-    let long_string = &quot;String literals
+    let long_string = &quot;String literals  // 文字列リテラルは改行やインデントもエスケープできます。
                         can span multiple lines.
                         The linebreak and indentation here -&gt;\
                         &lt;- can be escaped too!&quot;;
     println!(&quot;{}&quot;, long_string);
 }
 </code></pre></pre>
-<p>Sometimes there are just too many characters that need to be escaped or it's just
-much more convenient to write a string out as-is. This is where raw string literals come into play.</p>
+<p>エスケープに使われる文字をたくさん使った文字列を書きたいときもあります。
+この場合はRaw文字列リテラルを使います。</p>
 <pre><pre class="playpen"><code class="language-rust editable">fn main() {
     let raw_str = r&quot;Escapes don't work here: \x3F \u{211D}&quot;;
     println!(&quot;{}&quot;, raw_str);
 
-    // If you need quotes in a raw string, add a pair of #s
+    // Raw1文字列にクオートを使うときは、#で囲みます。
     let quotes = r#&quot;And then I said: &quot;There is no escape!&quot;&quot;#;
     println!(&quot;{}&quot;, quotes);
 
-    // If you need &quot;# in your string, just use more #s in the delimiter.
-    // There is no limit for the number of #s you can use.
+    // &quot;も#も使う場合は、さらに#を重ねてください。
+    // #の重ねられる数に上限はありません。
     let longer_delimiter = r###&quot;A string with &quot;# in it. And even &quot;##!&quot;###;
     println!(&quot;{}&quot;, longer_delimiter);
 }
 </code></pre></pre>
-<p>Want a string that's not UTF-8? (Remember, <code>str</code> and <code>String</code> must be valid UTF-8).
-Or maybe you want an array of bytes that's mostly text? Byte strings to the rescue!</p>
+<p>UTF-8出ない文字列を使いたいですか? (<code>str</code>と<code>String</code>はUTF-8でないといけません)
+またはバイト列を文字列として使いたいですか? バイト文字列が使えます!</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::str;
 
 fn main() {
-    // Note that this is not actually a `&amp;str`
+    // これは`&amp;str`ではありません。
     let bytestring: &amp;[u8; 21] = b&quot;this is a byte string&quot;;
 
-    // Byte arrays don't have the `Display` trait, so printing them is a bit limited
+    // バイト列は`Display`トレイトを持っていないので、出力は多少難しいです。
     println!(&quot;A byte string: {:?}&quot;, bytestring);
 
-    // Byte strings can have byte escapes...
+    // バイト文字列はバイトエスケープができます...
     let escaped = b&quot;\x52\x75\x73\x74 as bytes&quot;;
-    // ...but no unicode escapes
+    // ...しかしユニコードエスケープはできません
     // let escaped = b&quot;\u{211D} is not allowed&quot;;
     println!(&quot;Some escaped bytes: {:?}&quot;, escaped);
 
 
-    // Raw byte strings work just like raw strings
+    // Rawバイト列もRaw文字列のように使えます。
     let raw_bytestring = br&quot;\u{211D} is not escaped here&quot;;
     println!(&quot;{:?}&quot;, raw_bytestring);
 
-    // Converting a byte array to `str` can fail
+    // バイト列から`str`への変換は時々失敗します。
     if let Ok(my_str) = str::from_utf8(raw_bytestring) {
         println!(&quot;And the same as text: '{}'&quot;, my_str);
     }
@@ -7443,41 +7439,41 @@ fn main() {
     let _quotes = br#&quot;You can also use &quot;fancier&quot; formatting, \
                     like with normal raw strings&quot;#;
 
-    // Byte strings don't have to be UTF-8
-    let shift_jis = b&quot;\x82\xe6\x82\xa8\x82\xb1\x82\xbb&quot;; // &quot;ようこそ&quot; in SHIFT-JIS
+    // バイト文字列はUTF-8である必要はありません。
+    let shift_jis = b&quot;\x82\xe6\x82\xa8\x82\xb1\x82\xbb&quot;; // Shift-JISで&quot;ようこそ&quot;
 
-    // But then they can't always be converted to `str`
+    // しかし`str`には変換できません
     match str::from_utf8(shift_jis) {
         Ok(my_str) =&gt; println!(&quot;Conversion successful: '{}'&quot;, my_str),
         Err(e) =&gt; println!(&quot;Conversion failed: {:?}&quot;, e),
     };
 }
 </code></pre></pre>
-<p>For conversions between character encodings check out the <a href="https://crates.io/crates/encoding">encoding</a> crate.</p>
-<p>A more detailed listing of the ways to write string literals and escape characters
-is given in the <a href="https://doc.rust-lang.org/reference/tokens.html">'Tokens' chapter</a> of the Rust Reference.</p>
+<p>エンコードの違う文字列を変換するには<a href="https://crates.io/crates/encoding">encoding</a>クレートを使用します。</p>
+<p>リテラルの書き方やエスケープシーケンスの詳細はRustリファレンスの
+<a href="https://doc.rust-lang.org/reference/tokens.html">'Tokens'</a>章を参照してください。</p>
 <h1><a class="header" href="#option" id="option"><code>Option</code></a></h1>
-<p>Sometimes it's desirable to catch the failure of some parts of a program
-instead of calling <code>panic!</code>; this can be accomplished using the <code>Option</code> enum.</p>
-<p>The <code>Option&lt;T&gt;</code> enum has two variants:</p>
+<p>時々<code>panic!</code>を使わずにエラーを処理したいことがあります。
+これは<code>Option</code>enumを使うことで実現できます。</p>
+<p><code>Option&lt;T&gt;</code>は2つの列挙子を持ちます。</p>
 <ul>
-<li><code>None</code>, to indicate failure or lack of value, and</li>
-<li><code>Some(value)</code>, a tuple struct that wraps a <code>value</code> with type <code>T</code>.</li>
+<li><code>None</code>は値がないことをあらわし、</li>
+<li><code>Some(value)</code>は<code>T</code>型の<code>value</code>を持つタプル構造体です。</li>
 </ul>
-<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// An integer division that doesn't `panic!`
+<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// `panic!`しない整数の割り算
 fn checked_division(dividend: i32, divisor: i32) -&gt; Option&lt;i32&gt; {
     if divisor == 0 {
-        // Failure is represented as the `None` variant
+        // 失敗したときは`None`列挙子を返す
         None
     } else {
-        // Result is wrapped in a `Some` variant
+        // 結果は`Some`列挙子に入れて返します
         Some(dividend / divisor)
     }
 }
 
-// This function handles a division that may not succeed
+// この関数は割り算が成功したか確認します。
 fn try_division(dividend: i32, divisor: i32) {
-    // `Option` values can be pattern matched, just like other enums
+    // `Option`の値は他のenumと同じようにパターンマッチできる。
     match checked_division(dividend, divisor) {
         None =&gt; println!(&quot;{} / {} failed!&quot;, dividend, divisor),
         Some(quotient) =&gt; {
@@ -7490,33 +7486,30 @@ fn main() {
     try_division(4, 2);
     try_division(1, 0);
 
-    // Binding `None` to a variable needs to be type annotated
+    // `None`を変数に代入する時は型注釈が必要です
     let none: Option&lt;i32&gt; = None;
     let _equivalent_none = None::&lt;i32&gt;;
 
     let optional_float = Some(0f32);
 
-    // Unwrapping a `Some` variant will extract the value wrapped.
+    // `Some`列挙子でラップされた値を取り出す。
     println!(&quot;{:?} unwraps to {:?}&quot;, optional_float, optional_float.unwrap());
 
-    // Unwrapping a `None` variant will `panic!`
+    // `None`列挙子だった場合は`panic!`する
     println!(&quot;{:?} unwraps to {:?}&quot;, none, none.unwrap());
 }
 </code></pre></pre>
 <h1><a class="header" href="#result-1" id="result-1"><code>Result</code></a></h1>
-<p>We've seen that the <code>Option</code> enum can be used as a return value from functions
-that may fail, where <code>None</code> can be returned to indicate failure. However,
-sometimes it is important to express <em>why</em> an operation failed. To do this we 
-have the <code>Result</code> enum.</p>
-<p>The <code>Result&lt;T, E&gt;</code> enum has two variants:</p>
+<p><code>Option</code>enumで失敗する可能性のある関数から値を返すことができました。
+その場合、失敗したときは<code>None</code>を返します。しかし、しばしば<em>なぜ</em>関数が
+失敗したのかが重要になってくることがあります。これは<code>Result</code>enumで表現します。</p>
+<p><code>Result&lt;T, E&gt;</code>enumは2つの列挙子を持ちます。</p>
 <ul>
-<li><code>Ok(value)</code> which indicates that the operation succeeded, and wraps the
-<code>value</code> returned by the operation. (<code>value</code> has type <code>T</code>)</li>
-<li><code>Err(why)</code>, which indicates that the operation failed, and wraps <code>why</code>,
-which (hopefully) explains the cause of the failure. (<code>why</code> has type <code>E</code>)</li>
+<li><code>Ok(value)</code>は成功時に返され、<code>T</code>型の値<code>value</code>には結果が入ります。</li>
+<li><code>Err(why)</code>は失敗時に返され、<code>E</code>型の値<code>why</code>には失敗の原因が入ります。</li>
 </ul>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">mod checked {
-    // Mathematical &quot;errors&quot; we want to catch
+    // 数学的な「エラー」をキャッチする
     #[derive(Debug)]
     pub enum MathError {
         DivisionByZero,
@@ -7528,11 +7521,11 @@ which (hopefully) explains the cause of the failure. (<code>why</code> has type 
 
     pub fn div(x: f64, y: f64) -&gt; MathResult {
         if y == 0.0 {
-            // This operation would `fail`, instead let's return the reason of
-            // the failure wrapped in `Err`
+            // この操作は失敗なので、失敗の原因を`Err`
+            // に入れて返します。
             Err(MathError::DivisionByZero)
         } else {
-            // This operation is valid, return the result wrapped in `Ok`
+            // この操作は成功なので、結果を`Ok`に入れて返します。
             Ok(x / y)
         }
     }
@@ -7554,9 +7547,9 @@ which (hopefully) explains the cause of the failure. (<code>why</code> has type 
     }
 }
 
-// `op(x, y)` === `sqrt(ln(x / y))`
+// `op(x, y)`と`sqrt(ln(x / y))`は等価です
 fn op(x: f64, y: f64) -&gt; f64 {
-    // This is a three level match pyramid!
+    // 3段階matchピラミッドです!
     match checked::div(x, y) {
         Err(why) =&gt; panic!(&quot;{:?}&quot;, why),
         Ok(ratio) =&gt; match checked::ln(ratio) {
@@ -7570,16 +7563,14 @@ fn op(x: f64, y: f64) -&gt; f64 {
 }
 
 fn main() {
-    // Will this fail?
+    // 失敗しますか?
     println!(&quot;{}&quot;, op(1.0, 10.0));
 }
 </code></pre></pre>
 <h1><a class="header" href="#" id=""><code>?</code></a></h1>
-<p>Chaining results using match can get pretty untidy; luckily, the <code>?</code> operator
-can be used to make things pretty again. <code>?</code> is used at the end of an expression
-returning a <code>Result</code>, and is equivalent to a match expression, where the 
-<code>Err(err)</code> branch expands to an early <code>Err(From::from(err))</code>, and the <code>Ok(ok)</code>
-branch expands to an <code>ok</code> expression.</p>
+<p>Resultの処理をチェーンすると、だらしないです。幸運なことに、<code>?</code>演算子を使えば
+きれいに書くことができます。<code>Result</code>を返す<code>?</code>を式の最後につけると、match式のように、
+<code>Err(err)</code>ならば<code>Err(From::from(err))</code>を返して関数を終了し、<code>Ok(ok)</code>ならば<code>ok</code>を返します。</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">mod checked {
     #[derive(Debug)]
     enum MathError {
@@ -7614,12 +7605,12 @@ branch expands to an <code>ok</code> expression.</p>
         }
     }
 
-    // Intermediate function
+    // 中間関数
     fn op_(x: f64, y: f64) -&gt; MathResult {
-        // if `div` &quot;fails&quot;, then `DivisionByZero` will be `return`ed
+        // `div`が失敗したら、`DivisionByZero`が`return`される
         let ratio = div(x, y)?;
 
-        // if `ln` &quot;fails&quot;, then `NonPositiveLogarithm` will be `return`ed
+        // `ln`が失敗したら、`NonPositiveLogarithm`が`return`される
         let ln = ln(ratio)?;
 
         sqrt(ln)
@@ -7644,38 +7635,38 @@ fn main() {
     checked::op(1.0, 10.0);
 }
 </code></pre></pre>
-<p>Be sure to check the <a href="https://doc.rust-lang.org/std/result/index.html">documentation</a>,
-as there are many methods to map/compose <code>Result</code>.</p>
+<p><a href="https://doc.rust-lang.org/std/result/index.html">ドキュメンテーション</a>を参照し、<code>Result</code>を
+操作するたくさんのメソッドを探してみてください。</p>
 <h1><a class="header" href="#panic-1" id="panic-1"><code>panic!</code></a></h1>
-<p>The <code>panic!</code> macro can be used to generate a panic and start unwinding
-its stack. While unwinding, the runtime will take care of freeing all the
-resources <em>owned</em> by the thread by calling the destructor of all its objects.</p>
-<p>Since we are dealing with programs with only one thread, <code>panic!</code> will cause the
-program to report the panic message and exit.</p>
-<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// Re-implementation of integer division (/)
+<p><code>panic!</code>マクロでパニックを生成し、スタックを巻き戻すことができます。
+スタックを巻き戻すときは、スレッド内の全てのリソースのデストラクタを
+呼び出してメモリを開放します。</p>
+<p>プログラムを1スレッドで管理しているので、<code>panic!</code>はパニックメッセージ
+を表示して終了します。</p>
+<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// 整数除算(/)の再実装
 fn division(dividend: i32, divisor: i32) -&gt; i32 {
     if divisor == 0 {
-        // Division by zero triggers a panic
+        // 0で割るとパニックする
         panic!(&quot;division by zero&quot;);
     } else {
         dividend / divisor
     }
 }
 
-// The `main` task
+// `main`タスク
 fn main() {
-    // Heap allocated integer
+    // ヒープに整数を確保する
     let _x = Box::new(0i32);
 
-    // This operation will trigger a task failure
+    // この操作は失敗する。
     division(3, 0);
 
-    println!(&quot;This point won't be reached!&quot;);
+    println!(&quot;This point won't be reached!&quot;);  // ここにはたどり着きません!
 
-    // `_x` should get destroyed at this point
+    // `_x`はここで開放されるはずです。
 }
 </code></pre></pre>
-<p>Let's check that <code>panic!</code> doesn't leak memory.</p>
+<p><code>panic!</code>がメモリリークを起こしていないことを確認しましょう。</p>
 <pre><code class="language-shell">$ rustc panic.rs &amp;&amp; valgrind ./panic
 ==4401== Memcheck, a memory error detector
 ==4401== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.
@@ -7693,25 +7684,22 @@ thread '&lt;main&gt;' panicked at 'division by zero', panic.rs:5
 ==4401== For counts of detected and suppressed errors, rerun with: -v
 ==4401== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 </code></pre>
-<h1><a class="header" href="#hashmap" id="hashmap">HashMap</a></h1>
-<p>Where vectors store values by an integer index, <code>HashMap</code>s store values by key. 
-<code>HashMap</code> keys can be booleans, integers, strings, 
-or any other type that implements the <code>Eq</code> and <code>Hash</code> traits. 
-More on this in the next section.</p>
-<p>Like vectors, <code>HashMap</code>s are growable, but HashMaps can also shrink themselves 
-when they have excess space. 
-You can create a HashMap with a certain starting capacity using 
-<code>HashMap::with_capacity(uint)</code>, or use <code>HashMap::new()</code> to get a HashMap 
-with a default initial capacity (recommended).</p>
+<h1><a class="header" href="#ハッシュマップ" id="ハッシュマップ">ハッシュマップ</a></h1>
+<p>ベクターは整数でインデックスを管理しましたが、<code>HashMap</code>はキーで値を保持します。
+<code>HashMap</code>キーは、真偽値、整数、文字列など、<code>Eq</code>トレイトと<code>Hash</code>トレイトを実装する
+すべての型をキーにできます。これについては次の節で詳しく扱います。</p>
+<p>ベクターのように、<code>HashMap</code>は拡張でき、さらに余分なスペースを縮小できます。
+容量を指定して<code>HashMap::with_capacity(uint)</code>とするか、<code>HashMap::new()</code>で
+デフォルト容量でHashMapを初期化する(推奨)ことで、HashMapを作ることができます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::collections::HashMap;
 
 fn call(number: &amp;str) -&gt; &amp;str {
     match number {
-        &quot;798-1364&quot; =&gt; &quot;We're sorry, the call cannot be completed as dialed. 
-            Please hang up and try again.&quot;,
+        &quot;798-1364&quot; =&gt; &quot;We're sorry, the call cannot be completed as dialed.  
+            Please hang up and try again.&quot;,  // ただいま電話に出ることができません。しばらくしてもう一度おかけください。
         &quot;645-7689&quot; =&gt; &quot;Hello, this is Mr. Awesome's Pizza. My name is Fred.
-            What can I get for you today?&quot;,
-        _ =&gt; &quot;Hi! Who is this again?&quot;
+            What can I get for you today?&quot;,  // こんにちは。Mr. Awesome's PizzaのFredです。何をご注文されますか?
+        _ =&gt; &quot;Hi! Who is this again?&quot;  // もしもし、誰ですか?
     }
 }
 
@@ -7723,13 +7711,13 @@ fn main() {
     contacts.insert(&quot;Katie&quot;, &quot;435-8291&quot;);
     contacts.insert(&quot;Robert&quot;, &quot;956-1745&quot;);
 
-    // Takes a reference and returns Option&lt;&amp;V&gt;
+    // 参照をとり、Option&lt;&amp;V&gt;を返す
     match contacts.get(&amp;&quot;Daniel&quot;) {
         Some(&amp;number) =&gt; println!(&quot;Calling Daniel: {}&quot;, call(number)),
-        _ =&gt; println!(&quot;Don't have Daniel's number.&quot;),
+        _ =&gt; println!(&quot;Don't have Daniel's number.&quot;),  // Danielの番号を持っていません
     }
 
-    // `HashMap::insert()` returns `None`
+    // `HashMap::insert()`は`None`を返す
     // if the inserted value is new, `Some(value)` otherwise
     contacts.insert(&quot;Daniel&quot;, &quot;164-6743&quot;);
 
@@ -7740,41 +7728,40 @@ fn main() {
 
     contacts.remove(&amp;&quot;Ashley&quot;); 
 
-    // `HashMap::iter()` returns an iterator that yields 
-    // (&amp;'a key, &amp;'a value) pairs in arbitrary order.
+    // `HashMap::iter()`はイテレータを返します。
+    // (&amp;'a key, &amp;'a value)は順番になる。
     for (contact, &amp;number) in contacts.iter() {
         println!(&quot;Calling {}: {}&quot;, contact, call(number)); 
     }
 }
 </code></pre></pre>
-<p>For more information on how hashing and hash maps 
-(sometimes called hash tables) work, have a look at 
-<a href="https://en.wikipedia.org/wiki/Hash_table">Hash Table Wikipedia</a></p>
-<h1><a class="header" href="#alternatecustom-key-types" id="alternatecustom-key-types">Alternate/custom key types</a></h1>
-<p>Any type that implements the <code>Eq</code> and <code>Hash</code> traits can be a key in <code>HashMap</code>. 
-This includes:</p>
+<p>ハッシュやハッシュマップ(ハッシュテーブルとも呼ばれます)
+についての詳しい情報は、<a href="https://en.wikipedia.org/wiki/Hash_table">Hash Table Wikipedia</a>
+を参照してください。</p>
+<h1><a class="header" href="#独自のキーの型" id="独自のキーの型">独自のキーの型</a></h1>
+<p><code>Eq</code>トレイトと<code>Hash</code>トレイトを実装しているすべての型は<code>HashMap</code>の
+キーとして使用できます。</p>
 <ul>
-<li><code>bool</code> (though not very useful since there is only two possible keys)</li>
-<li><code>int</code>, <code>uint</code>, and all variations thereof</li>
-<li><code>String</code> and <code>&amp;str</code> (protip: you can have a <code>HashMap</code> keyed by <code>String</code>
-and call <code>.get()</code> with an <code>&amp;str</code>)</li>
+<li><code>bool</code> (値を2つしか保持できないので使えないと思います)</li>
+<li><code>int</code>、<code>uint</code>などのすべての整数型</li>
+<li><code>String</code>や<code>&amp;str</code> (<code>String</code>をキーとする<code>HashMap</code>で<code>.get()</code>を
+呼び出すと<code>&amp;str</code>が帰ってきます。</li>
 </ul>
-<p>Note that <code>f32</code> and <code>f64</code> do <em>not</em> implement <code>Hash</code>,
-likely because <a href="https://en.wikipedia.org/wiki/Floating_point#Accuracy_problems">floating-point precision errors</a>
-would make using them as hashmap keys horribly error-prone.</p>
-<p>All collection classes implement <code>Eq</code> and <code>Hash</code> 
-if their contained type also respectively implements <code>Eq</code> and <code>Hash</code>. 
-For example, <code>Vec&lt;T&gt;</code> will implement <code>Hash</code> if <code>T</code> implements <code>Hash</code>.</p>
-<p>You can easily implement <code>Eq</code> and <code>Hash</code> for a custom type with just one line: 
+<p><code>f32</code>と<code>f64</code>は<a href="https://en.wikipedia.org/wiki/Floating_point#Accuracy_problems">浮動小数点の精度エラー</a>
+が出る可能性があるため、<code>Hash</code>を実装していません。
+そのため、hashmapには使用できません。</p>
+<p>すべてのコレクションは<code>Eq</code>と<code>Hash</code>を実装している場合があります、例えば、
+<code>T</code>が<code>Hash</code>を実装している時、<code>Vec&lt;T&gt;</code>にも<code>Hash</code>が実装されます。</p>
+<p>この一行で簡単にカスタム型に<code>Eq</code>と<code>Hash</code>を実装することができます。
 <code>#[derive(PartialEq, Eq, Hash)]</code></p>
-<p>The compiler will do the rest. If you want more control over the details, 
-you can implement <code>Eq</code> and/or <code>Hash</code> yourself. 
-This guide will not cover the specifics of implementing <code>Hash</code>. </p>
-<p>To play around with using a <code>struct</code> in <code>HashMap</code>, 
-let's try making a very simple user logon system:</p>
+<p>後はコンパイラが勝手にやってくれます。もっと詳細に制御したい場合は、
+自分で<code>Eq</code>や<code>Hash</code>を実装することもできます。このガイドでは<code>Hash</code>の
+実装方法については触れません。</p>
+<p><code>struct</code>を<code>HashMap</code>に対して使い、シンプルなユーザーログオン
+システムを作ってみましょう。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::collections::HashMap;
 
-// Eq requires that you derive PartialEq on the type.
+// Eqを継承するには、PartialEqが実装されている必要があります。
 #[derive(PartialEq, Eq, Hash)]
 struct Account&lt;'a&gt;{
     username: &amp;'a str,
@@ -7829,37 +7816,36 @@ fn main(){
     try_logon(&amp;accounts, &quot;j.everyman&quot;, &quot;password123&quot;);
 }
 </code></pre></pre>
-<h1><a class="header" href="#hashset" id="hashset">HashSet</a></h1>
-<p>Consider a <code>HashSet</code> as a <code>HashMap</code> where we just care about the keys (
-<code>HashSet&lt;T&gt;</code> is, in actuality, just a wrapper around <code>HashMap&lt;T, ()&gt;</code>).</p>
-<p>&quot;What's the point of that?&quot; you ask. &quot;I could just store the keys in a <code>Vec</code>.&quot;</p>
-<p>A <code>HashSet</code>'s unique feature is that 
-it is guaranteed to not have duplicate elements. 
-That's the contract that any set collection fulfills. 
-<code>HashSet</code> is just one implementation. (see also: <a href="https://doc.rust-lang.org/std/collections/struct.BTreeSet.html"><code>BTreeSet</code></a>)</p>
-<p>If you insert a value that is already present in the <code>HashSet</code>, 
-(i.e. the new value is equal to the existing and they both have the same hash), 
-then the new value will replace the old.</p>
-<p>This is great for when you never want more than one of something, 
-or when you want to know if you've already got something.</p>
-<p>But sets can do more than that. </p>
-<p>Sets have 4 primary operations (all of the following calls return an iterator):</p>
+<h1><a class="header" href="#ハッシュセット" id="ハッシュセット">ハッシュセット</a></h1>
+<p><code>HashSet</code>は、キーしか持たない<code>HashMap</code>で、<code>HashSet&lt;T&gt;</code>は、実際には
+<code>HashMap&lt;T, ()&gt;</code>のラップです。</p>
+<p>「何が特殊なの?」「キーを<code>Vec</code>に入れたら良いじゃないか。」と思うかもしれません。</p>
+<p><code>HashSet</code>特有の機能は、重複した要素を持たないことが保証されていることです。
+これが他のコレクションとの大きな違いです。<code>HashSet</code>はその一つの実装にしか
+過ぎません。(こちらも参照: <a href="https://doc.rust-lang.org/std/collections/struct.BTreeSet.html"><code>BTreeSet</code></a>)</p>
+<p>すでに存在する値を<code>HashSet</code>に挿入した場合はどうなるのでしょうか。(これは同じ
+ハッシュを持つ新しい値を代入するのと同じなので)このとき、新しい値が古い値を
+置き換えます。</p>
+<p>これは2回以上同じことをしたくないときや、すでに知っているものをもう一度取得したくない
+場合に役立ちます。</p>
+<p>HashSetはさらに多くのことができます。</p>
+<p>HashSetは以下の4つの操作を持っています(すべてイテレータを返します。)</p>
 <ul>
 <li>
-<p><code>union</code>: get all the unique elements in both sets.</p>
+<p><code>union</code>: 2つの集合から重複しない要素を取り出す。</p>
 </li>
 <li>
-<p><code>difference</code>: get all the elements that are in the first set but not the second.</p>
+<p><code>difference</code>: 最初の集合にあって、2つ目にない要素をすべて取り出す。</p>
 </li>
 <li>
-<p><code>intersection</code>: get all the elements that are only in <em>both</em> sets.</p>
+<p><code>intersection</code>: 両方の集合にある要素を取り出す。</p>
 </li>
 <li>
 <p><code>symmetric_difference</code>: 
-get all the elements that are in one set or the other, but <em>not</em> both.</p>
+2つの集合の内一つにはあるが、両方には無いものをすべて取り出す。</p>
 </li>
 </ul>
-<p>Try all of these in the following example:</p>
+<p>以下の例で全て試してみましょう:</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">use std::collections::HashSet;
 
 fn main() {
@@ -7869,38 +7855,39 @@ fn main() {
     assert!(a.insert(4));
     assert!(a.contains(&amp;4));
 
-    // `HashSet::insert()` returns false if
-    // there was a value already present.
+    // `HashSet::insert()`はすでに値が存在する時
+    // falseを返す。
     assert!(b.insert(4), &quot;Value 4 is already in set B!&quot;);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください。
 
     b.insert(5);
 
-    // If a collection's element type implements `Debug`,
-    // then the collection implements `Debug`.
-    // It usually prints its elements in the format `[elem1, elem2, ...]`
+    // 要素の型が`Debug`を実装していれば、
+    // そのコレクションも`Debug`を実装する。
+    // 普通`[elem1, elem2, ...]`のように出力される。
     println!(&quot;A: {:?}&quot;, a);
     println!(&quot;B: {:?}&quot;, b);
 
-    // Print [1, 2, 3, 4, 5] in arbitrary order
+    // [1, 2, 3, 4, 5]を順番に出力する。
     println!(&quot;Union: {:?}&quot;, a.union(&amp;b).collect::&lt;Vec&lt;&amp;i32&gt;&gt;());
 
-    // This should print [1]
+    // これは[1]を出力する
     println!(&quot;Difference: {:?}&quot;, a.difference(&amp;b).collect::&lt;Vec&lt;&amp;i32&gt;&gt;());
 
-    // Print [2, 3, 4] in arbitrary order.
+    // これは[2, 3, 4]を順番に出力する。
     println!(&quot;Intersection: {:?}&quot;, a.intersection(&amp;b).collect::&lt;Vec&lt;&amp;i32&gt;&gt;());
 
-    // Print [1, 5]
+    // [1, 5]を出力する。
     println!(&quot;Symmetric Difference: {:?}&quot;,
              a.symmetric_difference(&amp;b).collect::&lt;Vec&lt;&amp;i32&gt;&gt;());
 }
 </code></pre></pre>
-<p>(Examples are adapted from the <a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.difference">documentation.</a>)</p>
+<p>(サンプルはHashSetの<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.difference">ドキュメント</a>から拝借しました。)</p>
 <h1><a class="header" href="#rc" id="rc"><code>Rc</code></a></h1>
-<p>When multiple ownership is needed, <code>Rc</code>(Reference Counting) can be used. <code>Rc</code> keeps track of the number of the references which means the number of owners of the value wrapped inside an <code>Rc</code>. </p>
-<p>Reference count of an <code>Rc</code> increases by 1 whenever an <code>Rc</code> is cloned, and decreases by 1 whenever one cloned <code>Rc</code> is dropped out of the scope. When an <code>Rc</code>'s reference count becomes zero, which means there are no owners remained, both the <code>Rc</code> and the value are all dropped. </p>
-<p>Cloning an <code>Rc</code> never do a deep copy. Cloning creates just another pointer to the wrapped value, and increments the count.</p>
+<p>複数のの所有権が必要な場合、<code>Rc</code>(Reference Counting、参照カウント)が使えます。<code>Rc</code>は内部に保持している値がいくつの場所から使用されているのかを記録しています。 </p>
+<p><code>Rc</code>が複製された時カウントが1増え、<code>Rc</code>がスコープの外にdropされた時、カウントが1減ります。
+カウントが0になった時、所有権は残っていないことを意味するため、値が開放されます。</p>
+<p><code>Rc</code>を複製してもコピーは作りません。複製したらもう一つのポインタを作り、カウントを増やすだけです。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::rc::Rc;
 
 fn main() {
@@ -7918,10 +7905,10 @@ fn main() {
             println!(&quot;Reference Count of rc_b: {}&quot;, Rc::strong_count(&amp;rc_b));
             println!(&quot;Reference Count of rc_a: {}&quot;, Rc::strong_count(&amp;rc_a));
             
-            // Two `Rc`s are equal if their inner values are equal
+            // `Rc`中の値が等しい時、Rcは等しいです。
             println!(&quot;rc_a and rc_b are equal: {}&quot;, rc_a.eq(&amp;rc_b));
             
-            // We can use methods of a value directly
+            // 値のメソッドを直接呼び出すことができます。
             println!(&quot;Length of the value inside rc_a: {}&quot;, rc_a.len());
             println!(&quot;Value of rc_b: {}&quot;, rc_b);
             
@@ -7933,14 +7920,17 @@ fn main() {
         println!(&quot;--- rc_a is dropped out of scope ---&quot;);
     }
     
-    // Error! `rc_examples` already moved into `rc_a`
-    // And when `rc_a` is dropped, `rc_examples` is dropped together
+    // エラー! `rc_examples`はすでに`rc_a`にムーブされています。
+    // `rc_a`がドロップされた時、`rc_examples`もドロップされます。
     // println!(&quot;rc_examples: {}&quot;, rc_examples);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください。
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also-2" id="see-also-2">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/rc/index.html">std::rc</a> and <a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a>.</p>
+<h3><a class="header" href="#こちらも参照-64" id="こちらも参照-64">こちらも参照:</a></h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/rc/index.html">std::rc</a></li>
+<li><a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a></li>
+</ul>
 <h1><a class="header" href="#std-misc" id="std-misc">Std misc</a></h1>
 <p>Many other types are provided by the std library to support
 things such as:</p>
@@ -7950,7 +7940,7 @@ things such as:</p>
 <li>File I/O</li>
 </ul>
 <p>These expand beyond what the <a href="primitives.html">primitives</a> provide.</p>
-<h3><a class="header" href="#see-also-3" id="see-also-3">See also:</a></h3>
+<h3><a class="header" href="#see-also-1" id="see-also-1">See also:</a></h3>
 <p><a href="primitives.html">primitives</a> and <a href="https://doc.rust-lang.org/std/">the std library</a></p>
 <h1><a class="header" href="#threads" id="threads">Threads</a></h1>
 <p>Rust provides a mechanism for spawning native OS threads via the <code>spawn</code>
@@ -8102,7 +8092,7 @@ fn main() {
 What if the user decides to insert a lot of spaces? Do we <em>really</em> want to spawn 2,000 threads?
 Modify the program so that the data is always chunked into a limited number of chunks,
 defined by a static constant at the beginning of the program.</p>
-<h3><a class="header" href="#see-also-4" id="see-also-4">See also:</a></h3>
+<h3><a class="header" href="#see-also-2" id="see-also-2">See also:</a></h3>
 <ul>
 <li><a href="std_misc/threads/../threads.html">Threads</a></li>
 <li><a href="std_misc/threads/../../std/vec.html">vectors</a> and <a href="std_misc/threads/../../trait/iter.html">iterators</a></li>
@@ -8197,7 +8187,7 @@ fn main() {
 </code></pre></pre>
 <p>Be sure to check at other <code>Path</code> methods (<code>posix::Path</code> or <code>windows::Path</code>) and
 the <code>Metadata</code> struct.</p>
-<h3><a class="header" href="#see-also-5" id="see-also-5">See also:</a></h3>
+<h3><a class="header" href="#see-also-3" id="see-also-3">See also:</a></h3>
 <p><a href="https://doc.rust-lang.org/std/ffi/struct.OsStr.html">OsStr</a> and <a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">Metadata</a>.</p>
 <h1><a class="header" href="#file-io" id="file-io">File I/O</a></h1>
 <p>The <code>File</code> struct represents a file that has been opened (it wraps a file
@@ -8542,7 +8532,7 @@ a
     Ok(s)
 }
 </code></pre>
-<h3><a class="header" href="#see-also-6" id="see-also-6">See also:</a></h3>
+<h3><a class="header" href="#see-also-4" id="see-also-4">See also:</a></h3>
 <p><a href="std_misc/../attribute/cfg.html"><code>cfg!</code></a></p>
 <h1><a class="header" href="#program-arguments" id="program-arguments">Program arguments</a></h1>
 <h2><a class="header" href="#standard-library" id="standard-library">Standard Library</a></h2>
@@ -8726,7 +8716,7 @@ impl fmt::Debug for Complex {
 <ul>
 <li><a href="testing/dev_dependencies.html">Dev-dependencies</a></li>
 </ul>
-<h2><a class="header" href="#こちらも参照-63" id="こちらも参照-63">こちらも参照</a></h2>
+<h2><a class="header" href="#こちらも参照-65" id="こちらも参照-65">こちらも参照</a></h2>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch11-00-testing.html">The Book</a>のテストの章</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a>のdoc-testの章</li>
@@ -9044,7 +9034,7 @@ pub fn try_div(a: i32, b: i32) -&gt; Result&lt;i32, String&gt; {
     }
 }
 </code></pre>
-<h2><a class="header" href="#こちらも参照-64" id="こちらも参照-64">こちらも参照</a></h2>
+<h2><a class="header" href="#こちらも参照-66" id="こちらも参照-66">こちらも参照</a></h2>
 <ul>
 <li><a href="https://github.com/rust-lang/rfcs/blob/master/text/0505-api-comment-conventions.md">RFC505</a>のドキュメンテーションスタイル</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a>のドキュメンテーションガイドライン</li>
@@ -9145,7 +9135,7 @@ mod tests {
     }
 }
 </code></pre>
-<h2><a class="header" href="#こちらも参照-65" id="こちらも参照-65">こちらも参照</a></h2>
+<h2><a class="header" href="#こちらも参照-67" id="こちらも参照-67">こちらも参照</a></h2>
 <p><a href="http://doc.crates.io/specifying-dependencies.html">Cargo</a>のドキュメントの「依存を指定する」章</p>
 <h1><a class="header" href="#安全でない操作" id="安全でない操作">安全でない操作</a></h1>
 <p>この節では、まず<a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">公式ドキュメント</a>から、「one should try to minimize
@@ -9323,7 +9313,7 @@ pub use self::async_await::*;
 </code></pre>
 <p>ドキュメンテーション用に、<code>rustdoc</code>はコミュニティによって広く使われています。これは<a href="https://doc.rust-lang.org/std/">標準ライブラリのドキュメント
 </a>にも使われています。</p>
-<h3><a class="header" href="#こちらも参照-66" id="こちらも参照-66">こちらも参照:</a></h3>
+<h3><a class="header" href="#こちらも参照-68" id="こちらも参照-68">こちらも参照:</a></h3>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#making-useful-documentation-comments">The Rust Book: 有用なドキュメンテーションコメントを作る</a></li>
 <li><a href="https://doc.rust-lang.org/rustdoc/index.html">The rustdoc Book</a></li>
@@ -9356,7 +9346,7 @@ pub use self::async_await::*;
 <p><a href="https://doc.rust-lang.org/core/">公式Rustドキュメント</a>に「Run」というボタンがついているのに気づいた人もいるかもしれません。
 これはサンプルコードをRust Playgroundで新しいタブに開きます。この機能は#[doc]属性の<a href="https://doc.rust-lang.org/rustdoc/the-doc-attribute.html#html_playground_url"><code>html_playground_url</code></a>で
 使うことができます。</p>
-<h3><a class="header" href="#こちらも参照-67" id="こちらも参照-67">こちらも参照:</a></h3>
+<h3><a class="header" href="#こちらも参照-69" id="こちらも参照-69">こちらも参照:</a></h3>
 <ul>
 <li><a href="https://play.rust-lang.org/">Rust Playground</a></li>
 <li><a href="https://github.com/integer32llc/rust-playground/">開発版playpen</a></li>

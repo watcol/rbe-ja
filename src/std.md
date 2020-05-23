@@ -1,17 +1,18 @@
-# Std library types
+# Stdライブラリの型
 
-The `std` library provides many custom types which expands drastically on
-the `primitives`. Some of these include:
+`std`ライブラリはプリミティブを劇的に拡張する多くのカスタム型を
+提供しています。これはそのうちの一つです。
 
-* growable `String`s like: `"hello world"`
-* growable vectors: `[1, 2, 3]`
-* optional types: `Option<i32>`
-* error handling types: `Result<i32, i32>`
-* heap allocated pointers: `Box<i32>`
+* `"hello world"`のような可変長文字列`String`
+* `[1, 2, 3]`のような可変長配列`Vector`
+* `Option<i32>`型
+* エラー制御をする`Result<i32, i32>`型
+* ヒープのポインタ`Box<i32>`型
 
-### See also:
+### こちらも参照:
 
-[primitives] and [the std library][std]
+- [基本型][primitives]
+- [stdライブラリ][std]
 
 [primitives]: primitives.md
 [std]: https://doc.rust-lang.org/std/

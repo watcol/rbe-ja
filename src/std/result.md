@@ -1,20 +1,17 @@
 # `Result`
 
-We've seen that the `Option` enum can be used as a return value from functions
-that may fail, where `None` can be returned to indicate failure. However,
-sometimes it is important to express *why* an operation failed. To do this we 
-have the `Result` enum.
+`Option`enumで失敗する可能性のある関数から値を返すことができました。
+その場合、失敗したときは`None`を返します。しかし、しばしば*なぜ*関数が
+失敗したのかが重要になってくることがあります。これは`Result`enumで表現します。
 
-The `Result<T, E>` enum has two variants:
+`Result<T, E>`enumは2つの列挙子を持ちます。
 
-* `Ok(value)` which indicates that the operation succeeded, and wraps the
-  `value` returned by the operation. (`value` has type `T`)
-* `Err(why)`, which indicates that the operation failed, and wraps `why`,
-  which (hopefully) explains the cause of the failure. (`why` has type `E`)
+* `Ok(value)`は成功時に返され、`T`型の値`value`には結果が入ります。
+* `Err(why)`は失敗時に返され、`E`型の値`why`には失敗の原因が入ります。
 
 ```rust,editable,ignore,mdbook-runnable
 mod checked {
-    // Mathematical "errors" we want to catch
+    // 数学的な「エラー」をキャッチする
     #[derive(Debug)]
     pub enum MathError {
         DivisionByZero,
@@ -26,11 +23,11 @@ mod checked {
 
     pub fn div(x: f64, y: f64) -> MathResult {
         if y == 0.0 {
-            // This operation would `fail`, instead let's return the reason of
-            // the failure wrapped in `Err`
+            // この操作は失敗なので、失敗の原因を`Err`
+            // に入れて返します。
             Err(MathError::DivisionByZero)
         } else {
-            // This operation is valid, return the result wrapped in `Ok`
+            // この操作は成功なので、結果を`Ok`に入れて返します。
             Ok(x / y)
         }
     }
@@ -52,9 +49,9 @@ mod checked {
     }
 }
 
-// `op(x, y)` === `sqrt(ln(x / y))`
+// `op(x, y)`と`sqrt(ln(x / y))`は等価です
 fn op(x: f64, y: f64) -> f64 {
-    // This is a three level match pyramid!
+    // 3段階matchピラミッドです!
     match checked::div(x, y) {
         Err(why) => panic!("{:?}", why),
         Ok(ratio) => match checked::ln(ratio) {
@@ -68,7 +65,7 @@ fn op(x: f64, y: f64) -> f64 {
 }
 
 fn main() {
-    // Will this fail?
+    // 失敗しますか?
     println!("{}", op(1.0, 10.0));
 }
 ```

@@ -1,36 +1,35 @@
-# HashSet
+# ハッシュセット
 
-Consider a `HashSet` as a `HashMap` where we just care about the keys (
-`HashSet<T>` is, in actuality, just a wrapper around `HashMap<T, ()>`).
+`HashSet`は、キーしか持たない`HashMap`で、`HashSet<T>`は、実際には
+`HashMap<T, ()>`のラップです。
 
-"What's the point of that?" you ask. "I could just store the keys in a `Vec`."
+「何が特殊なの?」「キーを`Vec`に入れたら良いじゃないか。」と思うかもしれません。
 
-A `HashSet`'s unique feature is that 
-it is guaranteed to not have duplicate elements. 
-That's the contract that any set collection fulfills. 
-`HashSet` is just one implementation. (see also: [`BTreeSet`][treeset])
+`HashSet`特有の機能は、重複した要素を持たないことが保証されていることです。
+これが他のコレクションとの大きな違いです。`HashSet`はその一つの実装にしか
+過ぎません。(こちらも参照: [`BTreeSet`][treeset])
 
-If you insert a value that is already present in the `HashSet`, 
-(i.e. the new value is equal to the existing and they both have the same hash), 
-then the new value will replace the old.
+すでに存在する値を`HashSet`に挿入した場合はどうなるのでしょうか。(これは同じ
+ハッシュを持つ新しい値を代入するのと同じなので)このとき、新しい値が古い値を
+置き換えます。
 
-This is great for when you never want more than one of something, 
-or when you want to know if you've already got something.
+これは2回以上同じことをしたくないときや、すでに知っているものをもう一度取得したくない
+場合に役立ちます。
 
-But sets can do more than that. 
+HashSetはさらに多くのことができます。
 
-Sets have 4 primary operations (all of the following calls return an iterator):
+HashSetは以下の4つの操作を持っています(すべてイテレータを返します。)
 
-* `union`: get all the unique elements in both sets.
+* `union`: 2つの集合から重複しない要素を取り出す。
 
-* `difference`: get all the elements that are in the first set but not the second.
+* `difference`: 最初の集合にあって、2つ目にない要素をすべて取り出す。
 
-* `intersection`: get all the elements that are only in *both* sets.
+* `intersection`: 両方の集合にある要素を取り出す。
 
 * `symmetric_difference`: 
-get all the elements that are in one set or the other, but *not* both.
+2つの集合の内一つにはあるが、両方には無いものをすべて取り出す。
 
-Try all of these in the following example:
+以下の例で全て試してみましょう:
 
 ```rust,editable,ignore,mdbook-runnable
 use std::collections::HashSet;
@@ -42,35 +41,35 @@ fn main() {
     assert!(a.insert(4));
     assert!(a.contains(&4));
 
-    // `HashSet::insert()` returns false if
-    // there was a value already present.
+    // `HashSet::insert()`はすでに値が存在する時
+    // falseを返す。
     assert!(b.insert(4), "Value 4 is already in set B!");
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください。
 
     b.insert(5);
 
-    // If a collection's element type implements `Debug`,
-    // then the collection implements `Debug`.
-    // It usually prints its elements in the format `[elem1, elem2, ...]`
+    // 要素の型が`Debug`を実装していれば、
+    // そのコレクションも`Debug`を実装する。
+    // 普通`[elem1, elem2, ...]`のように出力される。
     println!("A: {:?}", a);
     println!("B: {:?}", b);
 
-    // Print [1, 2, 3, 4, 5] in arbitrary order
+    // [1, 2, 3, 4, 5]を順番に出力する。
     println!("Union: {:?}", a.union(&b).collect::<Vec<&i32>>());
 
-    // This should print [1]
+    // これは[1]を出力する
     println!("Difference: {:?}", a.difference(&b).collect::<Vec<&i32>>());
 
-    // Print [2, 3, 4] in arbitrary order.
+    // これは[2, 3, 4]を順番に出力する。
     println!("Intersection: {:?}", a.intersection(&b).collect::<Vec<&i32>>());
 
-    // Print [1, 5]
+    // [1, 5]を出力する。
     println!("Symmetric Difference: {:?}",
              a.symmetric_difference(&b).collect::<Vec<&i32>>());
 }
 ```
 
-(Examples are adapted from the [documentation.][hash-set])
+(サンプルはHashSetの[ドキュメント][hash-set]から拝借しました。)
 
 [treeset]: https://doc.rust-lang.org/std/collections/struct.BTreeSet.html
 [hash-set]: https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.difference

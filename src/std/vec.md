@@ -1,62 +1,61 @@
-# Vectors
+# ベクター
 
-Vectors are re-sizable arrays. Like slices, their size is not known at compile
-time, but they can grow or shrink at any time. A vector is represented using
-3 parameters: 
-- pointer to the data
-- length
-- capacity 
+ベクターは可変長の配列です。スライスのように、コンパイル時にはサイズがわかりませんが、
+自由にサイズを伸縮できます。ベクターは次の3要素からなります。
+- データへのポインタ
+- 長さ
+- 容量
 
-The capacity indicates how much memory is reserved for the vector. The vector 
-can grow as long as the length is smaller than the capacity. When this threshold 
-needs to be surpassed, the vector is reallocated with a larger capacity.
+容量は、ベクターにどれだけのメモリが割り当てられているかを表します。容量を超えない
+範囲で、ベクターの長さを伸ばすことができます。これを超える長さが必要になった時、
+ベクターはもっと多い容量の場所へ再確保されます。 
 
 ```rust,editable,ignore,mdbook-runnable
 fn main() {
-    // Iterators can be collected into vectors
+    // イテレータはベクターに変換することができます。
     let collected_iterator: Vec<i32> = (0..10).collect();
     println!("Collected (0..10) into: {:?}", collected_iterator);
 
-    // The `vec!` macro can be used to initialize a vector
+    // `vec!`マクロでベクターを初期化できます。
     let mut xs = vec![1i32, 2, 3];
     println!("Initial vector: {:?}", xs);
 
-    // Insert new element at the end of the vector
+    // ベクターに新しい要素を入れる
     println!("Push 4 into the vector");
     xs.push(4);
     println!("Vector: {:?}", xs);
 
-    // Error! Immutable vectors can't grow
+    // エラー! 不変なベクターは伸ばすことができません。
     collected_iterator.push(0);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください
 
-    // The `len` method yields the number of elements currently stored in a vector
+    // `len`メソッドで現在のベクターの要素数を取得できます。
     println!("Vector length: {}", xs.len());
 
-    // Indexing is done using the square brackets (indexing starts at 0)
+    // 角括弧で要素にアクセスできます。(インデックスは0から始まります)
     println!("Second element: {}", xs[1]);
 
-    // `pop` removes the last element from the vector and returns it
+    // `pop`はベクターから最後の要素を消し、それを返します。
     println!("Pop last element: {:?}", xs.pop());
 
-    // Out of bounds indexing yields a panic
+    // 長さ以上のインデックスを指定するとパニックします。
     println!("Fourth element: {}", xs[3]);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください
 
-    // `Vector`s can be easily iterated over
+    // `Vector`は簡単にイテレーションできます。
     println!("Contents of xs:");
     for x in xs.iter() {
         println!("> {}", x);
     }
 
-    // A `Vector` can also be iterated over while the iteration
-    // count is enumerated in a separate variable (`i`)
+    // enumerateを使って要素のインデックスを変数(`i`)に
+    // とってイテレーションできます。
     for (i, x) in xs.iter().enumerate() {
         println!("In position {} we have value {}", i, x);
     }
 
-    // Thanks to `iter_mut`, mutable `Vector`s can also be iterated
-    // over in a way that allows modifying each value
+    // `iter_mut`のおかげで、可変な`Vector`を変更しながら
+    // イテレーションできます。
     for x in xs.iter_mut() {
         *x *= 3;
     }
@@ -64,7 +63,7 @@ fn main() {
 }
 ```
 
-More `Vec` methods can be found under the
-[std::vec][vec] module
+`Vec`のメソッドをさらに知りたいときは[std::vec][vec]モジュール
+のドキュメントを参照してください。
 
 [vec]: https://doc.rust-lang.org/std/vec/

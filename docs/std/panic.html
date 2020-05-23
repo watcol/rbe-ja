@@ -148,35 +148,35 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#panic" id="panic"><code>panic!</code></a></h1>
-<p>The <code>panic!</code> macro can be used to generate a panic and start unwinding
-its stack. While unwinding, the runtime will take care of freeing all the
-resources <em>owned</em> by the thread by calling the destructor of all its objects.</p>
-<p>Since we are dealing with programs with only one thread, <code>panic!</code> will cause the
-program to report the panic message and exit.</p>
-<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// Re-implementation of integer division (/)
+<p><code>panic!</code>マクロでパニックを生成し、スタックを巻き戻すことができます。
+スタックを巻き戻すときは、スレッド内の全てのリソースのデストラクタを
+呼び出してメモリを開放します。</p>
+<p>プログラムを1スレッドで管理しているので、<code>panic!</code>はパニックメッセージ
+を表示して終了します。</p>
+<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// 整数除算(/)の再実装
 fn division(dividend: i32, divisor: i32) -&gt; i32 {
     if divisor == 0 {
-        // Division by zero triggers a panic
+        // 0で割るとパニックする
         panic!(&quot;division by zero&quot;);
     } else {
         dividend / divisor
     }
 }
 
-// The `main` task
+// `main`タスク
 fn main() {
-    // Heap allocated integer
+    // ヒープに整数を確保する
     let _x = Box::new(0i32);
 
-    // This operation will trigger a task failure
+    // この操作は失敗する。
     division(3, 0);
 
-    println!(&quot;This point won't be reached!&quot;);
+    println!(&quot;This point won't be reached!&quot;);  // ここにはたどり着きません!
 
-    // `_x` should get destroyed at this point
+    // `_x`はここで開放されるはずです。
 }
 </code></pre></pre>
-<p>Let's check that <code>panic!</code> doesn't leak memory.</p>
+<p><code>panic!</code>がメモリリークを起こしていないことを確認しましょう。</p>
 <pre><code class="language-shell">$ rustc panic.rs &amp;&amp; valgrind ./panic
 ==4401== Memcheck, a memory error detector
 ==4401== Copyright (C) 2002-2013, and GNU GPL'd, by Julian Seward et al.

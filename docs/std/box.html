@@ -147,13 +147,13 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#box-stack-and-heap" id="box-stack-and-heap">Box, stack and heap</a></h1>
-<p>All values in Rust are stack allocated by default. Values can be <em>boxed</em>
-(allocated on the heap) by creating a <code>Box&lt;T&gt;</code>. A box is a smart pointer to a
-heap allocated value of type <code>T</code>. When a box goes out of scope, its destructor
-is called, the inner object is destroyed, and the memory on the heap is freed.</p>
-<p>Boxed values can be dereferenced using the <code>*</code> operator; this removes one layer
-of indirection. </p>
+                        <h1><a class="header" href="#ボックススタックヒープ" id="ボックススタックヒープ">ボックス、スタック、ヒープ</a></h1>
+<p>Rustではすべての変数がデフォルトでスタックに保存されます。しかし、<code>Box&lt;T&gt;</code>を
+使うことで、値をヒープに保存することができます。<code>Box&lt;T&gt;</code>はヒープ上に保存された
+型<code>T</code>の値をさすスマートポインタです。<code>Box</code>がスコープを出ると、デストラクタが
+呼び出されることで、中の値も破棄され、ヒープメモリが開放されます。</p>
+<p><code>Box</code>内の値は<code>*</code>演算子で参照できます。これによって、間接参照のコストが
+低くなります。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::mem;
 
 #[allow(dead_code)]
@@ -163,8 +163,7 @@ struct Point {
     y: f64,
 }
 
-// A Rectangle can be specified by where its top left and bottom right 
-// corners are in space
+// 長方形は左上の点と右下の点によって定義できます。
 #[allow(dead_code)]
 struct Rectangle {
     top_left: Point,
@@ -176,47 +175,47 @@ fn origin() -&gt; Point {
 }
 
 fn boxed_origin() -&gt; Box&lt;Point&gt; {
-    // Allocate this point on the heap, and return a pointer to it
+    // ヒープ上に作られた原点を指すPointのポインタを返す
     Box::new(Point { x: 0.0, y: 0.0 })
 }
 
 fn main() {
-    // (all the type annotations are superfluous)
-    // Stack allocated variables
+    // (すべての型注釈は必要ないものです)
+    // スタックに保存された変数
     let point: Point = origin();
     let rectangle: Rectangle = Rectangle {
         top_left: origin(),
         bottom_right: Point { x: 3.0, y: -4.0 }
     };
 
-    // Heap allocated rectangle
+    // ヒープに保存された長方形
     let boxed_rectangle: Box&lt;Rectangle&gt; = Box::new(Rectangle {
         top_left: origin(),
         bottom_right: Point { x: 3.0, y: -4.0 },
     });
 
-    // The output of functions can be boxed
+    // 関数の出力をBoxする
     let boxed_point: Box&lt;Point&gt; = Box::new(origin());
 
-    // Double indirection
+    // 二重参照
     let box_in_a_box: Box&lt;Box&lt;Point&gt;&gt; = Box::new(boxed_origin());
 
-    println!(&quot;Point occupies {} bytes on the stack&quot;,
+    println!(&quot;Point occupies {} bytes on the stack&quot;,  // Pointはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;point));
-    println!(&quot;Rectangle occupies {} bytes on the stack&quot;,
+    println!(&quot;Rectangle occupies {} bytes on the stack&quot;,  // Rectangleはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;rectangle));
 
-    // box size == pointer size
-    println!(&quot;Boxed point occupies {} bytes on the stack&quot;,
+    // Boxのサイズはポインタのサイズと等しい
+    println!(&quot;Boxed point occupies {} bytes on the stack&quot;,  // BoxされたPointはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;boxed_point));
-    println!(&quot;Boxed rectangle occupies {} bytes on the stack&quot;,
+    println!(&quot;Boxed rectangle occupies {} bytes on the stack&quot;,  // BoxされたRectangleはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;boxed_rectangle));
-    println!(&quot;Boxed box occupies {} bytes on the stack&quot;,
+    println!(&quot;Boxed box occupies {} bytes on the stack&quot;,  // BoxされたBoxはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;box_in_a_box));
 
-    // Copy the data contained in `boxed_point` into `unboxed_point`
+    // `boxed_point`内のデータを`unboxed_point`にコピーする
     let unboxed_point: Point = *boxed_point;
-    println!(&quot;Unboxed point occupies {} bytes on the stack&quot;,
+    println!(&quot;Unboxed point occupies {} bytes on the stack&quot;,  // BoxされていないPointはスタック上の{}バイトを占有しています
              mem::size_of_val(&amp;unboxed_point));
 }
 </code></pre></pre>

@@ -148,9 +148,10 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#rc" id="rc"><code>Rc</code></a></h1>
-<p>When multiple ownership is needed, <code>Rc</code>(Reference Counting) can be used. <code>Rc</code> keeps track of the number of the references which means the number of owners of the value wrapped inside an <code>Rc</code>. </p>
-<p>Reference count of an <code>Rc</code> increases by 1 whenever an <code>Rc</code> is cloned, and decreases by 1 whenever one cloned <code>Rc</code> is dropped out of the scope. When an <code>Rc</code>'s reference count becomes zero, which means there are no owners remained, both the <code>Rc</code> and the value are all dropped. </p>
-<p>Cloning an <code>Rc</code> never do a deep copy. Cloning creates just another pointer to the wrapped value, and increments the count.</p>
+<p>複数のの所有権が必要な場合、<code>Rc</code>(Reference Counting、参照カウント)が使えます。<code>Rc</code>は内部に保持している値がいくつの場所から使用されているのかを記録しています。 </p>
+<p><code>Rc</code>が複製された時カウントが1増え、<code>Rc</code>がスコープの外にdropされた時、カウントが1減ります。
+カウントが0になった時、所有権は残っていないことを意味するため、値が開放されます。</p>
+<p><code>Rc</code>を複製してもコピーは作りません。複製したらもう一つのポインタを作り、カウントを増やすだけです。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::rc::Rc;
 
 fn main() {
@@ -168,10 +169,10 @@ fn main() {
             println!(&quot;Reference Count of rc_b: {}&quot;, Rc::strong_count(&amp;rc_b));
             println!(&quot;Reference Count of rc_a: {}&quot;, Rc::strong_count(&amp;rc_a));
             
-            // Two `Rc`s are equal if their inner values are equal
+            // `Rc`中の値が等しい時、Rcは等しいです。
             println!(&quot;rc_a and rc_b are equal: {}&quot;, rc_a.eq(&amp;rc_b));
             
-            // We can use methods of a value directly
+            // 値のメソッドを直接呼び出すことができます。
             println!(&quot;Length of the value inside rc_a: {}&quot;, rc_a.len());
             println!(&quot;Value of rc_b: {}&quot;, rc_b);
             
@@ -183,14 +184,17 @@ fn main() {
         println!(&quot;--- rc_a is dropped out of scope ---&quot;);
     }
     
-    // Error! `rc_examples` already moved into `rc_a`
-    // And when `rc_a` is dropped, `rc_examples` is dropped together
+    // エラー! `rc_examples`はすでに`rc_a`にムーブされています。
+    // `rc_a`がドロップされた時、`rc_examples`もドロップされます。
     // println!(&quot;rc_examples: {}&quot;, rc_examples);
-    // TODO ^ Try uncommenting this line
+    // TODO ^ この行をアンコメントしてみてください。
 }
 </code></pre></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/rc/index.html">std::rc</a> and <a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a>.</p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/rc/index.html">std::rc</a></li>
+<li><a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a></li>
+</ul>
 
                     </main>
 

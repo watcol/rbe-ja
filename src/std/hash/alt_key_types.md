@@ -1,35 +1,34 @@
-# Alternate/custom key types
+# 独自のキーの型
 
-Any type that implements the `Eq` and `Hash` traits can be a key in `HashMap`. 
-This includes:
+`Eq`トレイトと`Hash`トレイトを実装しているすべての型は`HashMap`の
+キーとして使用できます。
 
-* `bool` (though not very useful since there is only two possible keys)
-* `int`, `uint`, and all variations thereof
-* `String` and `&str` (protip: you can have a `HashMap` keyed by `String`
-and call `.get()` with an `&str`)
+* `bool` (値を2つしか保持できないので使えないと思います)
+* `int`、`uint`などのすべての整数型
+* `String`や`&str` (`String`をキーとする`HashMap`で`.get()`を
+呼び出すと`&str`が帰ってきます。
 
-Note that `f32` and `f64` do *not* implement `Hash`,
-likely because [floating-point precision errors][floating]
-would make using them as hashmap keys horribly error-prone.
+`f32`と`f64`は[浮動小数点の精度エラー][floating]
+が出る可能性があるため、`Hash`を実装していません。
+そのため、hashmapには使用できません。
 
-All collection classes implement `Eq` and `Hash` 
-if their contained type also respectively implements `Eq` and `Hash`. 
-For example, `Vec<T>` will implement `Hash` if `T` implements `Hash`.
+すべてのコレクションは`Eq`と`Hash`を実装している場合があります、例えば、
+`T`が`Hash`を実装している時、`Vec<T>`にも`Hash`が実装されます。
 
-You can easily implement `Eq` and `Hash` for a custom type with just one line: 
+この一行で簡単にカスタム型に`Eq`と`Hash`を実装することができます。
 `#[derive(PartialEq, Eq, Hash)]`
 
-The compiler will do the rest. If you want more control over the details, 
-you can implement `Eq` and/or `Hash` yourself. 
-This guide will not cover the specifics of implementing `Hash`. 
+後はコンパイラが勝手にやってくれます。もっと詳細に制御したい場合は、
+自分で`Eq`や`Hash`を実装することもできます。このガイドでは`Hash`の
+実装方法については触れません。
 
-To play around with using a `struct` in `HashMap`, 
-let's try making a very simple user logon system:
+`struct`を`HashMap`に対して使い、シンプルなユーザーログオン
+システムを作ってみましょう。
 
 ```rust,editable
 use std::collections::HashMap;
 
-// Eq requires that you derive PartialEq on the type.
+// Eqを継承するには、PartialEqが実装されている必要があります。
 #[derive(PartialEq, Eq, Hash)]
 struct Account<'a>{
     username: &'a str,

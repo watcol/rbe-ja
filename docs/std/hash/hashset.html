@@ -147,37 +147,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#hashset" id="hashset">HashSet</a></h1>
-<p>Consider a <code>HashSet</code> as a <code>HashMap</code> where we just care about the keys (
-<code>HashSet&lt;T&gt;</code> is, in actuality, just a wrapper around <code>HashMap&lt;T, ()&gt;</code>).</p>
-<p>&quot;What's the point of that?&quot; you ask. &quot;I could just store the keys in a <code>Vec</code>.&quot;</p>
-<p>A <code>HashSet</code>'s unique feature is that 
-it is guaranteed to not have duplicate elements. 
-That's the contract that any set collection fulfills. 
-<code>HashSet</code> is just one implementation. (see also: <a href="https://doc.rust-lang.org/std/collections/struct.BTreeSet.html"><code>BTreeSet</code></a>)</p>
-<p>If you insert a value that is already present in the <code>HashSet</code>, 
-(i.e. the new value is equal to the existing and they both have the same hash), 
-then the new value will replace the old.</p>
-<p>This is great for when you never want more than one of something, 
-or when you want to know if you've already got something.</p>
-<p>But sets can do more than that. </p>
-<p>Sets have 4 primary operations (all of the following calls return an iterator):</p>
+                        <h1><a class="header" href="#ハッシュセット" id="ハッシュセット">ハッシュセット</a></h1>
+<p><code>HashSet</code>は、キーしか持たない<code>HashMap</code>で、<code>HashSet&lt;T&gt;</code>は、実際には
+<code>HashMap&lt;T, ()&gt;</code>のラップです。</p>
+<p>「何が特殊なの?」「キーを<code>Vec</code>に入れたら良いじゃないか。」と思うかもしれません。</p>
+<p><code>HashSet</code>特有の機能は、重複した要素を持たないことが保証されていることです。
+これが他のコレクションとの大きな違いです。<code>HashSet</code>はその一つの実装にしか
+過ぎません。(こちらも参照: <a href="https://doc.rust-lang.org/std/collections/struct.BTreeSet.html"><code>BTreeSet</code></a>)</p>
+<p>すでに存在する値を<code>HashSet</code>に挿入した場合はどうなるのでしょうか。(これは同じ
+ハッシュを持つ新しい値を代入するのと同じなので)このとき、新しい値が古い値を
+置き換えます。</p>
+<p>これは2回以上同じことをしたくないときや、すでに知っているものをもう一度取得したくない
+場合に役立ちます。</p>
+<p>HashSetはさらに多くのことができます。</p>
+<p>HashSetは以下の4つの操作を持っています(すべてイテレータを返します。)</p>
 <ul>
 <li>
-<p><code>union</code>: get all the unique elements in both sets.</p>
+<p><code>union</code>: 2つの集合から重複しない要素を取り出す。</p>
 </li>
 <li>
-<p><code>difference</code>: get all the elements that are in the first set but not the second.</p>
+<p><code>difference</code>: 最初の集合にあって、2つ目にない要素をすべて取り出す。</p>
 </li>
 <li>
-<p><code>intersection</code>: get all the elements that are only in <em>both</em> sets.</p>
+<p><code>intersection</code>: 両方の集合にある要素を取り出す。</p>
 </li>
 <li>
 <p><code>symmetric_difference</code>: 
-get all the elements that are in one set or the other, but <em>not</em> both.</p>
+2つの集合の内一つにはあるが、両方には無いものをすべて取り出す。</p>
 </li>
 </ul>
-<p>Try all of these in the following example:</p>
+<p>以下の例で全て試してみましょう:</p>
 <pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">use std::collections::HashSet;
 
 fn main() {
@@ -187,34 +186,34 @@ fn main() {
     assert!(a.insert(4));
     assert!(a.contains(&amp;4));
 
-    // `HashSet::insert()` returns false if
-    // there was a value already present.
+    // `HashSet::insert()`はすでに値が存在する時
+    // falseを返す。
     assert!(b.insert(4), &quot;Value 4 is already in set B!&quot;);
-    // FIXME ^ Comment out this line
+    // FIXME ^ この行をコメントアウトしてください。
 
     b.insert(5);
 
-    // If a collection's element type implements `Debug`,
-    // then the collection implements `Debug`.
-    // It usually prints its elements in the format `[elem1, elem2, ...]`
+    // 要素の型が`Debug`を実装していれば、
+    // そのコレクションも`Debug`を実装する。
+    // 普通`[elem1, elem2, ...]`のように出力される。
     println!(&quot;A: {:?}&quot;, a);
     println!(&quot;B: {:?}&quot;, b);
 
-    // Print [1, 2, 3, 4, 5] in arbitrary order
+    // [1, 2, 3, 4, 5]を順番に出力する。
     println!(&quot;Union: {:?}&quot;, a.union(&amp;b).collect::&lt;Vec&lt;&amp;i32&gt;&gt;());
 
-    // This should print [1]
+    // これは[1]を出力する
     println!(&quot;Difference: {:?}&quot;, a.difference(&amp;b).collect::&lt;Vec&lt;&amp;i32&gt;&gt;());
 
-    // Print [2, 3, 4] in arbitrary order.
+    // これは[2, 3, 4]を順番に出力する。
     println!(&quot;Intersection: {:?}&quot;, a.intersection(&amp;b).collect::&lt;Vec&lt;&amp;i32&gt;&gt;());
 
-    // Print [1, 5]
+    // [1, 5]を出力する。
     println!(&quot;Symmetric Difference: {:?}&quot;,
              a.symmetric_difference(&amp;b).collect::&lt;Vec&lt;&amp;i32&gt;&gt;());
 }
 </code></pre></pre>
-<p>(Examples are adapted from the <a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.difference">documentation.</a>)</p>
+<p>(サンプルはHashSetの<a href="https://doc.rust-lang.org/std/collections/struct.HashSet.html#method.difference">ドキュメント</a>から拝借しました。)</p>
 
                     </main>
 

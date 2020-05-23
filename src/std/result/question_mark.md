@@ -1,10 +1,8 @@
 # `?`
 
-Chaining results using match can get pretty untidy; luckily, the `?` operator
-can be used to make things pretty again. `?` is used at the end of an expression
-returning a `Result`, and is equivalent to a match expression, where the 
-`Err(err)` branch expands to an early `Err(From::from(err))`, and the `Ok(ok)`
-branch expands to an `ok` expression.
+Resultの処理をチェーンすると、だらしないです。幸運なことに、`?`演算子を使えば
+きれいに書くことができます。`Result`を返す`?`を式の最後につけると、match式のように、
+`Err(err)`ならば`Err(From::from(err))`を返して関数を終了し、`Ok(ok)`ならば`ok`を返します。
 
 ```rust,editable,ignore,mdbook-runnable
 mod checked {
@@ -41,12 +39,12 @@ mod checked {
         }
     }
 
-    // Intermediate function
+    // 中間関数
     fn op_(x: f64, y: f64) -> MathResult {
-        // if `div` "fails", then `DivisionByZero` will be `return`ed
+        // `div`が失敗したら、`DivisionByZero`が`return`される
         let ratio = div(x, y)?;
 
-        // if `ln` "fails", then `NonPositiveLogarithm` will be `return`ed
+        // `ln`が失敗したら、`NonPositiveLogarithm`が`return`される
         let ln = ln(ratio)?;
 
         sqrt(ln)
@@ -72,7 +70,7 @@ fn main() {
 }
 ```
 
-Be sure to check the [documentation][docs],
-as there are many methods to map/compose `Result`.
+[ドキュメンテーション][docs]を参照し、`Result`を
+操作するたくさんのメソッドを探してみてください。
 
 [docs]: https://doc.rust-lang.org/std/result/index.html

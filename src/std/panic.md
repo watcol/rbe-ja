@@ -1,38 +1,38 @@
 # `panic!`
 
-The `panic!` macro can be used to generate a panic and start unwinding
-its stack. While unwinding, the runtime will take care of freeing all the
-resources *owned* by the thread by calling the destructor of all its objects.
+`panic!`マクロでパニックを生成し、スタックを巻き戻すことができます。
+スタックを巻き戻すときは、スレッド内の全てのリソースのデストラクタを
+呼び出してメモリを開放します。
 
-Since we are dealing with programs with only one thread, `panic!` will cause the
-program to report the panic message and exit.
+プログラムを1スレッドで管理しているので、`panic!`はパニックメッセージ
+を表示して終了します。
 
 ```rust,editable,ignore,mdbook-runnable
-// Re-implementation of integer division (/)
+// 整数除算(/)の再実装
 fn division(dividend: i32, divisor: i32) -> i32 {
     if divisor == 0 {
-        // Division by zero triggers a panic
+        // 0で割るとパニックする
         panic!("division by zero");
     } else {
         dividend / divisor
     }
 }
 
-// The `main` task
+// `main`タスク
 fn main() {
-    // Heap allocated integer
+    // ヒープに整数を確保する
     let _x = Box::new(0i32);
 
-    // This operation will trigger a task failure
+    // この操作は失敗する。
     division(3, 0);
 
-    println!("This point won't be reached!");
+    println!("This point won't be reached!");  // ここにはたどり着きません!
 
-    // `_x` should get destroyed at this point
+    // `_x`はここで開放されるはずです。
 }
 ```
 
-Let's check that `panic!` doesn't leak memory.
+`panic!`がメモリリークを起こしていないことを確認しましょう。
 
 ```shell
 $ rustc panic.rs && valgrind ./panic

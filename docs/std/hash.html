@@ -147,25 +147,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#hashmap" id="hashmap">HashMap</a></h1>
-<p>Where vectors store values by an integer index, <code>HashMap</code>s store values by key. 
-<code>HashMap</code> keys can be booleans, integers, strings, 
-or any other type that implements the <code>Eq</code> and <code>Hash</code> traits. 
-More on this in the next section.</p>
-<p>Like vectors, <code>HashMap</code>s are growable, but HashMaps can also shrink themselves 
-when they have excess space. 
-You can create a HashMap with a certain starting capacity using 
-<code>HashMap::with_capacity(uint)</code>, or use <code>HashMap::new()</code> to get a HashMap 
-with a default initial capacity (recommended).</p>
+                        <h1><a class="header" href="#ハッシュマップ" id="ハッシュマップ">ハッシュマップ</a></h1>
+<p>ベクターは整数でインデックスを管理しましたが、<code>HashMap</code>はキーで値を保持します。
+<code>HashMap</code>キーは、真偽値、整数、文字列など、<code>Eq</code>トレイトと<code>Hash</code>トレイトを実装する
+すべての型をキーにできます。これについては次の節で詳しく扱います。</p>
+<p>ベクターのように、<code>HashMap</code>は拡張でき、さらに余分なスペースを縮小できます。
+容量を指定して<code>HashMap::with_capacity(uint)</code>とするか、<code>HashMap::new()</code>で
+デフォルト容量でHashMapを初期化する(推奨)ことで、HashMapを作ることができます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::collections::HashMap;
 
 fn call(number: &amp;str) -&gt; &amp;str {
     match number {
-        &quot;798-1364&quot; =&gt; &quot;We're sorry, the call cannot be completed as dialed. 
-            Please hang up and try again.&quot;,
+        &quot;798-1364&quot; =&gt; &quot;We're sorry, the call cannot be completed as dialed.  
+            Please hang up and try again.&quot;,  // ただいま電話に出ることができません。しばらくしてもう一度おかけください。
         &quot;645-7689&quot; =&gt; &quot;Hello, this is Mr. Awesome's Pizza. My name is Fred.
-            What can I get for you today?&quot;,
-        _ =&gt; &quot;Hi! Who is this again?&quot;
+            What can I get for you today?&quot;,  // こんにちは。Mr. Awesome's PizzaのFredです。何をご注文されますか?
+        _ =&gt; &quot;Hi! Who is this again?&quot;  // もしもし、誰ですか?
     }
 }
 
@@ -177,13 +174,13 @@ fn main() {
     contacts.insert(&quot;Katie&quot;, &quot;435-8291&quot;);
     contacts.insert(&quot;Robert&quot;, &quot;956-1745&quot;);
 
-    // Takes a reference and returns Option&lt;&amp;V&gt;
+    // 参照をとり、Option&lt;&amp;V&gt;を返す
     match contacts.get(&amp;&quot;Daniel&quot;) {
         Some(&amp;number) =&gt; println!(&quot;Calling Daniel: {}&quot;, call(number)),
-        _ =&gt; println!(&quot;Don't have Daniel's number.&quot;),
+        _ =&gt; println!(&quot;Don't have Daniel's number.&quot;),  // Danielの番号を持っていません
     }
 
-    // `HashMap::insert()` returns `None`
+    // `HashMap::insert()`は`None`を返す
     // if the inserted value is new, `Some(value)` otherwise
     contacts.insert(&quot;Daniel&quot;, &quot;164-6743&quot;);
 
@@ -194,16 +191,16 @@ fn main() {
 
     contacts.remove(&amp;&quot;Ashley&quot;); 
 
-    // `HashMap::iter()` returns an iterator that yields 
-    // (&amp;'a key, &amp;'a value) pairs in arbitrary order.
+    // `HashMap::iter()`はイテレータを返します。
+    // (&amp;'a key, &amp;'a value)は順番になる。
     for (contact, &amp;number) in contacts.iter() {
         println!(&quot;Calling {}: {}&quot;, contact, call(number)); 
     }
 }
 </code></pre></pre>
-<p>For more information on how hashing and hash maps 
-(sometimes called hash tables) work, have a look at 
-<a href="https://en.wikipedia.org/wiki/Hash_table">Hash Table Wikipedia</a></p>
+<p>ハッシュやハッシュマップ(ハッシュテーブルとも呼ばれます)
+についての詳しい情報は、<a href="https://en.wikipedia.org/wiki/Hash_table">Hash Table Wikipedia</a>
+を参照してください。</p>
 
                     </main>
 

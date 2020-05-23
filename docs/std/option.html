@@ -148,27 +148,27 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#option" id="option"><code>Option</code></a></h1>
-<p>Sometimes it's desirable to catch the failure of some parts of a program
-instead of calling <code>panic!</code>; this can be accomplished using the <code>Option</code> enum.</p>
-<p>The <code>Option&lt;T&gt;</code> enum has two variants:</p>
+<p>時々<code>panic!</code>を使わずにエラーを処理したいことがあります。
+これは<code>Option</code>enumを使うことで実現できます。</p>
+<p><code>Option&lt;T&gt;</code>は2つの列挙子を持ちます。</p>
 <ul>
-<li><code>None</code>, to indicate failure or lack of value, and</li>
-<li><code>Some(value)</code>, a tuple struct that wraps a <code>value</code> with type <code>T</code>.</li>
+<li><code>None</code>は値がないことをあらわし、</li>
+<li><code>Some(value)</code>は<code>T</code>型の<code>value</code>を持つタプル構造体です。</li>
 </ul>
-<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// An integer division that doesn't `panic!`
+<pre><pre class="playpen"><code class="language-rust editable ignore mdbook-runnable">// `panic!`しない整数の割り算
 fn checked_division(dividend: i32, divisor: i32) -&gt; Option&lt;i32&gt; {
     if divisor == 0 {
-        // Failure is represented as the `None` variant
+        // 失敗したときは`None`列挙子を返す
         None
     } else {
-        // Result is wrapped in a `Some` variant
+        // 結果は`Some`列挙子に入れて返します
         Some(dividend / divisor)
     }
 }
 
-// This function handles a division that may not succeed
+// この関数は割り算が成功したか確認します。
 fn try_division(dividend: i32, divisor: i32) {
-    // `Option` values can be pattern matched, just like other enums
+    // `Option`の値は他のenumと同じようにパターンマッチできる。
     match checked_division(dividend, divisor) {
         None =&gt; println!(&quot;{} / {} failed!&quot;, dividend, divisor),
         Some(quotient) =&gt; {
@@ -181,16 +181,16 @@ fn main() {
     try_division(4, 2);
     try_division(1, 0);
 
-    // Binding `None` to a variable needs to be type annotated
+    // `None`を変数に代入する時は型注釈が必要です
     let none: Option&lt;i32&gt; = None;
     let _equivalent_none = None::&lt;i32&gt;;
 
     let optional_float = Some(0f32);
 
-    // Unwrapping a `Some` variant will extract the value wrapped.
+    // `Some`列挙子でラップされた値を取り出す。
     println!(&quot;{:?} unwraps to {:?}&quot;, optional_float, optional_float.unwrap());
 
-    // Unwrapping a `None` variant will `panic!`
+    // `None`列挙子だった場合は`panic!`する
     println!(&quot;{:?} unwraps to {:?}&quot;, none, none.unwrap());
 }
 </code></pre></pre>

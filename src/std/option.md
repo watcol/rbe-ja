@@ -1,28 +1,28 @@
 # `Option`
 
-Sometimes it's desirable to catch the failure of some parts of a program
-instead of calling `panic!`; this can be accomplished using the `Option` enum.
+時々`panic!`を使わずにエラーを処理したいことがあります。
+これは`Option`enumを使うことで実現できます。
 
-The `Option<T>` enum has two variants:
+`Option<T>`は2つの列挙子を持ちます。
 
-* `None`, to indicate failure or lack of value, and
-* `Some(value)`, a tuple struct that wraps a `value` with type `T`.
+* `None`は値がないことをあらわし、
+* `Some(value)`は`T`型の`value`を持つタプル構造体です。
 
 ```rust,editable,ignore,mdbook-runnable
-// An integer division that doesn't `panic!`
+// `panic!`しない整数の割り算
 fn checked_division(dividend: i32, divisor: i32) -> Option<i32> {
     if divisor == 0 {
-        // Failure is represented as the `None` variant
+        // 失敗したときは`None`列挙子を返す
         None
     } else {
-        // Result is wrapped in a `Some` variant
+        // 結果は`Some`列挙子に入れて返します
         Some(dividend / divisor)
     }
 }
 
-// This function handles a division that may not succeed
+// この関数は割り算が成功したか確認します。
 fn try_division(dividend: i32, divisor: i32) {
-    // `Option` values can be pattern matched, just like other enums
+    // `Option`の値は他のenumと同じようにパターンマッチできる。
     match checked_division(dividend, divisor) {
         None => println!("{} / {} failed!", dividend, divisor),
         Some(quotient) => {
@@ -35,16 +35,16 @@ fn main() {
     try_division(4, 2);
     try_division(1, 0);
 
-    // Binding `None` to a variable needs to be type annotated
+    // `None`を変数に代入する時は型注釈が必要です
     let none: Option<i32> = None;
     let _equivalent_none = None::<i32>;
 
     let optional_float = Some(0f32);
 
-    // Unwrapping a `Some` variant will extract the value wrapped.
+    // `Some`列挙子でラップされた値を取り出す。
     println!("{:?} unwraps to {:?}", optional_float, optional_float.unwrap());
 
-    // Unwrapping a `None` variant will `panic!`
+    // `None`列挙子だった場合は`panic!`する
     println!("{:?} unwraps to {:?}", none, none.unwrap());
 }
 ```
