@@ -1,7 +1,7 @@
-# Wait
+# ウェイト
 
-If you'd like to wait for a `process::Child` to finish, you must call
-`Child::wait`, which will return a `process::ExitStatus`.
+`process::Child`は子プロセスが終了するのを待つことができます。
+`process::ExitStatus`を返す`Child::wait()`を呼び出してください。
 
 ```rust,ignore
 use std::process::Command;
@@ -16,6 +16,6 @@ fn main() {
 
 ```bash
 $ rustc wait.rs && ./wait
-# `wait` keeps running for 5 seconds until the `sleep 5` command finishes
+# `wait`は`sleep 5`コマンドが終了するまで5秒待ちます。
 reached end of main
 ```

@@ -1,6 +1,6 @@
-# Filesystem Operations
+# ファイルシステム制御
 
-The `std::fs` module contains several functions that deal with the filesystem.
+`std::fs`モジュールはファイルシステム制御のためのいくつかの関数を備えています。
 
 ```rust,ignore
 use std::fs;
@@ -10,7 +10,7 @@ use std::io::prelude::*;
 use std::os::unix;
 use std::path::Path;
 
-// A simple implementation of `% cat path`
+// `% cat path`のシンプルな実装
 fn cat(path: &Path) -> io::Result<String> {
     let mut f = File::open(path)?;
     let mut s = String::new();
@@ -20,14 +20,14 @@ fn cat(path: &Path) -> io::Result<String> {
     }
 }
 
-// A simple implementation of `% echo s > path`
+// `% echo s > path`のシンプルな実装
 fn echo(s: &str, path: &Path) -> io::Result<()> {
     let mut f = File::create(path)?;
 
     f.write_all(s.as_bytes())
 }
 
-// A simple implementation of `% touch path` (ignores existing files)
+// `% touch path`(すでにあるファイルは無視)のシンプルな実装
 fn touch(path: &Path) -> io::Result<()> {
     match OpenOptions::new().create(true).write(true).open(path) {
         Ok(_) => Ok(()),
@@ -37,20 +37,20 @@ fn touch(path: &Path) -> io::Result<()> {
 
 fn main() {
     println!("`mkdir a`");
-    // Create a directory, returns `io::Result<()>`
+    // ディレクトリを作成し、`io::Result<()>`を返す。
     match fs::create_dir("a") {
         Err(why) => println!("! {:?}", why.kind()),
         Ok(_) => {},
     }
 
     println!("`echo hello > a/b.txt`");
-    // The previous match can be simplified using the `unwrap_or_else` method
+    // 以下のmatchは`unwrap_or_else`メソッドで簡単に実装できます。
     echo("hello", &Path::new("a/b.txt")).unwrap_or_else(|why| {
         println!("! {:?}", why.kind());
     });
 
     println!("`mkdir -p a/c/d`");
-    // Recursively create a directory, returns `io::Result<()>`
+    // 再帰的にディレクトリを作成し、`io::Result<()>`を返す。
     fs::create_dir_all("a/c/d").unwrap_or_else(|why| {
         println!("! {:?}", why.kind());
     });
@@ -61,7 +61,7 @@ fn main() {
     });
 
     println!("`ln -s ../b.txt a/c/b.txt`");
-    // Create a symbolic link, returns `io::Result<()>`
+    // シンボリックリンクを作成し、`io::Result<()>`を返す。
     if cfg!(target_family = "unix") {
         unix::fs::symlink("../b.txt", "a/c/b.txt").unwrap_or_else(|why| {
         println!("! {:?}", why.kind());
@@ -84,13 +84,13 @@ fn main() {
     }
 
     println!("`rm a/c/e.txt`");
-    // Remove a file, returns `io::Result<()>`
+    // ファイルを削除し、`io::Result<()>`を返す。
     fs::remove_file("a/c/e.txt").unwrap_or_else(|why| {
         println!("! {:?}", why.kind());
     });
 
     println!("`rmdir a/c/d`");
-    // Remove an empty directory, returns `io::Result<()>`
+    // 空のディレクトリを削除し、`io::Result<()>`を返す。
     fs::remove_dir("a/c/d").unwrap_or_else(|why| {
         println!("! {:?}", why.kind());
     });
@@ -98,7 +98,7 @@ fn main() {
 
 ```
 
-Here's the expected successful output:
+これは成功した場合の出力です。
 
 ```shell
 $ rustc fs.rs && ./fs
@@ -116,7 +116,7 @@ $ rustc fs.rs && ./fs
 `rmdir a/c/d`
 ```
 
-And the final state of the `a` directory is:
+最終的な`a`ディレクトリの構成は:
 
 ```shell
 $ tree a
@@ -128,7 +128,7 @@ a
 1 directory, 2 files
 ```
 
-An alternative way to define the function `cat` is with `?` notation:
+`cat`は`?`を使っても実装できます。
 
 ```rust,ignore
 fn cat(path: &Path) -> io::Result<String> {
@@ -139,8 +139,8 @@ fn cat(path: &Path) -> io::Result<String> {
 }
 ```
 
-### See also:
+### こちらも参照:
 
-[`cfg!`][cfg]
+- [`cfg!`][cfg]
 
 [cfg]: ../attribute/cfg.md

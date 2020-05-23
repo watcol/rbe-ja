@@ -147,8 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#filesystem-operations" id="filesystem-operations">Filesystem Operations</a></h1>
-<p>The <code>std::fs</code> module contains several functions that deal with the filesystem.</p>
+                        <h1><a class="header" href="#ファイルシステム制御" id="ファイルシステム制御">ファイルシステム制御</a></h1>
+<p><code>std::fs</code>モジュールはファイルシステム制御のためのいくつかの関数を備えています。</p>
 <pre><code class="language-rust ignore">use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io;
@@ -156,7 +156,7 @@ use std::io::prelude::*;
 use std::os::unix;
 use std::path::Path;
 
-// A simple implementation of `% cat path`
+// `% cat path`のシンプルな実装
 fn cat(path: &amp;Path) -&gt; io::Result&lt;String&gt; {
     let mut f = File::open(path)?;
     let mut s = String::new();
@@ -166,14 +166,14 @@ fn cat(path: &amp;Path) -&gt; io::Result&lt;String&gt; {
     }
 }
 
-// A simple implementation of `% echo s &gt; path`
+// `% echo s &gt; path`のシンプルな実装
 fn echo(s: &amp;str, path: &amp;Path) -&gt; io::Result&lt;()&gt; {
     let mut f = File::create(path)?;
 
     f.write_all(s.as_bytes())
 }
 
-// A simple implementation of `% touch path` (ignores existing files)
+// `% touch path`(すでにあるファイルは無視)のシンプルな実装
 fn touch(path: &amp;Path) -&gt; io::Result&lt;()&gt; {
     match OpenOptions::new().create(true).write(true).open(path) {
         Ok(_) =&gt; Ok(()),
@@ -183,20 +183,20 @@ fn touch(path: &amp;Path) -&gt; io::Result&lt;()&gt; {
 
 fn main() {
     println!(&quot;`mkdir a`&quot;);
-    // Create a directory, returns `io::Result&lt;()&gt;`
+    // ディレクトリを作成し、`io::Result&lt;()&gt;`を返す。
     match fs::create_dir(&quot;a&quot;) {
         Err(why) =&gt; println!(&quot;! {:?}&quot;, why.kind()),
         Ok(_) =&gt; {},
     }
 
     println!(&quot;`echo hello &gt; a/b.txt`&quot;);
-    // The previous match can be simplified using the `unwrap_or_else` method
+    // 以下のmatchは`unwrap_or_else`メソッドで簡単に実装できます。
     echo(&quot;hello&quot;, &amp;Path::new(&quot;a/b.txt&quot;)).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
     });
 
     println!(&quot;`mkdir -p a/c/d`&quot;);
-    // Recursively create a directory, returns `io::Result&lt;()&gt;`
+    // 再帰的にディレクトリを作成し、`io::Result&lt;()&gt;`を返す。
     fs::create_dir_all(&quot;a/c/d&quot;).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
     });
@@ -207,7 +207,7 @@ fn main() {
     });
 
     println!(&quot;`ln -s ../b.txt a/c/b.txt`&quot;);
-    // Create a symbolic link, returns `io::Result&lt;()&gt;`
+    // シンボリックリンクを作成し、`io::Result&lt;()&gt;`を返す。
     if cfg!(target_family = &quot;unix&quot;) {
         unix::fs::symlink(&quot;../b.txt&quot;, &quot;a/c/b.txt&quot;).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
@@ -230,20 +230,20 @@ fn main() {
     }
 
     println!(&quot;`rm a/c/e.txt`&quot;);
-    // Remove a file, returns `io::Result&lt;()&gt;`
+    // ファイルを削除し、`io::Result&lt;()&gt;`を返す。
     fs::remove_file(&quot;a/c/e.txt&quot;).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
     });
 
     println!(&quot;`rmdir a/c/d`&quot;);
-    // Remove an empty directory, returns `io::Result&lt;()&gt;`
+    // 空のディレクトリを削除し、`io::Result&lt;()&gt;`を返す。
     fs::remove_dir(&quot;a/c/d&quot;).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
     });
 }
 
 </code></pre>
-<p>Here's the expected successful output:</p>
+<p>これは成功した場合の出力です。</p>
 <pre><code class="language-shell">$ rustc fs.rs &amp;&amp; ./fs
 `mkdir a`
 `echo hello &gt; a/b.txt`
@@ -258,7 +258,7 @@ fn main() {
 `rm a/c/e.txt`
 `rmdir a/c/d`
 </code></pre>
-<p>And the final state of the <code>a</code> directory is:</p>
+<p>最終的な<code>a</code>ディレクトリの構成は:</p>
 <pre><code class="language-shell">$ tree a
 a
 |-- b.txt
@@ -267,7 +267,7 @@ a
 
 1 directory, 2 files
 </code></pre>
-<p>An alternative way to define the function <code>cat</code> is with <code>?</code> notation:</p>
+<p><code>cat</code>は<code>?</code>を使っても実装できます。</p>
 <pre><code class="language-rust ignore">fn cat(path: &amp;Path) -&gt; io::Result&lt;String&gt; {
     let mut f = File::open(path)?;
     let mut s = String::new();
@@ -275,8 +275,10 @@ a
     Ok(s)
 }
 </code></pre>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="../attribute/cfg.html"><code>cfg!</code></a></p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="../attribute/cfg.html"><code>cfg!</code></a></li>
+</ul>
 
                     </main>
 

@@ -147,9 +147,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#wait" id="wait">Wait</a></h1>
-<p>If you'd like to wait for a <code>process::Child</code> to finish, you must call
-<code>Child::wait</code>, which will return a <code>process::ExitStatus</code>.</p>
+                        <h1><a class="header" href="#ウェイト" id="ウェイト">ウェイト</a></h1>
+<p><code>process::Child</code>は子プロセスが終了するのを待つことができます。
+<code>process::ExitStatus</code>を返す<code>Child::wait()</code>を呼び出してください。</p>
 <pre><code class="language-rust ignore">use std::process::Command;
 
 fn main() {
@@ -160,7 +160,7 @@ fn main() {
 }
 </code></pre>
 <pre><code class="language-bash">$ rustc wait.rs &amp;&amp; ./wait
-# `wait` keeps running for 5 seconds until the `sleep 5` command finishes
+# `wait`は`sleep 5`コマンドが終了するまで5秒待ちます。
 reached end of main
 </code></pre>
 

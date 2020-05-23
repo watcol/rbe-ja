@@ -8319,9 +8319,9 @@ $ rustc read_lines.rs &amp;&amp; ./read_lines
 </code></pre>
 <p>この方法は、特に大きなファイルを扱う時、<code>String</code>をすべてメモリに
 保存するより効率的です。</p>
-<h1><a class="header" href="#child-processes" id="child-processes">Child processes</a></h1>
-<p>The <code>process::Output</code> struct represents the output of a finished child process,
-and the <code>process::Command</code> struct is a process builder.</p>
+<h1><a class="header" href="#子プロセス" id="子プロセス">子プロセス</a></h1>
+<p><code>process::Output</code>構造体は終了した子プロセスの出力を表します。
+<code>process::Command</code>構造体はプロセスを作成します。</p>
 <pre><code class="language-rust editable ignore">use std::process::Command;
 
 fn main() {
@@ -8342,12 +8342,10 @@ fn main() {
     }
 }
 </code></pre>
-<p>(You are encouraged to try the previous example with an incorrect flag passed
-to <code>rustc</code>)</p>
-<h1><a class="header" href="#pipes" id="pipes">Pipes</a></h1>
-<p>The <code>std::Child</code> struct represents a running child process, and exposes the
-<code>stdin</code>, <code>stdout</code> and <code>stderr</code> handles for interaction with the underlying
-process via pipes.</p>
+<p>(間違ったフラグを<code>rustc</code>に渡すとエラーします。)</p>
+<h1><a class="header" href="#パイプ" id="パイプ">パイプ</a></h1>
+<p><code>std::Child</code>構造体は実行中の子プロセスを表し、<code>stdin</code>、<code>stdout</code>や<code>stderr</code>
+を制御してプロセスをパイプしてつなぐことができます。</p>
 <pre><code class="language-rust ignore">use std::io::prelude::*;
 use std::process::{Command, Stdio};
 
@@ -8355,7 +8353,7 @@ static PANGRAM: &amp;'static str =
 &quot;the quick brown fox jumped over the lazy dog\n&quot;;
 
 fn main() {
-    // Spawn the `wc` command
+    // `wc`コマンドを実行する。
     let process = match Command::new(&quot;wc&quot;)
                                 .stdin(Stdio::piped())
                                 .stdout(Stdio::piped())
@@ -8364,22 +8362,22 @@ fn main() {
         Ok(process) =&gt; process,
     };
 
-    // Write a string to the `stdin` of `wc`.
+    // `wc`の`stdin`を書き込む。
     //
-    // `stdin` has type `Option&lt;ChildStdin&gt;`, but since we know this instance
-    // must have one, we can directly `unwrap` it.
+    // `stdin`は`Option&lt;ChildStdin&gt;`型ですが、インスタンスが存在することが
+    // 分かるため、`unwrap`できます。
     match process.stdin.unwrap().write_all(PANGRAM.as_bytes()) {
         Err(why) =&gt; panic!(&quot;couldn't write to wc stdin: {}&quot;, why),
         Ok(_) =&gt; println!(&quot;sent pangram to wc&quot;),
     }
 
-    // Because `stdin` does not live after the above calls, it is `drop`ed,
-    // and the pipe is closed.
+    // `stdin`は上の呼び出しの後、使われないため`drop`されます。
+    // そしてパイプを閉じます。
     //
-    // This is very important, otherwise `wc` wouldn't start processing the
-    // input we just sent.
+    // これをしないと、 入力を送っただけなので、`wc`は
+    // 処理を開始します。
 
-    // The `stdout` field also has type `Option&lt;ChildStdout&gt;` so must be unwrapped.
+    // `stdout`も`Option&lt;ChildStdout&gt;`型なので、unwrapしないといけません。
     let mut s = String::new();
     match process.stdout.unwrap().read_to_string(&amp;mut s) {
         Err(why) =&gt; panic!(&quot;couldn't read wc stdout: {}&quot;, why),
@@ -8387,9 +8385,9 @@ fn main() {
     }
 }
 </code></pre>
-<h1><a class="header" href="#wait" id="wait">Wait</a></h1>
-<p>If you'd like to wait for a <code>process::Child</code> to finish, you must call
-<code>Child::wait</code>, which will return a <code>process::ExitStatus</code>.</p>
+<h1><a class="header" href="#ウェイト" id="ウェイト">ウェイト</a></h1>
+<p><code>process::Child</code>は子プロセスが終了するのを待つことができます。
+<code>process::ExitStatus</code>を返す<code>Child::wait()</code>を呼び出してください。</p>
 <pre><code class="language-rust ignore">use std::process::Command;
 
 fn main() {
@@ -8400,11 +8398,11 @@ fn main() {
 }
 </code></pre>
 <pre><code class="language-bash">$ rustc wait.rs &amp;&amp; ./wait
-# `wait` keeps running for 5 seconds until the `sleep 5` command finishes
+# `wait`は`sleep 5`コマンドが終了するまで5秒待ちます。
 reached end of main
 </code></pre>
-<h1><a class="header" href="#filesystem-operations" id="filesystem-operations">Filesystem Operations</a></h1>
-<p>The <code>std::fs</code> module contains several functions that deal with the filesystem.</p>
+<h1><a class="header" href="#ファイルシステム制御" id="ファイルシステム制御">ファイルシステム制御</a></h1>
+<p><code>std::fs</code>モジュールはファイルシステム制御のためのいくつかの関数を備えています。</p>
 <pre><code class="language-rust ignore">use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io;
@@ -8412,7 +8410,7 @@ use std::io::prelude::*;
 use std::os::unix;
 use std::path::Path;
 
-// A simple implementation of `% cat path`
+// `% cat path`のシンプルな実装
 fn cat(path: &amp;Path) -&gt; io::Result&lt;String&gt; {
     let mut f = File::open(path)?;
     let mut s = String::new();
@@ -8422,14 +8420,14 @@ fn cat(path: &amp;Path) -&gt; io::Result&lt;String&gt; {
     }
 }
 
-// A simple implementation of `% echo s &gt; path`
+// `% echo s &gt; path`のシンプルな実装
 fn echo(s: &amp;str, path: &amp;Path) -&gt; io::Result&lt;()&gt; {
     let mut f = File::create(path)?;
 
     f.write_all(s.as_bytes())
 }
 
-// A simple implementation of `% touch path` (ignores existing files)
+// `% touch path`(すでにあるファイルは無視)のシンプルな実装
 fn touch(path: &amp;Path) -&gt; io::Result&lt;()&gt; {
     match OpenOptions::new().create(true).write(true).open(path) {
         Ok(_) =&gt; Ok(()),
@@ -8439,20 +8437,20 @@ fn touch(path: &amp;Path) -&gt; io::Result&lt;()&gt; {
 
 fn main() {
     println!(&quot;`mkdir a`&quot;);
-    // Create a directory, returns `io::Result&lt;()&gt;`
+    // ディレクトリを作成し、`io::Result&lt;()&gt;`を返す。
     match fs::create_dir(&quot;a&quot;) {
         Err(why) =&gt; println!(&quot;! {:?}&quot;, why.kind()),
         Ok(_) =&gt; {},
     }
 
     println!(&quot;`echo hello &gt; a/b.txt`&quot;);
-    // The previous match can be simplified using the `unwrap_or_else` method
+    // 以下のmatchは`unwrap_or_else`メソッドで簡単に実装できます。
     echo(&quot;hello&quot;, &amp;Path::new(&quot;a/b.txt&quot;)).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
     });
 
     println!(&quot;`mkdir -p a/c/d`&quot;);
-    // Recursively create a directory, returns `io::Result&lt;()&gt;`
+    // 再帰的にディレクトリを作成し、`io::Result&lt;()&gt;`を返す。
     fs::create_dir_all(&quot;a/c/d&quot;).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
     });
@@ -8463,7 +8461,7 @@ fn main() {
     });
 
     println!(&quot;`ln -s ../b.txt a/c/b.txt`&quot;);
-    // Create a symbolic link, returns `io::Result&lt;()&gt;`
+    // シンボリックリンクを作成し、`io::Result&lt;()&gt;`を返す。
     if cfg!(target_family = &quot;unix&quot;) {
         unix::fs::symlink(&quot;../b.txt&quot;, &quot;a/c/b.txt&quot;).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
@@ -8486,20 +8484,20 @@ fn main() {
     }
 
     println!(&quot;`rm a/c/e.txt`&quot;);
-    // Remove a file, returns `io::Result&lt;()&gt;`
+    // ファイルを削除し、`io::Result&lt;()&gt;`を返す。
     fs::remove_file(&quot;a/c/e.txt&quot;).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
     });
 
     println!(&quot;`rmdir a/c/d`&quot;);
-    // Remove an empty directory, returns `io::Result&lt;()&gt;`
+    // 空のディレクトリを削除し、`io::Result&lt;()&gt;`を返す。
     fs::remove_dir(&quot;a/c/d&quot;).unwrap_or_else(|why| {
         println!(&quot;! {:?}&quot;, why.kind());
     });
 }
 
 </code></pre>
-<p>Here's the expected successful output:</p>
+<p>これは成功した場合の出力です。</p>
 <pre><code class="language-shell">$ rustc fs.rs &amp;&amp; ./fs
 `mkdir a`
 `echo hello &gt; a/b.txt`
@@ -8514,7 +8512,7 @@ fn main() {
 `rm a/c/e.txt`
 `rmdir a/c/d`
 </code></pre>
-<p>And the final state of the <code>a</code> directory is:</p>
+<p>最終的な<code>a</code>ディレクトリの構成は:</p>
 <pre><code class="language-shell">$ tree a
 a
 |-- b.txt
@@ -8523,7 +8521,7 @@ a
 
 1 directory, 2 files
 </code></pre>
-<p>An alternative way to define the function <code>cat</code> is with <code>?</code> notation:</p>
+<p><code>cat</code>は<code>?</code>を使っても実装できます。</p>
 <pre><code class="language-rust ignore">fn cat(path: &amp;Path) -&gt; io::Result&lt;String&gt; {
     let mut f = File::open(path)?;
     let mut s = String::new();
@@ -8531,22 +8529,24 @@ a
     Ok(s)
 }
 </code></pre>
-<h3><a class="header" href="#see-also-1" id="see-also-1">See also:</a></h3>
-<p><a href="std_misc/../attribute/cfg.html"><code>cfg!</code></a></p>
-<h1><a class="header" href="#program-arguments" id="program-arguments">Program arguments</a></h1>
-<h2><a class="header" href="#standard-library" id="standard-library">Standard Library</a></h2>
-<p>The command line arguments can be accessed using <code>std::env::args</code>, which
-returns an iterator that yields a <code>String</code> for each argument:</p>
+<h3><a class="header" href="#こちらも参照-68" id="こちらも参照-68">こちらも参照:</a></h3>
+<ul>
+<li><a href="std_misc/../attribute/cfg.html"><code>cfg!</code></a></li>
+</ul>
+<h1><a class="header" href="#プログラム引数" id="プログラム引数">プログラム引数</a></h1>
+<h2><a class="header" href="#標準ライブラリ" id="標準ライブラリ">標準ライブラリ</a></h2>
+<p>標準ライブラリは<code>String</code>の各引数に対するイテレータを返す<code>std::env::args</code>
+によってアクセスできます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::env;
 
 fn main() {
     let args: Vec&lt;String&gt; = env::args().collect();
 
-    // The first argument is the path that was used to call the program.
+    // 最初の引数はプログラムの呼び出しに使われるものです。
     println!(&quot;My path is {}.&quot;, args[0]);
 
-    // The rest of the arguments are the passed command line parameters.
-    // Call the program like this:
+    // その他の引数はプログラムに与えられるオプションです。
+    // このようにプログラムを呼び出します。
     //   $ ./args arg1 arg2
     println!(&quot;I got {:?} arguments: {:?}.&quot;, args.len() - 1, &amp;args[1..]);
 }
@@ -8555,13 +8555,11 @@ fn main() {
 My path is ./args.
 I got 3 arguments: [&quot;1&quot;, &quot;2&quot;, &quot;3&quot;].
 </code></pre>
-<h2><a class="header" href="#crates" id="crates">Crates</a></h2>
-<p>Alternatively, there are numerous crates that can provide extra functionality
-when creating command-line applications. The <a href="https://rust-lang-nursery.github.io/rust-cookbook/cli/arguments.html">Rust Cookbook</a> exhibits best
-practices on how to use one of the more popular command line argument crates,
-<code>clap</code>.</p>
-<h1><a class="header" href="#argument-parsing" id="argument-parsing">Argument parsing</a></h1>
-<p>Matching can be used to parse simple arguments:</p>
+<h2><a class="header" href="#クレート-2" id="クレート-2">クレート</a></h2>
+<p>その他にも、コマンドラインアプリケーションを作成するのに役立つ多くのクレートがあります。
+<a href="https://rust-lang-nursery.github.io/rust-cookbook/cli/arguments.html">Rust Cookbook</a>には、最もポピュラーなコマンドライン解析ライブラリ<code>clap</code>の使い方が書かれています。</p>
+<h1><a class="header" href="#引数解析" id="引数解析">引数解析</a></h1>
+<p>シンプルな引数解析にはmacthを使います。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::env;
 
 fn increase(number: i32) {
@@ -8571,6 +8569,12 @@ fn increase(number: i32) {
 fn decrease(number: i32) {
     println!(&quot;{}&quot;, number - 1);
 }
+
+// 使い方:
+// match_args &lt;string&gt;
+//     与えられた文字列が正しい答えかどうか確認します。
+// match_args {{increase|decrease}} &lt;integer&gt;
+//     与えられた整数をインクリメントまたはデクリメントします。
 
 fn help() {
     println!(&quot;usage:
@@ -8584,22 +8588,22 @@ fn main() {
     let args: Vec&lt;String&gt; = env::args().collect();
 
     match args.len() {
-        // no arguments passed
+        // 引数が渡されなかった場合
         1 =&gt; {
-            println!(&quot;My name is 'match_args'. Try passing some arguments!&quot;);
+            println!(&quot;My name is 'match_args'. Try passing some arguments!&quot;);  // 私は&quot;match_args&quot;です。なにか引数を渡してみてください!
         },
-        // one argument passed
+        // 1つ引数が渡された場合
         2 =&gt; {
             match args[1].parse() {
                 Ok(42) =&gt; println!(&quot;This is the answer!&quot;),
                 _ =&gt; println!(&quot;This is not the answer.&quot;),
             }
         },
-        // one command and one argument passed
+        // 1つのコマンドと1つの引数が渡された場合
         3 =&gt; {
             let cmd = &amp;args[1];
             let num = &amp;args[2];
-            // parse the number
+            // 数値を解析する
             let number: i32 = match num.parse() {
                 Ok(n) =&gt; {
                     n
@@ -8610,7 +8614,7 @@ fn main() {
                     return;
                 },
             };
-            // parse the command
+            // コマンドを解析する
             match &amp;cmd[..] {
                 &quot;increase&quot; =&gt; increase(number),
                 &quot;decrease&quot; =&gt; decrease(number),
@@ -8620,7 +8624,7 @@ fn main() {
                 },
             }
         },
-        // all the other cases
+        // その他の場合
         _ =&gt; {
             // show a help message
             help();
@@ -8649,24 +8653,24 @@ match_args {increase|decrease} &lt;integer&gt;
 $ ./match_args increase 42
 43
 </code></pre>
-<h1><a class="header" href="#foreign-function-interface" id="foreign-function-interface">Foreign Function Interface</a></h1>
-<p>Rust provides a Foreign Function Interface (FFI) to C libraries. Foreign
-functions must be declared inside an <code>extern</code> block annotated with a <code>#[link]</code>
-attribute containing the name of the foreign library.</p>
+<h1><a class="header" href="#外部関数インターフェース" id="外部関数インターフェース">外部関数インターフェース</a></h1>
+<p>RustはC言語のライブラリの外部関数インターフェース(FFI)を提供しています。外部の
+関数は<code>extern</code>ブロックで宣言され、そのブロックにはライブラリ名を付けた<code>#[link]</code>
+属性が与えられている必要があります。</p>
 <pre><code class="language-rust ignore">use std::fmt;
 
-// this extern block links to the libm library
+// このブロックはlibmとリンクします。
 #[link(name = &quot;m&quot;)]
 extern {
-    // this is a foreign function
-    // that computes the square root of a single precision complex number
+    // これは外部関数です。
+    // これは単精度複素数の平方根を求めます。
     fn csqrtf(z: Complex) -&gt; Complex;
 
     fn ccosf(z: Complex) -&gt; Complex;
 }
 
-// Since calling foreign functions is considered unsafe,
-// it's common to write safe wrappers around them.
+// 外部関数は安全でない可能性があるので、安全なラッパー
+// 関数が必要です。
 fn cos(z: Complex) -&gt; Complex {
     unsafe { ccosf(z) }
 }
@@ -8675,16 +8679,16 @@ fn main() {
     // z = -1 + 0i
     let z = Complex { re: -1., im: 0. };
 
-    // calling a foreign function is an unsafe operation
+    // 外部関数の呼び出しはunsafeです。
     let z_sqrt = unsafe { csqrtf(z) };
 
     println!(&quot;the square root of {:?} is {:?}&quot;, z, z_sqrt);
 
-    // calling safe API wrapped around unsafe operation
+    // unsafeをラップした安全なAPIを呼び出す。
     println!(&quot;cos({:?}) = {:?}&quot;, z, cos(z));
 }
 
-// Minimal implementation of single precision complex numbers
+// 単精度複素数の最小実装
 #[repr(C)]
 #[derive(Clone, Copy)]
 struct Complex {
@@ -8715,7 +8719,7 @@ impl fmt::Debug for Complex {
 <ul>
 <li><a href="testing/dev_dependencies.html">Dev-dependencies</a></li>
 </ul>
-<h2><a class="header" href="#こちらも参照-68" id="こちらも参照-68">こちらも参照</a></h2>
+<h2><a class="header" href="#こちらも参照-69" id="こちらも参照-69">こちらも参照</a></h2>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch11-00-testing.html">The Book</a>のテストの章</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a>のdoc-testの章</li>
@@ -9033,7 +9037,7 @@ pub fn try_div(a: i32, b: i32) -&gt; Result&lt;i32, String&gt; {
     }
 }
 </code></pre>
-<h2><a class="header" href="#こちらも参照-69" id="こちらも参照-69">こちらも参照</a></h2>
+<h2><a class="header" href="#こちらも参照-70" id="こちらも参照-70">こちらも参照</a></h2>
 <ul>
 <li><a href="https://github.com/rust-lang/rfcs/blob/master/text/0505-api-comment-conventions.md">RFC505</a>のドキュメンテーションスタイル</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a>のドキュメンテーションガイドライン</li>
@@ -9134,7 +9138,7 @@ mod tests {
     }
 }
 </code></pre>
-<h2><a class="header" href="#こちらも参照-70" id="こちらも参照-70">こちらも参照</a></h2>
+<h2><a class="header" href="#こちらも参照-71" id="こちらも参照-71">こちらも参照</a></h2>
 <p><a href="http://doc.crates.io/specifying-dependencies.html">Cargo</a>のドキュメントの「依存を指定する」章</p>
 <h1><a class="header" href="#安全でない操作" id="安全でない操作">安全でない操作</a></h1>
 <p>この節では、まず<a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">公式ドキュメント</a>から、「one should try to minimize
@@ -9312,7 +9316,7 @@ pub use self::async_await::*;
 </code></pre>
 <p>ドキュメンテーション用に、<code>rustdoc</code>はコミュニティによって広く使われています。これは<a href="https://doc.rust-lang.org/std/">標準ライブラリのドキュメント
 </a>にも使われています。</p>
-<h3><a class="header" href="#こちらも参照-71" id="こちらも参照-71">こちらも参照:</a></h3>
+<h3><a class="header" href="#こちらも参照-72" id="こちらも参照-72">こちらも参照:</a></h3>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#making-useful-documentation-comments">The Rust Book: 有用なドキュメンテーションコメントを作る</a></li>
 <li><a href="https://doc.rust-lang.org/rustdoc/index.html">The rustdoc Book</a></li>
@@ -9345,7 +9349,7 @@ pub use self::async_await::*;
 <p><a href="https://doc.rust-lang.org/core/">公式Rustドキュメント</a>に「Run」というボタンがついているのに気づいた人もいるかもしれません。
 これはサンプルコードをRust Playgroundで新しいタブに開きます。この機能は#[doc]属性の<a href="https://doc.rust-lang.org/rustdoc/the-doc-attribute.html#html_playground_url"><code>html_playground_url</code></a>で
 使うことができます。</p>
-<h3><a class="header" href="#こちらも参照-72" id="こちらも参照-72">こちらも参照:</a></h3>
+<h3><a class="header" href="#こちらも参照-73" id="こちらも参照-73">こちらも参照:</a></h3>
 <ul>
 <li><a href="https://play.rust-lang.org/">Rust Playground</a></li>
 <li><a href="https://github.com/integer32llc/rust-playground/">開発版playpen</a></li>

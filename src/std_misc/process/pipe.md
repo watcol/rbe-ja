@@ -1,8 +1,7 @@
-# Pipes
+# パイプ
 
-The `std::Child` struct represents a running child process, and exposes the
-`stdin`, `stdout` and `stderr` handles for interaction with the underlying
-process via pipes.
+`std::Child`構造体は実行中の子プロセスを表し、`stdin`、`stdout`や`stderr`
+を制御してプロセスをパイプしてつなぐことができます。
 
 ```rust,ignore
 use std::io::prelude::*;
@@ -12,7 +11,7 @@ static PANGRAM: &'static str =
 "the quick brown fox jumped over the lazy dog\n";
 
 fn main() {
-    // Spawn the `wc` command
+    // `wc`コマンドを実行する。
     let process = match Command::new("wc")
                                 .stdin(Stdio::piped())
                                 .stdout(Stdio::piped())
@@ -21,22 +20,22 @@ fn main() {
         Ok(process) => process,
     };
 
-    // Write a string to the `stdin` of `wc`.
+    // `wc`の`stdin`を書き込む。
     //
-    // `stdin` has type `Option<ChildStdin>`, but since we know this instance
-    // must have one, we can directly `unwrap` it.
+    // `stdin`は`Option<ChildStdin>`型ですが、インスタンスが存在することが
+    // 分かるため、`unwrap`できます。
     match process.stdin.unwrap().write_all(PANGRAM.as_bytes()) {
         Err(why) => panic!("couldn't write to wc stdin: {}", why),
         Ok(_) => println!("sent pangram to wc"),
     }
 
-    // Because `stdin` does not live after the above calls, it is `drop`ed,
-    // and the pipe is closed.
+    // `stdin`は上の呼び出しの後、使われないため`drop`されます。
+    // そしてパイプを閉じます。
     //
-    // This is very important, otherwise `wc` wouldn't start processing the
-    // input we just sent.
+    // これをしないと、 入力を送っただけなので、`wc`は
+    // 処理を開始します。
 
-    // The `stdout` field also has type `Option<ChildStdout>` so must be unwrapped.
+    // `stdout`も`Option<ChildStdout>`型なので、unwrapしないといけません。
     let mut s = String::new();
     match process.stdout.unwrap().read_to_string(&mut s) {
         Err(why) => panic!("couldn't read wc stdout: {}", why),

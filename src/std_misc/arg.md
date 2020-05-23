@@ -1,9 +1,9 @@
-# Program arguments
+# プログラム引数
 
-## Standard Library
+## 標準ライブラリ
 
-The command line arguments can be accessed using `std::env::args`, which
-returns an iterator that yields a `String` for each argument:
+標準ライブラリは`String`の各引数に対するイテレータを返す`std::env::args`
+によってアクセスできます。
 
 ```rust,editable
 use std::env;
@@ -11,11 +11,11 @@ use std::env;
 fn main() {
     let args: Vec<String> = env::args().collect();
 
-    // The first argument is the path that was used to call the program.
+    // 最初の引数はプログラムの呼び出しに使われるものです。
     println!("My path is {}.", args[0]);
 
-    // The rest of the arguments are the passed command line parameters.
-    // Call the program like this:
+    // その他の引数はプログラムに与えられるオプションです。
+    // このようにプログラムを呼び出します。
     //   $ ./args arg1 arg2
     println!("I got {:?} arguments: {:?}.", args.len() - 1, &args[1..]);
 }
@@ -27,11 +27,9 @@ My path is ./args.
 I got 3 arguments: ["1", "2", "3"].
 ```
 
-## Crates
+## クレート
 
-Alternatively, there are numerous crates that can provide extra functionality
-when creating command-line applications. The [Rust Cookbook] exhibits best
-practices on how to use one of the more popular command line argument crates,
-`clap`.
+その他にも、コマンドラインアプリケーションを作成するのに役立つ多くのクレートがあります。
+[Rust Cookbook]には、最もポピュラーなコマンドライン解析ライブラリ`clap`の使い方が書かれています。
 
 [Rust Cookbook]: https://rust-lang-nursery.github.io/rust-cookbook/cli/arguments.html

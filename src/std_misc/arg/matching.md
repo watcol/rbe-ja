@@ -1,6 +1,6 @@
-# Argument parsing
+# 引数解析
 
-Matching can be used to parse simple arguments:
+シンプルな引数解析にはmacthを使います。
 
 ```rust,editable
 use std::env;
@@ -12,6 +12,12 @@ fn increase(number: i32) {
 fn decrease(number: i32) {
     println!("{}", number - 1);
 }
+
+// 使い方:
+// match_args <string>
+//     与えられた文字列が正しい答えかどうか確認します。
+// match_args {{increase|decrease}} <integer>
+//     与えられた整数をインクリメントまたはデクリメントします。
 
 fn help() {
     println!("usage:
@@ -25,22 +31,22 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     match args.len() {
-        // no arguments passed
+        // 引数が渡されなかった場合
         1 => {
-            println!("My name is 'match_args'. Try passing some arguments!");
+            println!("My name is 'match_args'. Try passing some arguments!");  // 私は"match_args"です。なにか引数を渡してみてください!
         },
-        // one argument passed
+        // 1つ引数が渡された場合
         2 => {
             match args[1].parse() {
                 Ok(42) => println!("This is the answer!"),
                 _ => println!("This is not the answer."),
             }
         },
-        // one command and one argument passed
+        // 1つのコマンドと1つの引数が渡された場合
         3 => {
             let cmd = &args[1];
             let num = &args[2];
-            // parse the number
+            // 数値を解析する
             let number: i32 = match num.parse() {
                 Ok(n) => {
                     n
@@ -51,7 +57,7 @@ fn main() {
                     return;
                 },
             };
-            // parse the command
+            // コマンドを解析する
             match &cmd[..] {
                 "increase" => increase(number),
                 "decrease" => decrease(number),
@@ -61,7 +67,7 @@ fn main() {
                 },
             }
         },
-        // all the other cases
+        // その他の場合
         _ => {
             // show a help message
             help();

@@ -1,7 +1,7 @@
-# Child processes
+# 子プロセス
 
-The `process::Output` struct represents the output of a finished child process,
-and the `process::Command` struct is a process builder.
+`process::Output`構造体は終了した子プロセスの出力を表します。
+`process::Command`構造体はプロセスを作成します。
 
 ```rust,editable,ignore
 use std::process::Command;
@@ -25,5 +25,4 @@ fn main() {
 }
 ```
 
-(You are encouraged to try the previous example with an incorrect flag passed
-to `rustc`)
+(間違ったフラグを`rustc`に渡すとエラーします。)
