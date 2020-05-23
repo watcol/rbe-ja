@@ -148,18 +148,18 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#read_lines" id="read_lines"><code>read_lines</code></a></h1>
-<p>The method <code>lines()</code> returns an iterator over the lines
-of a file.</p>
-<p><code>File::open</code> expects a generic, <code>AsRef&lt;Path&gt;</code>.  That's what
-<code>read_lines()</code> expects as input.</p>
+<p><code>lines()</code>メソッドはファイルを1行ずつ読み込むイテレータ
+を返します。</p>
+<p><code>File::open</code>は<code>AsRef&lt;Path&gt;</code>を期待しますが、
+<code>read_lines()</code>は入力を期待します。</p>
 <pre><pre class="playpen"><code class="language-rust no_run">use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
 fn main() {
-    // File hosts must exist in current path before this produces output
+    // ファイルが存在し、読み込めることが前提
     if let Ok(lines) = read_lines(&quot;./hosts&quot;) {
-        // Consumes the iterator, returns an (Optional) String
+        // イテレータを消費し、文字列の`Result`を返す
         for line in lines {
             if let Ok(ip) = line {
                 println!(&quot;{}&quot;, ip);
@@ -168,22 +168,22 @@ fn main() {
     }
 }
 
-// The output is wrapped in a Result to allow matching on errors
-// Returns an Iterator to the Reader of the lines of the file.
+// エラーに遭遇しても良いように、Resultを返す。
+// BufReaderを行ごとに読み取るイテレータを返す。
 fn read_lines&lt;P&gt;(filename: P) -&gt; io::Result&lt;io::Lines&lt;io::BufReader&lt;File&gt;&gt;&gt;
 where P: AsRef&lt;Path&gt;, {
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
 }
 </code></pre></pre>
-<p>Running this program simply prints the lines individually.</p>
+<p>このプログラムを実行すると、シンプルにすべての行の値が得られる。</p>
 <pre><code class="language-shell">$ echo -e &quot;127.0.0.1\n192.168.0.1\n&quot; &gt; hosts
 $ rustc read_lines.rs &amp;&amp; ./read_lines
 127.0.0.1
 192.168.0.1
 </code></pre>
-<p>This process is more efficient than creating a <code>String</code> in memory
-especially working with larger files.</p>
+<p>この方法は、特に大きなファイルを扱う時、<code>String</code>をすべてメモリに
+保存するより効率的です。</p>
 
                     </main>
 

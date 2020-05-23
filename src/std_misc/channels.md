@@ -1,8 +1,7 @@
-# Channels
+# チャンネル
 
-Rust provides asynchronous `channels` for communication between threads. Channels
-allow a unidirectional flow of information between two end-points: the
-`Sender` and the `Receiver`.
+Rustはスレッド間で同期するためのチャンネルを提供しています。チャンネルを
+使えば、情報を2つのスレッド(`Sender`と`Receiver`)間で一方的に送信できます。
 
 ```rust,editable
 use std::sync::mpsc::{Sender, Receiver};
@@ -12,44 +11,44 @@ use std::thread;
 static NTHREADS: i32 = 3;
 
 fn main() {
-    // Channels have two endpoints: the `Sender<T>` and the `Receiver<T>`,
-    // where `T` is the type of the message to be transferred
-    // (type annotation is superfluous)
+    // チャンネルは`Sender<T>`と`Receiver<T>`という2つの地点を持っていて、
+    // `T`は送信する情報の型です。
+    // (型注釈は必要ないものです)
     let (tx, rx): (Sender<i32>, Receiver<i32>) = mpsc::channel();
     let mut children = Vec::new();
 
     for id in 0..NTHREADS {
-        // The sender endpoint can be copied
+        // 送り手(Sender)はコピーできます。
         let thread_tx = tx.clone();
 
-        // Each thread will send its id via the channel
+        // それぞれのスレッドがチャンネルを使ってデータを送信します。
         let child = thread::spawn(move || {
-            // The thread takes ownership over `thread_tx`
-            // Each thread queues a message in the channel
+            // このスレッドは`thread_tx`の所有権を必要とします。
+            // それぞれのスレッドがキューにデータを送ります。
             thread_tx.send(id).unwrap();
 
-            // Sending is a non-blocking operation, the thread will continue
-            // immediately after sending its message
+            // 送ることは制限された操作ではないので、スレッドは
+            // 即座に次の操作ができます。
             println!("thread {} finished", id);
         });
 
         children.push(child);
     }
 
-    // Here, all the messages are collected
+    // ここにすべてのメッセージが溜まっています
     let mut ids = Vec::with_capacity(NTHREADS as usize);
     for _ in 0..NTHREADS {
-        // The `recv` method picks a message from the channel
-        // `recv` will block the current thread if there are no messages available
+        // `recv`メソッドはチャンネルからのメッセージを一つとります。
+        // `recv`はメッセージが届いていないときに操作がブロックされます。
         ids.push(rx.recv());
     }
     
-    // Wait for the threads to complete any remaining work
+    // 残りの作業を終えるため、スレッドの終了を待つ。
     for child in children {
         child.join().expect("oops! the child thread panicked");
     }
 
-    // Show the order in which the messages were sent
+    // メッセージを贈られた順に並べる。
     println!("{:?}", ids);
 }
 ```

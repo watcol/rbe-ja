@@ -147,33 +147,30 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#testcase-map-reduce" id="testcase-map-reduce">Testcase: map-reduce</a></h1>
-<p>Rust makes it very easy to parallelise data processing, without many of the headaches traditionally associated with such an attempt.</p>
-<p>The standard library provides great threading primitives out of the box.
-These, combined with Rust's concept of Ownership and aliasing rules, automatically prevent
-data races.</p>
-<p>The aliasing rules (one writable reference XOR many readable references) automatically prevent
-you from manipulating state that is visible to other threads. (Where synchronisation is needed,
-there are synchronisation
-primitives like <code>Mutex</code>es or <code>Channel</code>s.)</p>
-<p>In this example, we will calculate the sum of all digits in a block of numbers.
-We will do this by parcelling out chunks of the block into different threads. Each thread will sum
-its tiny block of digits, and subsequently we will sum the intermediate sums produced by each
-thread.</p>
-<p>Note that, although we're passing references across thread boundaries, Rust understands that we're
-only passing read-only references, and that thus no unsafety or data races can occur. Because
-we're <code>move</code>-ing the data segments into the thread, Rust will also ensure the data is kept alive
-until the threads exit, so no dangling pointers occur.</p>
+                        <h1><a class="header" href="#テストケース-map-reduce" id="テストケース-map-reduce">テストケース: map-reduce</a></h1>
+<p>Rustを使えば、苦労なしに簡単に並行プログラミングできます。</p>
+<p>標準ライブラリはスレッド管理のための素晴らしい機能を提供しています。
+これらは、Rustの所有権やエイリアスの概念と協調した、データ競合の少ない
+並行化を可能にします。</p>
+<p>エイリアシングルール(一つの他と共存できない可変参照と、他といくつでも共存できる不変参照)によって、
+他のスレッドとの競合を原理的になくすことができます。(同期したいときは、そのための<code>Mutex</code>や<code>Channnel</code>
+といった型が存在します。)</p>
+<p>この例では、ブロック内のすべての数字を加算します。ここでは、ブロックをチャンクに分割して、それぞれの
+チャンクの計算を別のスレッドで行っています。それぞれのスレッドが合計を計算したら、即座にそれぞれの
+スレッドの持つ数を合算します。</p>
+<p>スレッドを超えてデータを参照しても、コンパイラは読み取り専用の参照しか渡していないことを知っているので、
+安全でない操作やデータ競合が起こらないことに注意してください。また、データをスレッドに<code>move</code>しても、
+スレッドが終了するまでデータを確保するので、危険なポインタもできません。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::thread;
 
-// This is the `main` thread
+// `main`スレッド
 fn main() {
 
-    // This is our data to process.
-    // We will calculate the sum of all digits via a threaded  map-reduce algorithm.
-    // Each whitespace separated chunk will be handled in a different thread.
+    // これが処理するデータです。
+    // map-reduceアルゴリズムでこれらの数字の合計を計算します。
+    // 空白によってチャンクを分割できます。
     //
-    // TODO: see what happens to the output if you insert spaces!
+    // TODO: 空白を増やしたらどうなるか見てみましょう!
     let data = &quot;86967897737416471853297327050364959
 11861322575564723963297542624962850
 70856234701860851907960690014725639
@@ -183,56 +180,56 @@ fn main() {
 69920216438980873548808413720956532
 16278424637452589860345374828574668&quot;;
 
-    // Make a vector to hold the child-threads which we will spawn.
+    // 子スレッドを保持するベクタ
     let mut children = vec![];
 
     /*************************************************************************
-     * &quot;Map&quot; phase
+     * &quot;Map&quot;フェーズ
      *
-     * Divide our data into segments, and apply initial processing
+     * データを分割し、最初の処理を行う
      ************************************************************************/
 
-    // split our data into segments for individual calculation
-    // each chunk will be a reference (&amp;str) into the actual data
+    // それぞれの計算のためにデータを分割する。
+    // それぞれのチャンクは(&amp;str)から本物のデータを参照できる。
     let chunked_data = data.split_whitespace();
 
-    // Iterate over the data segments.
-    // .enumerate() adds the current loop index to whatever is iterated
-    // the resulting tuple &quot;(index, element)&quot; is then immediately
-    // &quot;destructured&quot; into two variables, &quot;i&quot; and &quot;data_segment&quot; with a
-    // &quot;destructuring assignment&quot;
+    // データ単位ごとにイテレーションする
+    // .enumerate()は現在のループインデックスとデータを
+    // タプル&quot;(index, element)&quot;に入れ、即座に2つの変数
+    // &quot;i&quot;と&quot;data_segment&quot;に「分割代入」する。
     for (i, data_segment) in chunked_data.enumerate() {
         println!(&quot;data segment {} is \&quot;{}\&quot;&quot;, i, data_segment);
 
-        // Process each data segment in a separate thread
+        // それぞれのデータ単位を別々のスレッドで処理する。
         //
-        // spawn() returns a handle to the new thread,
-        // which we MUST keep to access the returned value
+        // spawn()はスレッドの情報を返し、これは返り値にアクセス
+        // するために保持しないといけない。
         //
-        // 'move || -&gt; u32' is syntax for a closure that:
-        // * takes no arguments ('||')
-        // * takes ownership of its captured variables ('move') and
-        // * returns an unsigned 32-bit integer ('-&gt; u32')
+        // 'move || -&gt; u32'は、
+        // * 引数を取らない ('||')
+        // * キャプチャした変数を移動するする('move')
+        // * 32ビット浮動小数点整数を返す('-&gt; u32')
+        // クロージャです。
         //
-        // Rust is smart enough to infer the '-&gt; u32' from
-        // the closure itself so we could have left that out.
+        // Rustは、クロージャ自体から'-&gt; u32'を推論できるので
+        // 省略することもできる。
         //
-        // TODO: try removing the 'move' and see what happens
+        // TODO: 'move'を外すとどうなるか見てみましょう。
         children.push(thread::spawn(move || -&gt; u32 {
-            // Calculate the intermediate sum of this segment:
+            // そのデータ単位の合計を計算する
             let result = data_segment
-                        // iterate over the characters of our segment..
+                        // 文字ごとにイテレートする..
                         .chars()
-                        // .. convert text-characters to their number value..
+                        // ..文字を数値に変換する..
                         .map(|c| c.to_digit(10).expect(&quot;should be a digit&quot;))
-                        // .. and sum the resulting iterator of numbers
+                        // ..すべての数値を合計する
                         .sum();
 
-            // println! locks stdout, so no text-interleaving occurs
+            // println!はstdoutをロックするので、テキストの競合は起こらない
             println!(&quot;processed segment {}, result={}&quot;, i, result);
 
-            // &quot;return&quot; not needed, because Rust is an &quot;expression language&quot;, the
-            // last evaluated expression in each block is automatically its value.
+            // は&quot;式ベース言語&quot;なので、&quot;return&quot;は必要なく、ブロックの最後の式が
+            // 自動的に返される。
             result
 
         }));
@@ -240,25 +237,25 @@ fn main() {
 
 
     /*************************************************************************
-     * &quot;Reduce&quot; phase
+     * &quot;Reduce&quot;フェーズ
      *
-     * Collect our intermediate results, and combine them into a final result
+     * それぞれの結果を取得し、合算する。
      ************************************************************************/
 
-    // collect each thread's intermediate results into a new Vec
+    // 新しいベクターにそれぞれの結果を入れる。
     let mut intermediate_sums = vec![];
     for child in children {
-        // collect each child thread's return-value
+        // それぞれの子スレッドの返り値を取得する。
         let intermediate_sum = child.join().unwrap();
         intermediate_sums.push(intermediate_sum);
     }
 
-    // combine all intermediate sums into a single final sum.
+    // すべての数値を合算して、最後の結果とする。
     //
-    // we use the &quot;turbofish&quot; ::&lt;&gt; to provide sum() with a type hint.
+    // &quot;ターボフィッシュ&quot;(::&lt;&gt;)を使うことでsum()に型のヒントを与える。
     //
-    // TODO: try without the turbofish, by instead explicitly
-    // specifying the type of final_result
+    // TODO: ターボフィッシュを使わず、明示的に
+    // final_resultの型を指定してください。
     let final_result = intermediate_sums.iter().sum::&lt;u32&gt;();
 
     println!(&quot;Final sum result: {}&quot;, final_result);
@@ -266,19 +263,21 @@ fn main() {
 
 
 </code></pre></pre>
-<h3><a class="header" href="#assignments" id="assignments">Assignments</a></h3>
-<p>It is not wise to let our number of threads depend on user inputted data.
-What if the user decides to insert a lot of spaces? Do we <em>really</em> want to spawn 2,000 threads?
-Modify the program so that the data is always chunked into a limited number of chunks,
-defined by a static constant at the beginning of the program.</p>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
+<h3><a class="header" href="#代入" id="代入">代入</a></h3>
+<p>ユーザー入力からスレッド数を決めるのは賢くありません。ユーザーがもしたくさんのスペースを入れたとして、
+<em>本当に</em>2,000個のスレッドを作る必要があるでしょうか? いつも限られた数のチャンクを作るようにして、
+その数を静的定数としてプログラムのはじめに定義するようにプログラムを変更してみてください。</p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
 <ul>
-<li><a href="../threads.html">Threads</a></li>
-<li><a href="../../std/vec.html">vectors</a> and <a href="../../trait/iter.html">iterators</a></li>
-<li><a href="../../fn/closures.html">closures</a>, <a href="../../scope/move.html">move</a> semantics and <a href="https://doc.rust-lang.org/book/ch13-01-closures.html#closures-can-capture-their-environment"><code>move</code> closures</a></li>
-<li><a href="https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#destructuring-to-break-apart-values">destructuring</a> assignments</li>
-<li><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect">turbofish notation</a> to help type inference</li>
-<li><a href="../../error/option_unwrap.html">unwrap vs. expect</a></li>
+<li><a href="../threads.html">スレッド</a></li>
+<li><a href="../../std/vec.html">ベクター</a></li>
+<li><a href="../../trait/iter.html">イテレータ</a></li>
+<li><a href="../../fn/closures.html">クロージャ</a></li>
+<li><a href="../../scope/move.html">move</a></li>
+<li><a href="https://doc.rust-lang.org/book/ch13-01-closures.html#closures-can-capture-their-environment">クロージャの<code>move</code></a></li>
+<li><a href="https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#destructuring-to-break-apart-values">分割代入</a></li>
+<li>型インターフェースを補助する<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect">ターボフィッシュ</a></li>
+<li><a href="../../error/option_unwrap.html">unwrapとexpect</a></li>
 <li><a href="https://doc.rust-lang.org/book/loops.html#enumerate">enumerate</a></li>
 </ul>
 

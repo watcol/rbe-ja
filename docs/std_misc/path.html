@@ -147,30 +147,29 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#path" id="path">Path</a></h1>
-<p>The <code>Path</code> struct represents file paths in the underlying filesystem. There are
-two flavors of <code>Path</code>: <code>posix::Path</code>, for UNIX-like systems, and
-<code>windows::Path</code>, for Windows. The prelude exports the appropriate
-platform-specific <code>Path</code> variant.</p>
-<p>A <code>Path</code> can be created from an <code>OsStr</code>, and provides several methods to get
-information from the file/directory the path points to.</p>
-<p>Note that a <code>Path</code> is <em>not</em> internally represented as an UTF-8 string, but
-instead is stored as a vector of bytes (<code>Vec&lt;u8&gt;</code>). Therefore, converting a
-<code>Path</code> to a <code>&amp;str</code> is <em>not</em> free and may fail (an <code>Option</code> is returned).</p>
+                        <h1><a class="header" href="#パス" id="パス">パス</a></h1>
+<p><code>Path</code>構造体はファイルシステム下のファイルパスを格納します。これにはUNIX系
+システム用の<code>posix::Path</code>と、Windows用の<code>windows::Path</code>の2つがあります。
+これらは適切なプラットフォーム依存の<code>Path</code>列挙子を提供します。</p>
+<p><code>Path</code>は<code>OsStr</code>から作ることができ、ファイルやディレクトリに対する情報
+を操作するいくつかのメソッドを持っています。</p>
+<p><code>Path</code>は内部的にはUTF-8文字列として保存されず、バイト列(<code>Vec&lt;u8&gt;</code>)として
+保存されることに注意してください。そのため、<code>Path</code>から<code>&amp;str</code>への変換は
+失敗する可能性があります(<code>Option</code>が返されます)。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::path::Path;
 
 fn main() {
-    // Create a `Path` from an `&amp;'static str`
+    // `&amp;'static str`から`Path`を作る
     let path = Path::new(&quot;.&quot;);
 
-    // The `display` method returns a `Show`able structure
+    // `display`メソッドは`Show`できる構造体を返します。
     let _display = path.display();
 
-    // `join` merges a path with a byte container using the OS specific
-    // separator, and returns the new path
+    // `join`はパスをOS依存のセパレータで結合し、
+    // 新しいパスを返します。
     let new_path = path.join(&quot;a&quot;).join(&quot;b&quot;);
 
-    // Convert the path into a string slice
+    // パスを文字列スライスに変換する。
     match new_path.to_str() {
         None =&gt; panic!(&quot;new path is not a valid UTF-8 sequence&quot;),
         Some(s) =&gt; println!(&quot;new path is {}&quot;, s),
@@ -178,10 +177,13 @@ fn main() {
 }
 
 </code></pre></pre>
-<p>Be sure to check at other <code>Path</code> methods (<code>posix::Path</code> or <code>windows::Path</code>) and
-the <code>Metadata</code> struct.</p>
-<h3><a class="header" href="#see-also" id="see-also">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/ffi/struct.OsStr.html">OsStr</a> and <a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">Metadata</a>.</p>
+<p>他の<code>Path</code>(<code>posix::Path</code>または<code>windows::Path</code>)のメソッドや
+<code>Metadata</code>構造体についても確認してください。</p>
+<h3><a class="header" href="#こちらも参照" id="こちらも参照">こちらも参照:</a></h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/ffi/struct.OsStr.html">OsStr</a></li>
+<li><a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">Metadata</a></li>
+</ul>
 
                     </main>
 

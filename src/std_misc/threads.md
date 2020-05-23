@@ -1,7 +1,7 @@
-# Threads
+# スレッド
 
-Rust provides a mechanism for spawning native OS threads via the `spawn`
-function, the argument of this function is a moving closure.
+Rustは`spawn`関数でクロージャを引数にとり、OSのスレッドを生成する
+メカニズムを備えています。
 
 ```rust,editable
 use std::thread;
@@ -27,4 +27,4 @@ fn main() {
 }
 ```
 
-These threads will be scheduled by the OS.
+これらのスレッドはOSによってスケジューリングされています。

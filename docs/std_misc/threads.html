@@ -147,9 +147,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#threads" id="threads">Threads</a></h1>
-<p>Rust provides a mechanism for spawning native OS threads via the <code>spawn</code>
-function, the argument of this function is a moving closure.</p>
+                        <h1><a class="header" href="#スレッド" id="スレッド">スレッド</a></h1>
+<p>Rustは<code>spawn</code>関数でクロージャを引数にとり、OSのスレッドを生成する
+メカニズムを備えています。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::thread;
 
 static NTHREADS: i32 = 10;
@@ -172,7 +172,7 @@ fn main() {
     }
 }
 </code></pre></pre>
-<p>These threads will be scheduled by the OS.</p>
+<p>これらのスレッドはOSによってスケジューリングされています。</p>
 
                     </main>
 

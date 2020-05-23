@@ -147,14 +147,13 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#file-io" id="file-io">File I/O</a></h1>
-<p>The <code>File</code> struct represents a file that has been opened (it wraps a file
-descriptor), and gives read and/or write access to the underlying file.</p>
-<p>Since many things can go wrong when doing file I/O, all the <code>File</code> methods
-return the <code>io::Result&lt;T&gt;</code> type, which is an alias for <code>Result&lt;T, io::Error&gt;</code>.</p>
-<p>This makes the failure of all I/O operations <em>explicit</em>. Thanks to this, the
-programmer can see all the failure paths, and is encouraged to handle them in
-a proactive manner.</p>
+                        <h1><a class="header" href="#ファイルio" id="ファイルio">ファイルI/O</a></h1>
+<p><code>File</code>構造体はすでに開いたファイルを表します。(これはファイル記述子の
+ラップです。) また、これに対して読み取りや書き込みの権限を要求できます。</p>
+<p>ファイルI/Oには多くの失敗要素があるため, <code>File</code>のメソッドは
+<code>Result&lt;T, io::Error&gt;</code>のエイリアスである<code>io::Result&lt;T&gt;</code>を返します。</p>
+<p>これによって、ファイルI/Oのエラーを<em>明確</em>にできます。これのおかげで、
+パスの失敗について、自身を持って処理できます。</p>
 
                     </main>
 

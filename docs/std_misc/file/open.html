@@ -148,43 +148,42 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#open" id="open"><code>open</code></a></h1>
-<p>The <code>open</code> static method can be used to open a file in read-only mode.</p>
-<p>A <code>File</code> owns a resource, the file descriptor and takes care of closing the
-file when it is <code>drop</code>ed.</p>
+<p><code>open</code>静的メソッドはファイルを読み取り専用モードで開くのに使うことができます。</p>
+<p><code>File</code>はリソース、ファイル記述子を所有していて、いつファイルが<code>drop</code>されるかに
+ついての配慮をしています。</p>
 <pre><code class="language-rust editable ignore">use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
 fn main() {
-    // Create a path to the desired file
+    // 開くファイルのパスを作る
     let path = Path::new(&quot;hello.txt&quot;);
     let display = path.display();
 
-    // Open the path in read-only mode, returns `io::Result&lt;File&gt;`
+    // 読み取り専用でパスを開き、`io::Result&lt;File&gt;`を返す。
     let mut file = match File::open(&amp;path) {
         Err(why) =&gt; panic!(&quot;couldn't open {}: {}&quot;, display, why),
         Ok(file) =&gt; file,
     };
 
-    // Read the file contents into a string, returns `io::Result&lt;usize&gt;`
+    // ファイルを文字列に読み込み、`io::Result&lt;usize&gt;`を返す。
     let mut s = String::new();
     match file.read_to_string(&amp;mut s) {
         Err(why) =&gt; panic!(&quot;couldn't read {}: {}&quot;, display, why),
         Ok(_) =&gt; print!(&quot;{} contains:\n{}&quot;, display, s),
     }
 
-    // `file` goes out of scope, and the &quot;hello.txt&quot; file gets closed
+    // `file`がスコープを出たことで、&quot;hello.txt&quot;は閉じられます。
 }
 </code></pre>
-<p>Here's the expected successful output:</p>
+<p>これが成功時の出力です。</p>
 <pre><code class="language-shell">$ echo &quot;Hello World!&quot; &gt; hello.txt
 $ rustc open.rs &amp;&amp; ./open
 hello.txt contains:
 Hello World!
 </code></pre>
-<p>(You are encouraged to test the previous example under different failure
-conditions: <code>hello.txt</code> doesn't exist, or <code>hello.txt</code> is not readable,
-etc.)</p>
+<p>(<code>hello.txt</code>が存在しない、または<code>hello.txt</code>が読み込めないなどの
+場合、このプログラムはエラーします。)</p>
 
                     </main>
 

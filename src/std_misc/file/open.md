@@ -1,9 +1,9 @@
 # `open`
 
-The `open` static method can be used to open a file in read-only mode.
+`open`静的メソッドはファイルを読み取り専用モードで開くのに使うことができます。
 
-A `File` owns a resource, the file descriptor and takes care of closing the
-file when it is `drop`ed.
+`File`はリソース、ファイル記述子を所有していて、いつファイルが`drop`されるかに
+ついての配慮をしています。
 
 ```rust,editable,ignore
 use std::fs::File;
@@ -11,28 +11,28 @@ use std::io::prelude::*;
 use std::path::Path;
 
 fn main() {
-    // Create a path to the desired file
+    // 開くファイルのパスを作る
     let path = Path::new("hello.txt");
     let display = path.display();
 
-    // Open the path in read-only mode, returns `io::Result<File>`
+    // 読み取り専用でパスを開き、`io::Result<File>`を返す。
     let mut file = match File::open(&path) {
         Err(why) => panic!("couldn't open {}: {}", display, why),
         Ok(file) => file,
     };
 
-    // Read the file contents into a string, returns `io::Result<usize>`
+    // ファイルを文字列に読み込み、`io::Result<usize>`を返す。
     let mut s = String::new();
     match file.read_to_string(&mut s) {
         Err(why) => panic!("couldn't read {}: {}", display, why),
         Ok(_) => print!("{} contains:\n{}", display, s),
     }
 
-    // `file` goes out of scope, and the "hello.txt" file gets closed
+    // `file`がスコープを出たことで、"hello.txt"は閉じられます。
 }
 ```
 
-Here's the expected successful output:
+これが成功時の出力です。
 
 ```shell
 $ echo "Hello World!" > hello.txt
@@ -41,6 +41,5 @@ hello.txt contains:
 Hello World!
 ```
 
-(You are encouraged to test the previous example under different failure
-conditions: `hello.txt` doesn't exist, or `hello.txt` is not readable,
-etc.)
+(`hello.txt`が存在しない、または`hello.txt`が読み込めないなどの
+場合、このプログラムはエラーします。)

@@ -1,8 +1,7 @@
 # `create`
 
-The `create` static method opens a file in write-only mode. If the file
-already existed, the old content is destroyed. Otherwise, a new file is
-created.
+`create`はファイルを書き込み専用で開きます。もしファイルがすでに存在する場合、
+古いものは破棄され、存在しないときは新しく作成されます。
 
 ```rust,ignore
 static LOREM_IPSUM: &str =
@@ -22,13 +21,13 @@ fn main() {
     let path = Path::new("lorem_ipsum.txt");
     let display = path.display();
 
-    // Open a file in write-only mode, returns `io::Result<File>`
+    // 書き込み専用でファイルを開き、`io::Result<File>`を返します。
     let mut file = match File::create(&path) {
         Err(why) => panic!("couldn't create {}: {}", display, why),
         Ok(file) => file,
     };
 
-    // Write the `LOREM_IPSUM` string to `file`, returns `io::Result<()>`
+    // `LOREM_IPSUM`文字列を`file`に書き込み、`io::Result<()>`を返します。
     match file.write_all(LOREM_IPSUM.as_bytes()) {
         Err(why) => panic!("couldn't write to {}: {}", display, why),
         Ok(_) => println!("successfully wrote to {}", display),
@@ -36,7 +35,7 @@ fn main() {
 }
 ```
 
-Here's the expected successful output:
+成功時の出力は以下の通りです。
 
 ```shell
 $ rustc create.rs && ./create
@@ -50,9 +49,8 @@ cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 ```
 
-(As in the previous example, you are encouraged to test this example under
-failure conditions.)
+(前の例のように、状況によっては失敗することがあります。)
 
-There is [`OpenOptions`] struct that can be used to configure how a file is opened.
+[`OpenOptions`]構造体でファイルをどのように開くか決めることができます。
 
 [`OpenOptions`]: https://doc.rust-lang.org/std/fs/struct.OpenOptions.html

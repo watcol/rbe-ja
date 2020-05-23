@@ -1,37 +1,34 @@
-# Testcase: map-reduce
+# テストケース: map-reduce
 
-Rust makes it very easy to parallelise data processing, without many of the headaches traditionally associated with such an attempt.
+Rustを使えば、苦労なしに簡単に並行プログラミングできます。
 
-The standard library provides great threading primitives out of the box.
-These, combined with Rust's concept of Ownership and aliasing rules, automatically prevent
-data races.
+標準ライブラリはスレッド管理のための素晴らしい機能を提供しています。
+これらは、Rustの所有権やエイリアスの概念と協調した、データ競合の少ない
+並行化を可能にします。
 
-The aliasing rules (one writable reference XOR many readable references) automatically prevent
-you from manipulating state that is visible to other threads. (Where synchronisation is needed,
-there are synchronisation
-primitives like `Mutex`es or `Channel`s.)
+エイリアシングルール(一つの他と共存できない可変参照と、他といくつでも共存できる不変参照)によって、
+他のスレッドとの競合を原理的になくすことができます。(同期したいときは、そのための`Mutex`や`Channnel`
+といった型が存在します。)
 
-In this example, we will calculate the sum of all digits in a block of numbers.
-We will do this by parcelling out chunks of the block into different threads. Each thread will sum
-its tiny block of digits, and subsequently we will sum the intermediate sums produced by each
-thread.
+この例では、ブロック内のすべての数字を加算します。ここでは、ブロックをチャンクに分割して、それぞれの
+チャンクの計算を別のスレッドで行っています。それぞれのスレッドが合計を計算したら、即座にそれぞれの
+スレッドの持つ数を合算します。
 
-Note that, although we're passing references across thread boundaries, Rust understands that we're
-only passing read-only references, and that thus no unsafety or data races can occur. Because
-we're `move`-ing the data segments into the thread, Rust will also ensure the data is kept alive
-until the threads exit, so no dangling pointers occur.
+スレッドを超えてデータを参照しても、コンパイラは読み取り専用の参照しか渡していないことを知っているので、
+安全でない操作やデータ競合が起こらないことに注意してください。また、データをスレッドに`move`しても、
+スレッドが終了するまでデータを確保するので、危険なポインタもできません。
 
 ```rust,editable
 use std::thread;
 
-// This is the `main` thread
+// `main`スレッド
 fn main() {
 
-    // This is our data to process.
-    // We will calculate the sum of all digits via a threaded  map-reduce algorithm.
-    // Each whitespace separated chunk will be handled in a different thread.
+    // これが処理するデータです。
+    // map-reduceアルゴリズムでこれらの数字の合計を計算します。
+    // 空白によってチャンクを分割できます。
     //
-    // TODO: see what happens to the output if you insert spaces!
+    // TODO: 空白を増やしたらどうなるか見てみましょう!
     let data = "86967897737416471853297327050364959
 11861322575564723963297542624962850
 70856234701860851907960690014725639
@@ -41,56 +38,56 @@ fn main() {
 69920216438980873548808413720956532
 16278424637452589860345374828574668";
 
-    // Make a vector to hold the child-threads which we will spawn.
+    // 子スレッドを保持するベクタ
     let mut children = vec![];
 
     /*************************************************************************
-     * "Map" phase
+     * "Map"フェーズ
      *
-     * Divide our data into segments, and apply initial processing
+     * データを分割し、最初の処理を行う
      ************************************************************************/
 
-    // split our data into segments for individual calculation
-    // each chunk will be a reference (&str) into the actual data
+    // それぞれの計算のためにデータを分割する。
+    // それぞれのチャンクは(&str)から本物のデータを参照できる。
     let chunked_data = data.split_whitespace();
 
-    // Iterate over the data segments.
-    // .enumerate() adds the current loop index to whatever is iterated
-    // the resulting tuple "(index, element)" is then immediately
-    // "destructured" into two variables, "i" and "data_segment" with a
-    // "destructuring assignment"
+    // データ単位ごとにイテレーションする
+    // .enumerate()は現在のループインデックスとデータを
+    // タプル"(index, element)"に入れ、即座に2つの変数
+    // "i"と"data_segment"に「分割代入」する。
     for (i, data_segment) in chunked_data.enumerate() {
         println!("data segment {} is \"{}\"", i, data_segment);
 
-        // Process each data segment in a separate thread
+        // それぞれのデータ単位を別々のスレッドで処理する。
         //
-        // spawn() returns a handle to the new thread,
-        // which we MUST keep to access the returned value
+        // spawn()はスレッドの情報を返し、これは返り値にアクセス
+        // するために保持しないといけない。
         //
-        // 'move || -> u32' is syntax for a closure that:
-        // * takes no arguments ('||')
-        // * takes ownership of its captured variables ('move') and
-        // * returns an unsigned 32-bit integer ('-> u32')
+        // 'move || -> u32'は、
+        // * 引数を取らない ('||')
+        // * キャプチャした変数を移動するする('move')
+        // * 32ビット浮動小数点整数を返す('-> u32')
+        // クロージャです。
         //
-        // Rust is smart enough to infer the '-> u32' from
-        // the closure itself so we could have left that out.
+        // Rustは、クロージャ自体から'-> u32'を推論できるので
+        // 省略することもできる。
         //
-        // TODO: try removing the 'move' and see what happens
+        // TODO: 'move'を外すとどうなるか見てみましょう。
         children.push(thread::spawn(move || -> u32 {
-            // Calculate the intermediate sum of this segment:
+            // そのデータ単位の合計を計算する
             let result = data_segment
-                        // iterate over the characters of our segment..
+                        // 文字ごとにイテレートする..
                         .chars()
-                        // .. convert text-characters to their number value..
+                        // ..文字を数値に変換する..
                         .map(|c| c.to_digit(10).expect("should be a digit"))
-                        // .. and sum the resulting iterator of numbers
+                        // ..すべての数値を合計する
                         .sum();
 
-            // println! locks stdout, so no text-interleaving occurs
+            // println!はstdoutをロックするので、テキストの競合は起こらない
             println!("processed segment {}, result={}", i, result);
 
-            // "return" not needed, because Rust is an "expression language", the
-            // last evaluated expression in each block is automatically its value.
+            // は"式ベース言語"なので、"return"は必要なく、ブロックの最後の式が
+            // 自動的に返される。
             result
 
         }));
@@ -98,25 +95,25 @@ fn main() {
 
 
     /*************************************************************************
-     * "Reduce" phase
+     * "Reduce"フェーズ
      *
-     * Collect our intermediate results, and combine them into a final result
+     * それぞれの結果を取得し、合算する。
      ************************************************************************/
 
-    // collect each thread's intermediate results into a new Vec
+    // 新しいベクターにそれぞれの結果を入れる。
     let mut intermediate_sums = vec![];
     for child in children {
-        // collect each child thread's return-value
+        // それぞれの子スレッドの返り値を取得する。
         let intermediate_sum = child.join().unwrap();
         intermediate_sums.push(intermediate_sum);
     }
 
-    // combine all intermediate sums into a single final sum.
+    // すべての数値を合算して、最後の結果とする。
     //
-    // we use the "turbofish" ::<> to provide sum() with a type hint.
+    // "ターボフィッシュ"(::<>)を使うことでsum()に型のヒントを与える。
     //
-    // TODO: try without the turbofish, by instead explicitly
-    // specifying the type of final_result
+    // TODO: ターボフィッシュを使わず、明示的に
+    // final_resultの型を指定してください。
     let final_result = intermediate_sums.iter().sum::<u32>();
 
     println!("Final sum result: {}", final_result);
@@ -125,19 +122,21 @@ fn main() {
 
 ```
 
-### Assignments
-It is not wise to let our number of threads depend on user inputted data.
-What if the user decides to insert a lot of spaces? Do we _really_ want to spawn 2,000 threads?
-Modify the program so that the data is always chunked into a limited number of chunks,
-defined by a static constant at the beginning of the program.
+### 代入
+ユーザー入力からスレッド数を決めるのは賢くありません。ユーザーがもしたくさんのスペースを入れたとして、
+*本当に*2,000個のスレッドを作る必要があるでしょうか? いつも限られた数のチャンクを作るようにして、
+その数を静的定数としてプログラムのはじめに定義するようにプログラムを変更してみてください。
 
-### See also:
-* [Threads][thread]
-* [vectors][vectors] and [iterators][iterators]
-* [closures][closures], [move][move] semantics and [`move` closures][move_closure]
-* [destructuring][destructuring] assignments
-* [turbofish notation][turbofish] to help type inference
-* [unwrap vs. expect][unwrap]
+### こちらも参照:
+* [スレッド][thread]
+* [ベクター][vectors]
+* [イテレータ][iterators]
+* [クロージャ][closures]
+* [move][move]
+* [クロージャの`move`][move_closure]
+* [分割代入][destructuring]
+* 型インターフェースを補助する[ターボフィッシュ][turbofish]
+* [unwrapとexpect][unwrap]
 * [enumerate][enumerate]
 
 [thread]: ../threads.md

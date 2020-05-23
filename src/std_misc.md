@@ -1,17 +1,18 @@
-# Std misc
+# その他のStd
 
-Many other types are provided by the std library to support
-things such as:
+標準ライブラリは、このような用途のためのその他の
+型を提供しています。
 
-* Threads
-* Channels
-* File I/O
+* スレッド
+* チャンネル
+* ファイル  I/O
 
-These expand beyond what the [primitives] provide.
+これらは[基本型][primitives]を拡張することで提供されています。
 
-### See also:
+### こちらも参照:
 
-[primitives] and [the std library][std]
+- [基本型][primitives]
+- [標準ライブラリ][std]
 
 [primitives]: primitives.md
 [std]: https://doc.rust-lang.org/std/

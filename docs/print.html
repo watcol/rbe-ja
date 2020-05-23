@@ -7931,20 +7931,23 @@ fn main() {
 <li><a href="https://doc.rust-lang.org/std/rc/index.html">std::rc</a></li>
 <li><a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a></li>
 </ul>
-<h1><a class="header" href="#std-misc" id="std-misc">Std misc</a></h1>
-<p>Many other types are provided by the std library to support
-things such as:</p>
+<h1><a class="header" href="#その他のstd" id="その他のstd">その他のStd</a></h1>
+<p>標準ライブラリは、このような用途のためのその他の
+型を提供しています。</p>
 <ul>
-<li>Threads</li>
-<li>Channels</li>
-<li>File I/O</li>
+<li>スレッド</li>
+<li>チャンネル</li>
+<li>ファイル  I/O</li>
 </ul>
-<p>These expand beyond what the <a href="primitives.html">primitives</a> provide.</p>
-<h3><a class="header" href="#see-also-1" id="see-also-1">See also:</a></h3>
-<p><a href="primitives.html">primitives</a> and <a href="https://doc.rust-lang.org/std/">the std library</a></p>
-<h1><a class="header" href="#threads" id="threads">Threads</a></h1>
-<p>Rust provides a mechanism for spawning native OS threads via the <code>spawn</code>
-function, the argument of this function is a moving closure.</p>
+<p>これらは<a href="primitives.html">基本型</a>を拡張することで提供されています。</p>
+<h3><a class="header" href="#こちらも参照-65" id="こちらも参照-65">こちらも参照:</a></h3>
+<ul>
+<li><a href="primitives.html">基本型</a></li>
+<li><a href="https://doc.rust-lang.org/std/">標準ライブラリ</a></li>
+</ul>
+<h1><a class="header" href="#スレッド" id="スレッド">スレッド</a></h1>
+<p>Rustは<code>spawn</code>関数でクロージャを引数にとり、OSのスレッドを生成する
+メカニズムを備えています。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::thread;
 
 static NTHREADS: i32 = 10;
@@ -7967,34 +7970,31 @@ fn main() {
     }
 }
 </code></pre></pre>
-<p>These threads will be scheduled by the OS.</p>
-<h1><a class="header" href="#testcase-map-reduce" id="testcase-map-reduce">Testcase: map-reduce</a></h1>
-<p>Rust makes it very easy to parallelise data processing, without many of the headaches traditionally associated with such an attempt.</p>
-<p>The standard library provides great threading primitives out of the box.
-These, combined with Rust's concept of Ownership and aliasing rules, automatically prevent
-data races.</p>
-<p>The aliasing rules (one writable reference XOR many readable references) automatically prevent
-you from manipulating state that is visible to other threads. (Where synchronisation is needed,
-there are synchronisation
-primitives like <code>Mutex</code>es or <code>Channel</code>s.)</p>
-<p>In this example, we will calculate the sum of all digits in a block of numbers.
-We will do this by parcelling out chunks of the block into different threads. Each thread will sum
-its tiny block of digits, and subsequently we will sum the intermediate sums produced by each
-thread.</p>
-<p>Note that, although we're passing references across thread boundaries, Rust understands that we're
-only passing read-only references, and that thus no unsafety or data races can occur. Because
-we're <code>move</code>-ing the data segments into the thread, Rust will also ensure the data is kept alive
-until the threads exit, so no dangling pointers occur.</p>
+<p>これらのスレッドはOSによってスケジューリングされています。</p>
+<h1><a class="header" href="#テストケース-map-reduce" id="テストケース-map-reduce">テストケース: map-reduce</a></h1>
+<p>Rustを使えば、苦労なしに簡単に並行プログラミングできます。</p>
+<p>標準ライブラリはスレッド管理のための素晴らしい機能を提供しています。
+これらは、Rustの所有権やエイリアスの概念と協調した、データ競合の少ない
+並行化を可能にします。</p>
+<p>エイリアシングルール(一つの他と共存できない可変参照と、他といくつでも共存できる不変参照)によって、
+他のスレッドとの競合を原理的になくすことができます。(同期したいときは、そのための<code>Mutex</code>や<code>Channnel</code>
+といった型が存在します。)</p>
+<p>この例では、ブロック内のすべての数字を加算します。ここでは、ブロックをチャンクに分割して、それぞれの
+チャンクの計算を別のスレッドで行っています。それぞれのスレッドが合計を計算したら、即座にそれぞれの
+スレッドの持つ数を合算します。</p>
+<p>スレッドを超えてデータを参照しても、コンパイラは読み取り専用の参照しか渡していないことを知っているので、
+安全でない操作やデータ競合が起こらないことに注意してください。また、データをスレッドに<code>move</code>しても、
+スレッドが終了するまでデータを確保するので、危険なポインタもできません。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::thread;
 
-// This is the `main` thread
+// `main`スレッド
 fn main() {
 
-    // This is our data to process.
-    // We will calculate the sum of all digits via a threaded  map-reduce algorithm.
-    // Each whitespace separated chunk will be handled in a different thread.
+    // これが処理するデータです。
+    // map-reduceアルゴリズムでこれらの数字の合計を計算します。
+    // 空白によってチャンクを分割できます。
     //
-    // TODO: see what happens to the output if you insert spaces!
+    // TODO: 空白を増やしたらどうなるか見てみましょう!
     let data = &quot;86967897737416471853297327050364959
 11861322575564723963297542624962850
 70856234701860851907960690014725639
@@ -8004,56 +8004,56 @@ fn main() {
 69920216438980873548808413720956532
 16278424637452589860345374828574668&quot;;
 
-    // Make a vector to hold the child-threads which we will spawn.
+    // 子スレッドを保持するベクタ
     let mut children = vec![];
 
     /*************************************************************************
-     * &quot;Map&quot; phase
+     * &quot;Map&quot;フェーズ
      *
-     * Divide our data into segments, and apply initial processing
+     * データを分割し、最初の処理を行う
      ************************************************************************/
 
-    // split our data into segments for individual calculation
-    // each chunk will be a reference (&amp;str) into the actual data
+    // それぞれの計算のためにデータを分割する。
+    // それぞれのチャンクは(&amp;str)から本物のデータを参照できる。
     let chunked_data = data.split_whitespace();
 
-    // Iterate over the data segments.
-    // .enumerate() adds the current loop index to whatever is iterated
-    // the resulting tuple &quot;(index, element)&quot; is then immediately
-    // &quot;destructured&quot; into two variables, &quot;i&quot; and &quot;data_segment&quot; with a
-    // &quot;destructuring assignment&quot;
+    // データ単位ごとにイテレーションする
+    // .enumerate()は現在のループインデックスとデータを
+    // タプル&quot;(index, element)&quot;に入れ、即座に2つの変数
+    // &quot;i&quot;と&quot;data_segment&quot;に「分割代入」する。
     for (i, data_segment) in chunked_data.enumerate() {
         println!(&quot;data segment {} is \&quot;{}\&quot;&quot;, i, data_segment);
 
-        // Process each data segment in a separate thread
+        // それぞれのデータ単位を別々のスレッドで処理する。
         //
-        // spawn() returns a handle to the new thread,
-        // which we MUST keep to access the returned value
+        // spawn()はスレッドの情報を返し、これは返り値にアクセス
+        // するために保持しないといけない。
         //
-        // 'move || -&gt; u32' is syntax for a closure that:
-        // * takes no arguments ('||')
-        // * takes ownership of its captured variables ('move') and
-        // * returns an unsigned 32-bit integer ('-&gt; u32')
+        // 'move || -&gt; u32'は、
+        // * 引数を取らない ('||')
+        // * キャプチャした変数を移動するする('move')
+        // * 32ビット浮動小数点整数を返す('-&gt; u32')
+        // クロージャです。
         //
-        // Rust is smart enough to infer the '-&gt; u32' from
-        // the closure itself so we could have left that out.
+        // Rustは、クロージャ自体から'-&gt; u32'を推論できるので
+        // 省略することもできる。
         //
-        // TODO: try removing the 'move' and see what happens
+        // TODO: 'move'を外すとどうなるか見てみましょう。
         children.push(thread::spawn(move || -&gt; u32 {
-            // Calculate the intermediate sum of this segment:
+            // そのデータ単位の合計を計算する
             let result = data_segment
-                        // iterate over the characters of our segment..
+                        // 文字ごとにイテレートする..
                         .chars()
-                        // .. convert text-characters to their number value..
+                        // ..文字を数値に変換する..
                         .map(|c| c.to_digit(10).expect(&quot;should be a digit&quot;))
-                        // .. and sum the resulting iterator of numbers
+                        // ..すべての数値を合計する
                         .sum();
 
-            // println! locks stdout, so no text-interleaving occurs
+            // println!はstdoutをロックするので、テキストの競合は起こらない
             println!(&quot;processed segment {}, result={}&quot;, i, result);
 
-            // &quot;return&quot; not needed, because Rust is an &quot;expression language&quot;, the
-            // last evaluated expression in each block is automatically its value.
+            // は&quot;式ベース言語&quot;なので、&quot;return&quot;は必要なく、ブロックの最後の式が
+            // 自動的に返される。
             result
 
         }));
@@ -8061,25 +8061,25 @@ fn main() {
 
 
     /*************************************************************************
-     * &quot;Reduce&quot; phase
+     * &quot;Reduce&quot;フェーズ
      *
-     * Collect our intermediate results, and combine them into a final result
+     * それぞれの結果を取得し、合算する。
      ************************************************************************/
 
-    // collect each thread's intermediate results into a new Vec
+    // 新しいベクターにそれぞれの結果を入れる。
     let mut intermediate_sums = vec![];
     for child in children {
-        // collect each child thread's return-value
+        // それぞれの子スレッドの返り値を取得する。
         let intermediate_sum = child.join().unwrap();
         intermediate_sums.push(intermediate_sum);
     }
 
-    // combine all intermediate sums into a single final sum.
+    // すべての数値を合算して、最後の結果とする。
     //
-    // we use the &quot;turbofish&quot; ::&lt;&gt; to provide sum() with a type hint.
+    // &quot;ターボフィッシュ&quot;(::&lt;&gt;)を使うことでsum()に型のヒントを与える。
     //
-    // TODO: try without the turbofish, by instead explicitly
-    // specifying the type of final_result
+    // TODO: ターボフィッシュを使わず、明示的に
+    // final_resultの型を指定してください。
     let final_result = intermediate_sums.iter().sum::&lt;u32&gt;();
 
     println!(&quot;Final sum result: {}&quot;, final_result);
@@ -8087,25 +8087,26 @@ fn main() {
 
 
 </code></pre></pre>
-<h3><a class="header" href="#assignments" id="assignments">Assignments</a></h3>
-<p>It is not wise to let our number of threads depend on user inputted data.
-What if the user decides to insert a lot of spaces? Do we <em>really</em> want to spawn 2,000 threads?
-Modify the program so that the data is always chunked into a limited number of chunks,
-defined by a static constant at the beginning of the program.</p>
-<h3><a class="header" href="#see-also-2" id="see-also-2">See also:</a></h3>
+<h3><a class="header" href="#代入" id="代入">代入</a></h3>
+<p>ユーザー入力からスレッド数を決めるのは賢くありません。ユーザーがもしたくさんのスペースを入れたとして、
+<em>本当に</em>2,000個のスレッドを作る必要があるでしょうか? いつも限られた数のチャンクを作るようにして、
+その数を静的定数としてプログラムのはじめに定義するようにプログラムを変更してみてください。</p>
+<h3><a class="header" href="#こちらも参照-66" id="こちらも参照-66">こちらも参照:</a></h3>
 <ul>
-<li><a href="std_misc/threads/../threads.html">Threads</a></li>
-<li><a href="std_misc/threads/../../std/vec.html">vectors</a> and <a href="std_misc/threads/../../trait/iter.html">iterators</a></li>
-<li><a href="std_misc/threads/../../fn/closures.html">closures</a>, <a href="std_misc/threads/../../scope/move.html">move</a> semantics and <a href="https://doc.rust-lang.org/book/ch13-01-closures.html#closures-can-capture-their-environment"><code>move</code> closures</a></li>
-<li><a href="https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#destructuring-to-break-apart-values">destructuring</a> assignments</li>
-<li><a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect">turbofish notation</a> to help type inference</li>
-<li><a href="std_misc/threads/../../error/option_unwrap.html">unwrap vs. expect</a></li>
+<li><a href="std_misc/threads/../threads.html">スレッド</a></li>
+<li><a href="std_misc/threads/../../std/vec.html">ベクター</a></li>
+<li><a href="std_misc/threads/../../trait/iter.html">イテレータ</a></li>
+<li><a href="std_misc/threads/../../fn/closures.html">クロージャ</a></li>
+<li><a href="std_misc/threads/../../scope/move.html">move</a></li>
+<li><a href="https://doc.rust-lang.org/book/ch13-01-closures.html#closures-can-capture-their-environment">クロージャの<code>move</code></a></li>
+<li><a href="https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html#destructuring-to-break-apart-values">分割代入</a></li>
+<li>型インターフェースを補助する<a href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#method.collect">ターボフィッシュ</a></li>
+<li><a href="std_misc/threads/../../error/option_unwrap.html">unwrapとexpect</a></li>
 <li><a href="https://doc.rust-lang.org/book/loops.html#enumerate">enumerate</a></li>
 </ul>
-<h1><a class="header" href="#channels" id="channels">Channels</a></h1>
-<p>Rust provides asynchronous <code>channels</code> for communication between threads. Channels
-allow a unidirectional flow of information between two end-points: the
-<code>Sender</code> and the <code>Receiver</code>.</p>
+<h1><a class="header" href="#チャンネル" id="チャンネル">チャンネル</a></h1>
+<p>Rustはスレッド間で同期するためのチャンネルを提供しています。チャンネルを
+使えば、情報を2つのスレッド(<code>Sender</code>と<code>Receiver</code>)間で一方的に送信できます。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::sync::mpsc::{Sender, Receiver};
 use std::sync::mpsc;
 use std::thread;
@@ -8113,71 +8114,70 @@ use std::thread;
 static NTHREADS: i32 = 3;
 
 fn main() {
-    // Channels have two endpoints: the `Sender&lt;T&gt;` and the `Receiver&lt;T&gt;`,
-    // where `T` is the type of the message to be transferred
-    // (type annotation is superfluous)
+    // チャンネルは`Sender&lt;T&gt;`と`Receiver&lt;T&gt;`という2つの地点を持っていて、
+    // `T`は送信する情報の型です。
+    // (型注釈は必要ないものです)
     let (tx, rx): (Sender&lt;i32&gt;, Receiver&lt;i32&gt;) = mpsc::channel();
     let mut children = Vec::new();
 
     for id in 0..NTHREADS {
-        // The sender endpoint can be copied
+        // 送り手(Sender)はコピーできます。
         let thread_tx = tx.clone();
 
-        // Each thread will send its id via the channel
+        // それぞれのスレッドがチャンネルを使ってデータを送信します。
         let child = thread::spawn(move || {
-            // The thread takes ownership over `thread_tx`
-            // Each thread queues a message in the channel
+            // このスレッドは`thread_tx`の所有権を必要とします。
+            // それぞれのスレッドがキューにデータを送ります。
             thread_tx.send(id).unwrap();
 
-            // Sending is a non-blocking operation, the thread will continue
-            // immediately after sending its message
+            // 送ることは制限された操作ではないので、スレッドは
+            // 即座に次の操作ができます。
             println!(&quot;thread {} finished&quot;, id);
         });
 
         children.push(child);
     }
 
-    // Here, all the messages are collected
+    // ここにすべてのメッセージが溜まっています
     let mut ids = Vec::with_capacity(NTHREADS as usize);
     for _ in 0..NTHREADS {
-        // The `recv` method picks a message from the channel
-        // `recv` will block the current thread if there are no messages available
+        // `recv`メソッドはチャンネルからのメッセージを一つとります。
+        // `recv`はメッセージが届いていないときに操作がブロックされます。
         ids.push(rx.recv());
     }
     
-    // Wait for the threads to complete any remaining work
+    // 残りの作業を終えるため、スレッドの終了を待つ。
     for child in children {
         child.join().expect(&quot;oops! the child thread panicked&quot;);
     }
 
-    // Show the order in which the messages were sent
+    // メッセージを贈られた順に並べる。
     println!(&quot;{:?}&quot;, ids);
 }
 </code></pre></pre>
-<h1><a class="header" href="#path" id="path">Path</a></h1>
-<p>The <code>Path</code> struct represents file paths in the underlying filesystem. There are
-two flavors of <code>Path</code>: <code>posix::Path</code>, for UNIX-like systems, and
-<code>windows::Path</code>, for Windows. The prelude exports the appropriate
-platform-specific <code>Path</code> variant.</p>
-<p>A <code>Path</code> can be created from an <code>OsStr</code>, and provides several methods to get
-information from the file/directory the path points to.</p>
-<p>Note that a <code>Path</code> is <em>not</em> internally represented as an UTF-8 string, but
-instead is stored as a vector of bytes (<code>Vec&lt;u8&gt;</code>). Therefore, converting a
-<code>Path</code> to a <code>&amp;str</code> is <em>not</em> free and may fail (an <code>Option</code> is returned).</p>
+<h1><a class="header" href="#パス" id="パス">パス</a></h1>
+<p><code>Path</code>構造体はファイルシステム下のファイルパスを格納します。これにはUNIX系
+システム用の<code>posix::Path</code>と、Windows用の<code>windows::Path</code>の2つがあります。
+これらは適切なプラットフォーム依存の<code>Path</code>列挙子を提供します。</p>
+<p><code>Path</code>は<code>OsStr</code>から作ることができ、ファイルやディレクトリに対する情報
+を操作するいくつかのメソッドを持っています。</p>
+<p><code>Path</code>は内部的にはUTF-8文字列として保存されず、バイト列(<code>Vec&lt;u8&gt;</code>)として
+保存されることに注意してください。そのため、<code>Path</code>から<code>&amp;str</code>への変換は
+失敗する可能性があります(<code>Option</code>が返されます)。</p>
 <pre><pre class="playpen"><code class="language-rust editable">use std::path::Path;
 
 fn main() {
-    // Create a `Path` from an `&amp;'static str`
+    // `&amp;'static str`から`Path`を作る
     let path = Path::new(&quot;.&quot;);
 
-    // The `display` method returns a `Show`able structure
+    // `display`メソッドは`Show`できる構造体を返します。
     let _display = path.display();
 
-    // `join` merges a path with a byte container using the OS specific
-    // separator, and returns the new path
+    // `join`はパスをOS依存のセパレータで結合し、
+    // 新しいパスを返します。
     let new_path = path.join(&quot;a&quot;).join(&quot;b&quot;);
 
-    // Convert the path into a string slice
+    // パスを文字列スライスに変換する。
     match new_path.to_str() {
         None =&gt; panic!(&quot;new path is not a valid UTF-8 sequence&quot;),
         Some(s) =&gt; println!(&quot;new path is {}&quot;, s),
@@ -8185,60 +8185,60 @@ fn main() {
 }
 
 </code></pre></pre>
-<p>Be sure to check at other <code>Path</code> methods (<code>posix::Path</code> or <code>windows::Path</code>) and
-the <code>Metadata</code> struct.</p>
-<h3><a class="header" href="#see-also-3" id="see-also-3">See also:</a></h3>
-<p><a href="https://doc.rust-lang.org/std/ffi/struct.OsStr.html">OsStr</a> and <a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">Metadata</a>.</p>
-<h1><a class="header" href="#file-io" id="file-io">File I/O</a></h1>
-<p>The <code>File</code> struct represents a file that has been opened (it wraps a file
-descriptor), and gives read and/or write access to the underlying file.</p>
-<p>Since many things can go wrong when doing file I/O, all the <code>File</code> methods
-return the <code>io::Result&lt;T&gt;</code> type, which is an alias for <code>Result&lt;T, io::Error&gt;</code>.</p>
-<p>This makes the failure of all I/O operations <em>explicit</em>. Thanks to this, the
-programmer can see all the failure paths, and is encouraged to handle them in
-a proactive manner.</p>
+<p>他の<code>Path</code>(<code>posix::Path</code>または<code>windows::Path</code>)のメソッドや
+<code>Metadata</code>構造体についても確認してください。</p>
+<h3><a class="header" href="#こちらも参照-67" id="こちらも参照-67">こちらも参照:</a></h3>
+<ul>
+<li><a href="https://doc.rust-lang.org/std/ffi/struct.OsStr.html">OsStr</a></li>
+<li><a href="https://doc.rust-lang.org/std/fs/struct.Metadata.html">Metadata</a></li>
+</ul>
+<h1><a class="header" href="#ファイルio" id="ファイルio">ファイルI/O</a></h1>
+<p><code>File</code>構造体はすでに開いたファイルを表します。(これはファイル記述子の
+ラップです。) また、これに対して読み取りや書き込みの権限を要求できます。</p>
+<p>ファイルI/Oには多くの失敗要素があるため, <code>File</code>のメソッドは
+<code>Result&lt;T, io::Error&gt;</code>のエイリアスである<code>io::Result&lt;T&gt;</code>を返します。</p>
+<p>これによって、ファイルI/Oのエラーを<em>明確</em>にできます。これのおかげで、
+パスの失敗について、自身を持って処理できます。</p>
 <h1><a class="header" href="#open" id="open"><code>open</code></a></h1>
-<p>The <code>open</code> static method can be used to open a file in read-only mode.</p>
-<p>A <code>File</code> owns a resource, the file descriptor and takes care of closing the
-file when it is <code>drop</code>ed.</p>
+<p><code>open</code>静的メソッドはファイルを読み取り専用モードで開くのに使うことができます。</p>
+<p><code>File</code>はリソース、ファイル記述子を所有していて、いつファイルが<code>drop</code>されるかに
+ついての配慮をしています。</p>
 <pre><code class="language-rust editable ignore">use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
 fn main() {
-    // Create a path to the desired file
+    // 開くファイルのパスを作る
     let path = Path::new(&quot;hello.txt&quot;);
     let display = path.display();
 
-    // Open the path in read-only mode, returns `io::Result&lt;File&gt;`
+    // 読み取り専用でパスを開き、`io::Result&lt;File&gt;`を返す。
     let mut file = match File::open(&amp;path) {
         Err(why) =&gt; panic!(&quot;couldn't open {}: {}&quot;, display, why),
         Ok(file) =&gt; file,
     };
 
-    // Read the file contents into a string, returns `io::Result&lt;usize&gt;`
+    // ファイルを文字列に読み込み、`io::Result&lt;usize&gt;`を返す。
     let mut s = String::new();
     match file.read_to_string(&amp;mut s) {
         Err(why) =&gt; panic!(&quot;couldn't read {}: {}&quot;, display, why),
         Ok(_) =&gt; print!(&quot;{} contains:\n{}&quot;, display, s),
     }
 
-    // `file` goes out of scope, and the &quot;hello.txt&quot; file gets closed
+    // `file`がスコープを出たことで、&quot;hello.txt&quot;は閉じられます。
 }
 </code></pre>
-<p>Here's the expected successful output:</p>
+<p>これが成功時の出力です。</p>
 <pre><code class="language-shell">$ echo &quot;Hello World!&quot; &gt; hello.txt
 $ rustc open.rs &amp;&amp; ./open
 hello.txt contains:
 Hello World!
 </code></pre>
-<p>(You are encouraged to test the previous example under different failure
-conditions: <code>hello.txt</code> doesn't exist, or <code>hello.txt</code> is not readable,
-etc.)</p>
+<p>(<code>hello.txt</code>が存在しない、または<code>hello.txt</code>が読み込めないなどの
+場合、このプログラムはエラーします。)</p>
 <h1><a class="header" href="#create" id="create"><code>create</code></a></h1>
-<p>The <code>create</code> static method opens a file in write-only mode. If the file
-already existed, the old content is destroyed. Otherwise, a new file is
-created.</p>
+<p><code>create</code>はファイルを書き込み専用で開きます。もしファイルがすでに存在する場合、
+古いものは破棄され、存在しないときは新しく作成されます。</p>
 <pre><code class="language-rust ignore">static LOREM_IPSUM: &amp;str =
     &quot;Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
@@ -8256,20 +8256,20 @@ fn main() {
     let path = Path::new(&quot;lorem_ipsum.txt&quot;);
     let display = path.display();
 
-    // Open a file in write-only mode, returns `io::Result&lt;File&gt;`
+    // 書き込み専用でファイルを開き、`io::Result&lt;File&gt;`を返します。
     let mut file = match File::create(&amp;path) {
         Err(why) =&gt; panic!(&quot;couldn't create {}: {}&quot;, display, why),
         Ok(file) =&gt; file,
     };
 
-    // Write the `LOREM_IPSUM` string to `file`, returns `io::Result&lt;()&gt;`
+    // `LOREM_IPSUM`文字列を`file`に書き込み、`io::Result&lt;()&gt;`を返します。
     match file.write_all(LOREM_IPSUM.as_bytes()) {
         Err(why) =&gt; panic!(&quot;couldn't write to {}: {}&quot;, display, why),
         Ok(_) =&gt; println!(&quot;successfully wrote to {}&quot;, display),
     }
 }
 </code></pre>
-<p>Here's the expected successful output:</p>
+<p>成功時の出力は以下の通りです。</p>
 <pre><code class="language-shell">$ rustc create.rs &amp;&amp; ./create
 successfully wrote to lorem_ipsum.txt
 $ cat lorem_ipsum.txt
@@ -8280,22 +8280,21 @@ consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </code></pre>
-<p>(As in the previous example, you are encouraged to test this example under
-failure conditions.)</p>
-<p>There is <a href="https://doc.rust-lang.org/std/fs/struct.OpenOptions.html"><code>OpenOptions</code></a> struct that can be used to configure how a file is opened.</p>
+<p>(前の例のように、状況によっては失敗することがあります。)</p>
+<p><a href="https://doc.rust-lang.org/std/fs/struct.OpenOptions.html"><code>OpenOptions</code></a>構造体でファイルをどのように開くか決めることができます。</p>
 <h1><a class="header" href="#read_lines" id="read_lines"><code>read_lines</code></a></h1>
-<p>The method <code>lines()</code> returns an iterator over the lines
-of a file.</p>
-<p><code>File::open</code> expects a generic, <code>AsRef&lt;Path&gt;</code>.  That's what
-<code>read_lines()</code> expects as input.</p>
+<p><code>lines()</code>メソッドはファイルを1行ずつ読み込むイテレータ
+を返します。</p>
+<p><code>File::open</code>は<code>AsRef&lt;Path&gt;</code>を期待しますが、
+<code>read_lines()</code>は入力を期待します。</p>
 <pre><pre class="playpen"><code class="language-rust no_run">use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
 
 fn main() {
-    // File hosts must exist in current path before this produces output
+    // ファイルが存在し、読み込めることが前提
     if let Ok(lines) = read_lines(&quot;./hosts&quot;) {
-        // Consumes the iterator, returns an (Optional) String
+        // イテレータを消費し、文字列の`Result`を返す
         for line in lines {
             if let Ok(ip) = line {
                 println!(&quot;{}&quot;, ip);
@@ -8304,22 +8303,22 @@ fn main() {
     }
 }
 
-// The output is wrapped in a Result to allow matching on errors
-// Returns an Iterator to the Reader of the lines of the file.
+// エラーに遭遇しても良いように、Resultを返す。
+// BufReaderを行ごとに読み取るイテレータを返す。
 fn read_lines&lt;P&gt;(filename: P) -&gt; io::Result&lt;io::Lines&lt;io::BufReader&lt;File&gt;&gt;&gt;
 where P: AsRef&lt;Path&gt;, {
     let file = File::open(filename)?;
     Ok(io::BufReader::new(file).lines())
 }
 </code></pre></pre>
-<p>Running this program simply prints the lines individually.</p>
+<p>このプログラムを実行すると、シンプルにすべての行の値が得られる。</p>
 <pre><code class="language-shell">$ echo -e &quot;127.0.0.1\n192.168.0.1\n&quot; &gt; hosts
 $ rustc read_lines.rs &amp;&amp; ./read_lines
 127.0.0.1
 192.168.0.1
 </code></pre>
-<p>This process is more efficient than creating a <code>String</code> in memory
-especially working with larger files.</p>
+<p>この方法は、特に大きなファイルを扱う時、<code>String</code>をすべてメモリに
+保存するより効率的です。</p>
 <h1><a class="header" href="#child-processes" id="child-processes">Child processes</a></h1>
 <p>The <code>process::Output</code> struct represents the output of a finished child process,
 and the <code>process::Command</code> struct is a process builder.</p>
@@ -8532,7 +8531,7 @@ a
     Ok(s)
 }
 </code></pre>
-<h3><a class="header" href="#see-also-4" id="see-also-4">See also:</a></h3>
+<h3><a class="header" href="#see-also-1" id="see-also-1">See also:</a></h3>
 <p><a href="std_misc/../attribute/cfg.html"><code>cfg!</code></a></p>
 <h1><a class="header" href="#program-arguments" id="program-arguments">Program arguments</a></h1>
 <h2><a class="header" href="#standard-library" id="standard-library">Standard Library</a></h2>
@@ -8716,7 +8715,7 @@ impl fmt::Debug for Complex {
 <ul>
 <li><a href="testing/dev_dependencies.html">Dev-dependencies</a></li>
 </ul>
-<h2><a class="header" href="#こちらも参照-65" id="こちらも参照-65">こちらも参照</a></h2>
+<h2><a class="header" href="#こちらも参照-68" id="こちらも参照-68">こちらも参照</a></h2>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch11-00-testing.html">The Book</a>のテストの章</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a>のdoc-testの章</li>
@@ -9034,7 +9033,7 @@ pub fn try_div(a: i32, b: i32) -&gt; Result&lt;i32, String&gt; {
     }
 }
 </code></pre>
-<h2><a class="header" href="#こちらも参照-66" id="こちらも参照-66">こちらも参照</a></h2>
+<h2><a class="header" href="#こちらも参照-69" id="こちらも参照-69">こちらも参照</a></h2>
 <ul>
 <li><a href="https://github.com/rust-lang/rfcs/blob/master/text/0505-api-comment-conventions.md">RFC505</a>のドキュメンテーションスタイル</li>
 <li><a href="https://rust-lang-nursery.github.io/api-guidelines/documentation.html">API Guidelines</a>のドキュメンテーションガイドライン</li>
@@ -9135,7 +9134,7 @@ mod tests {
     }
 }
 </code></pre>
-<h2><a class="header" href="#こちらも参照-67" id="こちらも参照-67">こちらも参照</a></h2>
+<h2><a class="header" href="#こちらも参照-70" id="こちらも参照-70">こちらも参照</a></h2>
 <p><a href="http://doc.crates.io/specifying-dependencies.html">Cargo</a>のドキュメントの「依存を指定する」章</p>
 <h1><a class="header" href="#安全でない操作" id="安全でない操作">安全でない操作</a></h1>
 <p>この節では、まず<a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">公式ドキュメント</a>から、「one should try to minimize
@@ -9313,7 +9312,7 @@ pub use self::async_await::*;
 </code></pre>
 <p>ドキュメンテーション用に、<code>rustdoc</code>はコミュニティによって広く使われています。これは<a href="https://doc.rust-lang.org/std/">標準ライブラリのドキュメント
 </a>にも使われています。</p>
-<h3><a class="header" href="#こちらも参照-68" id="こちらも参照-68">こちらも参照:</a></h3>
+<h3><a class="header" href="#こちらも参照-71" id="こちらも参照-71">こちらも参照:</a></h3>
 <ul>
 <li><a href="https://doc.rust-lang.org/book/ch14-02-publishing-to-crates-io.html#making-useful-documentation-comments">The Rust Book: 有用なドキュメンテーションコメントを作る</a></li>
 <li><a href="https://doc.rust-lang.org/rustdoc/index.html">The rustdoc Book</a></li>
@@ -9346,7 +9345,7 @@ pub use self::async_await::*;
 <p><a href="https://doc.rust-lang.org/core/">公式Rustドキュメント</a>に「Run」というボタンがついているのに気づいた人もいるかもしれません。
 これはサンプルコードをRust Playgroundで新しいタブに開きます。この機能は#[doc]属性の<a href="https://doc.rust-lang.org/rustdoc/the-doc-attribute.html#html_playground_url"><code>html_playground_url</code></a>で
 使うことができます。</p>
-<h3><a class="header" href="#こちらも参照-69" id="こちらも参照-69">こちらも参照:</a></h3>
+<h3><a class="header" href="#こちらも参照-72" id="こちらも参照-72">こちらも参照:</a></h3>
 <ul>
 <li><a href="https://play.rust-lang.org/">Rust Playground</a></li>
 <li><a href="https://github.com/integer32llc/rust-playground/">開発版playpen</a></li>
